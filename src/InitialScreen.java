@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 /**
@@ -45,6 +46,9 @@ public class InitialScreen {
     // create combo boxes for computer strategy choosers
     final JComboBox<String>[] strategyChooserBoxes = new JComboBox[6];
 
+    //create player name input fields
+    final JTextField[] nameTextFields = new JTextField[6];
+
     final static int LEFT_PADDING = 15;
     // vertical padding high is used for space from first row to top
     final static int VERTICAL_PADDING_FIRST = 50;
@@ -57,7 +61,7 @@ public class InitialScreen {
     JPanel panel;
 
     public InitialScreen() {
-        frame = new JFrame("Transamerica Player Selection Screen");
+        frame = new JFrame("Player Selection");
         panel = new JPanel(new GridBagLayout());
         frame.setContentPane(panel);
         frame.setPreferredSize(new Dimension(600, 600));
@@ -104,6 +108,13 @@ public class InitialScreen {
             strategyChooserBoxes[i].setVisible(false);
         }
 
+        //set player text fields to default: player $i:
+        for (int i = 0; i < nameTextFields.length; i++) {
+            nameTextFields[i] = new JTextField("Player " + (i+1), 7);
+            //set invisible by default because human not selected
+            nameTextFields[i].setVisible(false);
+        }
+
         // create constraint object to be edited:
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -132,9 +143,19 @@ public class InitialScreen {
                 c.gridx = j + 1;
                 c.gridy = i;
                 panel.add(radioGroups[i / 2][j], c);
+
+                //if radio button is for player, add text box below it
+                if (j == 0) {
+                    c.gridy = i + 1; //next row
+                    c.insets = new Insets(0, 0, 0, 0);
+                    c.fill = GridBagConstraints.NONE;
+                    panel.add(nameTextFields[i / 2], c);
+                    c.fill = GridBagConstraints.HORIZONTAL;
+                }
+
                 // if radio button is for computer, add combo box below it
                 if (j == 1) {
-                    c.gridy = i + 1;
+                    c.gridy = i + 1; //next row
                     c.insets = new Insets(0, 0, 0, 0);
                     c.fill = GridBagConstraints.NONE;
                     panel.add(strategyChooserBoxes[i / 2], c);
@@ -180,19 +201,20 @@ public class InitialScreen {
             }
             if (button == 0) { //human
                 //show player name input
-                System.out.println("show player name input");
+                nameTextFields[group].setVisible(true);
                 strategyChooserBoxes[group].setVisible(false);
             }
             else if (button == 1) { //computer
                 //hide player name input
-                System.out.println("hide player name input");
+                nameTextFields[group].setVisible(false);
                 strategyChooserBoxes[group].setVisible(true);
             }
             else { //none
                 //hide player name input
-                System.out.println("hide player name input");
+                nameTextFields[group].setVisible(false);
                 strategyChooserBoxes[group].setVisible(false);
             }
+            frame.pack();
         }
 
     }
