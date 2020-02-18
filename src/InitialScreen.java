@@ -15,26 +15,13 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-/**
- * 
- * Note: Add an extra row between every existing player choice row Extra row
- * will include: Player name input (pre-filled with Player $n) Computer strategy
- * choice box
- * 
- * 
- */
-
 public class InitialScreen {
-    // XXX: note that this class is just a proof of concept
-    // this class DOES NOT include player name prompts or computer strategy radio
-    // buttons
-    // TODO: include computer strategy JComboBox to switch difficulty
-    // https://docs.oracle.com/javase/tutorial/uiswing/layout/gridbag.html
 
     // player labels (Player 1:, etc.)
     final JLabel[] playerPrompts = new JLabel[6];
@@ -62,6 +49,8 @@ public class InitialScreen {
     JFrame frame;
     JPanel panel;
 
+    JButton playButton;
+
     public InitialScreen() {
         frame = new JFrame("Player Selection");
         panel = new JPanel(new GridBagLayout());
@@ -69,7 +58,7 @@ public class InitialScreen {
         frame.setPreferredSize(new Dimension(600, 700));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //create title label
+        // create title label
         JLabel title = new JLabel("Transamerica");
         title.setFont(new Font("Arial", Font.BOLD, 36));
 
@@ -141,36 +130,36 @@ public class InitialScreen {
         c.ipadx = 5;
         c.ipady = 5;
 
-        //make title take up two spaces
+        // make title take up two spaces
         c.gridx = 1;
         c.gridy = 0;
         c.gridwidth = 2;
         c.insets = new Insets(5, 1, 20, 1);
         panel.add(title, c);
 
-        //reset grid width
+        // reset grid width
         c.gridwidth = 1;
 
         // add player label followed by each radio button group
         for (int i = 0; i < radioGroups.length * 2; i += 2) {
             // if (i == 0) {
-            //     c.insets = new Insets(VERTICAL_PADDING_FIRST, LEFT_PADDING, 10, 20);
+            // c.insets = new Insets(VERTICAL_PADDING_FIRST, LEFT_PADDING, 10, 20);
             // } else {
-                // if not first row, have less vertical padding
-                c.insets = new Insets(TOP_PADDING, LEFT_PADDING, RIGHT_PADDING, BOTTOM_PADDING);
+            // if not first row, have less vertical padding
+            c.insets = new Insets(TOP_PADDING, LEFT_PADDING, RIGHT_PADDING, BOTTOM_PADDING);
             // }
             c.gridx = 0;
-            c.gridy = (i + 1); //offset from title label
+            c.gridy = (i + 1); // offset from title label
             panel.add(playerPrompts[i / 2], c);
             for (int j = 0; j < radioGroups[i / 2].length; j++) {
                 // if (i == 0) {
-                //     c.insets = new Insets(VERTICAL_PADDING_FIRST, LEFT_PADDING, 10, 20);
+                // c.insets = new Insets(VERTICAL_PADDING_FIRST, LEFT_PADDING, 10, 20);
                 // } else {
-                    // if not first row, have less vertical padding
-                    c.insets = new Insets(TOP_PADDING, LEFT_PADDING, RIGHT_PADDING, BOTTOM_PADDING);
+                // if not first row, have less vertical padding
+                c.insets = new Insets(TOP_PADDING, LEFT_PADDING, RIGHT_PADDING, BOTTOM_PADDING);
                 // }
                 c.gridx = j + 1;
-                c.gridy = (i + 1); //offset from title label
+                c.gridy = (i + 1); // offset from title label
                 panel.add(radioGroups[i / 2][j], c);
 
                 // if radio button is for player, add text box below it
@@ -197,28 +186,31 @@ public class InitialScreen {
         panel.add(new JLabel());
 
         // create play/exit buttons:
-        JButton playButton = new JButton("Play");
+        playButton = new JButton("Play");
         JButton exitButton = new JButton("Exit");
 
-        //set action commands:
+        //make play button disabled by default
+        playButton.setEnabled(false);
+
+        // set action commands:
         playButton.setActionCommand("Play");
         exitButton.setActionCommand("Exit");
 
-        //create button listener to handle button presses
+        // create button listener to handle button presses
         ControlButtonListener controlListener = new ControlButtonListener();
 
-        //add actionlistener to buttons
+        // add actionlistener to buttons
         playButton.addActionListener(controlListener);
         exitButton.addActionListener(controlListener);
 
         // set constraints for play/exit buttons:
         c.gridx = 1;
-        c.gridy = radioGroups.length * 2 + 1; //offset from title label
+        c.gridy = radioGroups.length * 2 + 1; // offset from title label
         c.insets = new Insets(5, LEFT_PADDING, RIGHT_PADDING, BOTTOM_PADDING);
 
-        //add buttons to panel
+        // add buttons to panel
         panel.add(playButton, c);
-        c.gridx = 2; //makes exit button next to play button
+        c.gridx = 2; // makes exit button next to play button
         panel.add(exitButton, c);
 
         frame.pack();
@@ -256,6 +248,26 @@ public class InitialScreen {
                 nameTextFields[group].setVisible(false);
                 strategyChooserBoxes[group].setVisible(false);
             }
+
+            int playerCount = 0;
+
+            //count number of players, if < 2, disable play button
+            for (int i = 0; i < radioGroups.length; i++) {
+                for (int j = 0; j < radioGroups[i].length; j++) {
+                    if (radioGroups[i][j].isSelected()) {
+                        if (!radioGroups[i][j].getText().equals("None")) {
+                            playerCount++;
+                        }
+                    }
+                }
+            }
+
+            if (playerCount < 2) {
+                playButton.setEnabled(false);
+            }
+            else {
+                playButton.setEnabled(true);
+            }
             frame.pack();
         }
 
@@ -266,34 +278,45 @@ public class InitialScreen {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equals("Exit")) {
-                //dialog box to confirm exit?
+                // dialog box to confirm exit?
                 System.exit(1);
-            }
-            else {
+            } else {
                 ArrayList<String> players = new ArrayList<String>();
-                JRadioButton[][] radioGroups = { radioGroup1, radioGroup2, radioGroup3, radioGroup4, radioGroup5, radioGroup6 };
+                JRadioButton[][] radioGroups = { radioGroup1, radioGroup2, radioGroup3, radioGroup4, radioGroup5,
+                        radioGroup6 };
                 for (int i = 0; i < radioGroups.length; i++) {
                     for (int j = 0; j < radioGroups[i].length; j++) {
                         if (radioGroups[i][j].isSelected()) {
-                            //if player is human, take their name input
+                            // if player is human, take their name input
                             if (radioGroups[i][j].getText().equals("Human")) {
                                 players.add(nameTextFields[i].getText());
                             }
-                            //TODO: update naming scheme
-                            //if computer player, name them $difficulty CPU $playerPos
-                            //ex: expert CPU 2 (in second player position)
+                            // TODO: update naming scheme
+                            // if computer player, name them $difficulty CPU $playerPos
+                            // ex: expert CPU 2 (in second player position)
                             else if (radioGroups[i][j].getText().equals("Computer")) {
-                                players.add(strategyChooserBoxes[i].getSelectedItem().toString() + " CPU " + (i+1));
-                            }
-                            else {
-                                //none is selected, don't add to player list
+                                players.add(strategyChooserBoxes[i].getSelectedItem().toString() + " CPU " + (i + 1));
+                            } else {
+                                // none is selected, don't add to player list
                             }
                         }
                     }
                 }
+                // XXX: the stubs below are proof of concept code
                 System.out.println("Players: ");
                 for (String s : players) {
                     System.out.println(s);
+                }
+                boolean eval = true;
+                for (String s : players) {
+                    if (!s.contains("CPU")) {
+                        eval = false;
+                    }
+                }
+                if (eval) {
+                    System.out.println("Strategy Evaluation mode is on!");
+                    int games = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter number of games"));
+                    System.out.println("playing " + games + " games");
                 }
             }
         }
