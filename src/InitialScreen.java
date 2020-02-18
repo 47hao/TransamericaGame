@@ -3,6 +3,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,6 +33,10 @@ public class InitialScreen {
     final JRadioButton[] radioGroup4 = new JRadioButton[3];
     final JRadioButton[] radioGroup5 = new JRadioButton[3];
     final JRadioButton[] radioGroup6 = new JRadioButton[3];
+
+    final JRadioButton[][] radioGroups = { radioGroup1, radioGroup2, radioGroup3, radioGroup4, radioGroup5,
+            radioGroup6 };
+
     // class to group radio buttons
     final ButtonGroup[] buttonGroups = new ButtonGroup[6];
 
@@ -79,9 +84,6 @@ public class InitialScreen {
         playerPrompts[3].setBackground(Color.GREEN);
         playerPrompts[4].setBackground(Color.MAGENTA);
         playerPrompts[5].setBackground(Color.ORANGE);
-
-        // create a list of all groups of radio buttons
-        JRadioButton[][] radioGroups = { radioGroup1, radioGroup2, radioGroup3, radioGroup4, radioGroup5, radioGroup6 };
 
         // create radio button groups (6 groups for 6 players)
         for (int i = 0; i < buttonGroups.length; i++) {
@@ -189,7 +191,7 @@ public class InitialScreen {
         playButton = new JButton("Play");
         JButton exitButton = new JButton("Exit");
 
-        //make play button disabled by default
+        // make play button disabled by default
         playButton.setEnabled(false);
 
         // set action commands:
@@ -220,8 +222,6 @@ public class InitialScreen {
     class RadioListener implements ItemListener {
         @Override
         public void itemStateChanged(ItemEvent e) {
-            JRadioButton[][] radioGroups = { radioGroup1, radioGroup2, radioGroup3, radioGroup4, radioGroup5,
-                    radioGroup6 };
             Object o = e.getSource();
             // group refers to which radioGroup contains the source
             int group = -1;
@@ -251,7 +251,7 @@ public class InitialScreen {
 
             int playerCount = 0;
 
-            //count number of players, if < 2, disable play button
+            // count number of players to enable/disable play button
             for (int i = 0; i < radioGroups.length; i++) {
                 for (int j = 0; j < radioGroups[i].length; j++) {
                     if (radioGroups[i][j].isSelected()) {
@@ -262,10 +262,10 @@ public class InitialScreen {
                 }
             }
 
+            // if less than 2 players, disable play button
             if (playerCount < 2) {
                 playButton.setEnabled(false);
-            }
-            else {
+            } else {
                 playButton.setEnabled(true);
             }
             frame.pack();
@@ -282,8 +282,6 @@ public class InitialScreen {
                 System.exit(1);
             } else {
                 ArrayList<String> players = new ArrayList<String>();
-                JRadioButton[][] radioGroups = { radioGroup1, radioGroup2, radioGroup3, radioGroup4, radioGroup5,
-                        radioGroup6 };
                 for (int i = 0; i < radioGroups.length; i++) {
                     for (int j = 0; j < radioGroups[i].length; j++) {
                         if (radioGroups[i][j].isSelected()) {
@@ -307,18 +305,84 @@ public class InitialScreen {
                 for (String s : players) {
                     System.out.println(s);
                 }
-                boolean eval = true;
+                boolean computersOnly = true;
                 for (String s : players) {
                     if (!s.contains("CPU")) {
-                        eval = false;
+                        computersOnly = false;
                     }
                 }
-                if (eval) {
+                if (computersOnly) {
                     System.out.println("Strategy Evaluation mode is on!");
-                    int games = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter number of games"));
-                    System.out.println("playing " + games + " games");
+                    StrategyEvalPanel p = new StrategyEvalPanel();
+                    JFrame evalFrame = new JFrame("Strategy Evaluator");
+                    evalFrame.setContentPane(p);
+                    evalFrame.setPreferredSize(new Dimension(400, 200));
+                    evalFrame.pack();
+                    evalFrame.setVisible(true);
                 }
             }
+        }
+    }
+
+    class StrategyEvalPanel extends JPanel {
+        JTextField numGamesField;
+        JRadioButton fastButton;
+        JRadioButton slowButton;
+        JLabel numPrompt;
+        JLabel speedPrompt;
+        ButtonGroup g;
+        JButton confirmButton;
+
+        public StrategyEvalPanel() {
+            g = new ButtonGroup();
+            setLayout(new GridLayout(0, 2));
+            numPrompt = new JLabel("Enter number of games:");
+            speedPrompt = new JLabel("Enter a game speed: ");
+            numGamesField = new JTextField();
+            fastButton = new JRadioButton("Fast");
+            slowButton = new JRadioButton("Slow");
+            g.add(fastButton);
+            g.add(slowButton);
+
+            confirmButton = new JButton("Confirm");
+            confirmButton.addActionListener(new ConfirmButtonListener());
+            
+            add(numPrompt);
+            add(numGamesField);
+            add(speedPrompt);
+            add(new JLabel());
+            add(fastButton);
+            add(slowButton);
+
+            add(new JLabel());
+            add(confirmButton);
+        }
+
+        class ConfirmButtonListener implements ActionListener {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int numGames = -1;
+                try {
+                    numGames = Integer.parseInt(numGamesField.getText());
+                    if (numGames < 1) {
+                        throw new NumberFormatException();
+                    }
+                } catch (NumberFormatException e1) {
+                    JOptionPane.showMessageDialog(null, "Enter a valid number of games", "Error", JOptionPane.ERROR_MESSAGE, null);
+                    return;
+                }
+                if (!fastButton.isSelected() && !slowButton.isSelected()) {
+                    JOptionPane.showMessageDialog(null, "Choose a game speed", "Error", JOptionPane.ERROR_MESSAGE, null);
+                    return;
+                }
+                String speed = fastButton.isSelected() ? "fast" : "slow";
+
+                System.out.println("numGames: " + numGames);
+                System.out.println("mode: " + speed);
+
+            }
+
         }
     }
 
