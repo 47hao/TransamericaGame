@@ -303,14 +303,8 @@ public class InitialScreen {
                 // XXX: the stubs below are proof of concept code
                 System.out.println("Players: ");
                 for (String s : players) {
-                    if (s.isEmpty()) {
-                        players.set(players.indexOf(s), "Player " + (players.indexOf(s) + 1));
-                    }
+                    System.out.println(s);
                 }
-                for (int i = 0; i < players.size(); i++) {
-                    System.out.println(players.get(i));
-                }
-                
                 boolean computersOnly = true;
                 for (String s : players) {
                     if (!s.contains("CPU")) {
