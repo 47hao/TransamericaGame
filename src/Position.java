@@ -1,4 +1,3 @@
-import java.awt.Point;
 
 public class Position {
 	int x,y;
