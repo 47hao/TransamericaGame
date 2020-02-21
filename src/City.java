@@ -5,6 +5,10 @@ public class City {
 	private String name;
 	private Position pos;
 	
+	public static final String[] CITYNAMES = {
+			"America", "Brazil", "Czechslovakia"
+	};
+	
 	public City(Position p, String n, Color c)
 	{
 		pos = p;
