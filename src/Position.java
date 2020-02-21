@@ -14,15 +14,4 @@ public class Position {
 	int getY() {
 		return y;
 	}
-	int getPixelX() {
-		return 0;
-		//returns Pixel value of x
-	}
-	int getPixelY() {
-		return 0;
-		//returns Pixel value of y
-	}
-	public Point pixelLoc() {
-		return new Point(x,y);
-	}
 }
