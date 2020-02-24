@@ -13,8 +13,8 @@ public class Board {
 
 	}
 
-	public Rail getRail(Position start, Position end){
-		return new Rail(new Position(), end, false);
+	public Rail getRail(Position start, Position end) {
+		return new Rail(start, end);
 	}
 
 	public Rail getRail(Position pos) {
@@ -33,7 +33,7 @@ public class Board {
 
 	}
 
-	int getDistancetoCity(Player p, City c) {
+	int getDistanceToCity(Player p, City c) {
 
 	}
 }

@@ -5,13 +5,13 @@ import java.util.Arrays;
 public abstract class Player {
 	Color color;
 	String name;
-	
+
 	int score;
-	
+
 	Position markerPos;
 	ArrayList<City> targetCities;
 	ArrayList<Integer> distanceToCities;
-	
+
 	Player(String n, Position markerP, City[] cities, Color c) {
 		name = n;
 		markerPos = markerP;
@@ -19,17 +19,17 @@ public abstract class Player {
 		color = c;
 		score = 0;
 	}
-	
+
 	abstract String getName();
-	
-	abstract int getDistanceToCity(City c);	
-	
+
+	abstract int getDistanceToCity(City c);
+
 	abstract void setDistanceToCity(City c, int n);
-	
+
 	abstract int getRail(Rail[] rails);
-	
+
 	abstract void addScore(int amount);
-	
+
 	abstract int getScore();
-	
+
 }
