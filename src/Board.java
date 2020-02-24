@@ -1,10 +1,16 @@
+import java.util.ArrayList;
 import java.util.Queue;
 
 public class Board {
-	final Rail[] rails;
 	String gameState;
 	Queue<Rail> newRails;
-
+	TurnOrder[] turnOrder;
+	Player activePlayer;
+	final Position[] positions;
+	final City[] cities;
+	final Rail[] rails;
+	ArrayList<possiblePlacement> possiblePlacements;
+	
 	Board() {
 		rails = new Rail[1];
 	}
@@ -13,8 +19,8 @@ public class Board {
 
 	}
 
-	public Rail getRail(Position start, Position end) {
-		return new Rail(start, end);
+	public Rail getRail(Position start, Position end){
+		
 	}
 
 	public Rail getRail(Position pos) {
@@ -26,14 +32,14 @@ public class Board {
 	}
 
 	public Rail[] getRails() {
-
+		return rails;
 	}
 
 	public Rail[] computeConenctedRails(Player p) {
 
 	}
 
-	int getDistanceToCity(Player p, City c) {
+	int getDistancetoCity(Player p, City c) {
 
 	}
 }
