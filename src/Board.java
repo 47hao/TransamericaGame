@@ -4,12 +4,11 @@ import java.util.Queue;
 public class Board {
 	String gameState;
 	Queue<Rail> newRails;
-	TurnOrder[] turnOrder;
 	Player activePlayer;
 	final Position[] positions;
 	final City[] cities;
 	final Rail[] rails;
-	ArrayList<possiblePlacement> possiblePlacements;
+	ArrayList<Position> possiblePlacements;
 	
 	Board() {
 		rails = new Rail[1];
