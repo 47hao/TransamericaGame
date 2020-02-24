@@ -1,3 +1,4 @@
+import java.awt.Point;
 import javax.swing.JFrame;
 
 public class Game {
@@ -19,7 +20,7 @@ public class Game {
 	}
 
 	Player[] Play() {
-
+		return players;
 	}
 
 }
