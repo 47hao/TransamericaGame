@@ -26,14 +26,19 @@ public class Board {
 		}
 		return null;
 	}
-
-	public Rail getRail(Position pos) {
+	public Rail[] getRails(Position pos) {
+		Rail[] rl= new Rail[0];
 		for(int i=0;i<rails.length;i++) {
 			if (rails[i].startPoint==pos||rails[i].endPoint==pos) {
-				return rails[i];
+				Rail[] newRL= new Rail[rl.length+1];
+				for(int j=0;j<rl.length;j++) {
+					newRL[j]=rl[j];
+				}
+				newRL[rl.length+1]=rails[i];
+				rl= newRL;
 			}
 		}
-		return null;
+		return rl;
 	}
 
 	public void setRailState(Rail r, String state) {
