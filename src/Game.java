@@ -1,4 +1,3 @@
-import java.awt.Point;
 import javax.swing.JFrame;
 
 public class Game {
@@ -12,15 +11,36 @@ public class Game {
 	GamePanel panel;
 
 	public Game(Player[] players) {
-
+		frame = new JFrame();
+		panel = new GamePanel(this);
+		board = new Board();
+		scoreboard = new Scoreboard();
+		this.players = players;
+		
 	}
 
 	public Game(Player[] players, boolean fast, int turns) {
 
 	}
 
+	void placeMarkers() {
+		
+	}
+	
 	Player[] Play() {
 		return players;
 	}
 
+	Board getBoard() {
+		return board;
+	}
+	
+	Scoreboard getSB() {
+		return scoreboard;
+	}
+	
+	Player[] getPlayers() {
+		return players;
+	}
+	
 }

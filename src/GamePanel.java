@@ -1,3 +1,4 @@
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -6,39 +7,60 @@ import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements MouseListener {
 	
+	Game gameInfo;
 	int xMousePos = 0;
 	int yMousePos = 0;
 	Point mousePos = new Point(xMousePos, yMousePos);
 	
-	void paintComponent() {
+	public GamePanel(Game g) {
+		gameInfo = g;
+	}
+	
+	public void paintComponent(Graphics g) {
+		drawBoard(g);
+		drawGrid(g);
+		drawScoreboard(g);
+		for (Player p : gameInfo.getPlayers())
+			drawTrain(g, new Point(getPixelX(p.score), 50));
+		for (City c : gameInfo.getBoard().getCities())
+			drawCity(g, new Point(getPixelX(c.getPos().getX()), getPixelY(c.getPos().getY())));
+		for (Player p : gameInfo.getPlayers())
+			drawMarker(g, new Point(getPixelX(p.getMarkerPos().getX()), getPixelY(p.getMarkerPos().getY())));
+		for (Rail r : gameInfo.getBoard().getRails()) {
+			drawRails(g, new Point(getPixelX(r.startPos().getX()), getPixelY(r.startPos().getY())), new Point(getPixelX(r.endPos().getX()), getPixelY(r.endPos().getY())));
+		}
 		// draws board and game information
 	}
 
-	void drawGrid() {
+	void drawBoard(Graphics g) {
+		
+	}
+	
+	void drawGrid(Graphics g) {
 
 	}
 
-	void drawScoreboard() {
+	void drawScoreboard(Graphics g) {
 
 	}
 
-	void drawTrain(Point location) {
+	void drawTrain(Graphics g, Point location) {
+		
+	}
+
+	void drawCity(Graphics g, Point location) {
 
 	}
 
-	void drawCities(Player p) {
+	void drawMarker(Graphics g, Point location) {
 
 	}
 
-	void drawMarkers(Player[] pArray, Player p) {
-
-	}
-
-	void drawRails(Rail[] rails) {
+	void drawRails(Graphics g, Point startPos, Point endPos) {
 		// Looks at states, draws rails
 	}
 
-	void drawInterface(Player p) {
+	void drawInterface(Graphics g, Player p) {
 
 	}
 

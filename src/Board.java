@@ -6,12 +6,11 @@ public class Board {
 	Queue<Rail> newRails;
 	Player activePlayer;
 	final Position[] positions;
-	final City[] cities;
-	final Rail[] rails;
+	final City[] cities = new City[20]; //temp
+	final Rail[] rails = new Rail[100]; //temp
 	ArrayList<Position> possiblePlacements;
 
-	Board() {
-		rails = new Rail[1];
+	public Board() {
 	}
 
 	public void addPlayer(Player p) {
@@ -33,8 +32,12 @@ public class Board {
 	public Rail[] getRails() {
 		return rails;
 	}
-
-	public Rail[] computeConenctedRails(Player p) {
+	
+	public City[] getCities() {
+		return cities;
+	}
+	
+	public Rail[] computeConnectedRails(Player p) {
 
 	}
 

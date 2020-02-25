@@ -22,6 +22,10 @@ public abstract class Player {
 
 	abstract String getName();
 
+	Position getMarkerPos() {
+		return markerPos;
+	}
+	
 	abstract int getDistanceToCity(City c);
 
 	abstract void setDistanceToCity(City c, int n);
