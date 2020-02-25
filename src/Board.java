@@ -1,3 +1,4 @@
+  
 import java.util.ArrayList;
 import java.util.Queue;
 
@@ -20,16 +21,17 @@ public class Board {
 
 	public Rail getRail(Position start, Position end){
 		for(int i=0;i<rails.length;i++) {
-			if (rails[i].startPoint==start&&rails[i].endPoint==end) {
+			if (rails[i].startPoint.equals(start)&&rails[i].endPoint.equals(end)) {
 				return rails[i];
 			}
 		}
 		return null;
 	}
+
 	public Rail[] getRails(Position pos) {
 		Rail[] rl= new Rail[0];
 		for(int i=0;i<rails.length;i++) {
-			if (rails[i].startPoint==pos||rails[i].endPoint==pos) {
+			if (rails[i].startPoint.equals(pos)||rails[i].endPoint.equals(pos)) {
 				Rail[] newRL= new Rail[rl.length+1];
 				for(int j=0;j<rl.length;j++) {
 					newRL[j]=rl[j];
@@ -45,7 +47,7 @@ public class Board {
 		r.setState(state);
 	}
 
-	public Rail[] getallRails() {
+	public Rail[] getRails() {
 		return rails;
 	}
 
