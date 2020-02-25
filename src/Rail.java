@@ -36,4 +36,11 @@ public class Rail {
 	Position endPos() {
 		return endPoint;
 	}
+	public boolean equals(Rail otherRail) {
+		if(startPoint.getX()==otherRail.startPoint.getX()&&startPoint.getY()==otherRail.startPoint.getY()&&
+			endPoint.getX()==otherRail.endPoint.getX()&&endPoint.getY()==otherRail.endPoint.getY()) {
+			return true;
+		}
+		return false;
+	}
 }
