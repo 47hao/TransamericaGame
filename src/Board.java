@@ -45,7 +45,7 @@ public class Board {
 		r.setState(state);
 	}
 
-	public Rail[] getRails() {
+	public Rail[] getallRails() {
 		return rails;
 	}
 
