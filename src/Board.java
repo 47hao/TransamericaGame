@@ -9,7 +9,7 @@ public class Board {
 	final City[] cities;
 	final Rail[] rails;
 	ArrayList<Position> possiblePlacements;
-
+	
 	Board() {
 		rails = new Rail[1];
 	}
@@ -18,12 +18,22 @@ public class Board {
 
 	}
 
-	public Rail getRail(Position start, Position end) {
-
+	public Rail getRail(Position start, Position end){
+		for(int i=0;i<rails.length;i++) {
+			if (rails[i].startPoint==start&&rails[i].endPoint==end) {
+				return rails[i];
+			}
+		}
+		return null;
 	}
 
 	public Rail getRail(Position pos) {
-
+		for(int i=0;i<rails.length;i++) {
+			if (rails[i].startPoint==pos||rails[i].endPoint==pos) {
+				return rails[i];
+			}
+		}
+		return null;
 	}
 
 	public void setRailState(Rail r, String state) {
@@ -38,7 +48,7 @@ public class Board {
 
 	}
 
-	int getDistanceToCity(Player p, City c) {
+	int getDistancetoCity(Player p, City c) {
 
 	}
 }
