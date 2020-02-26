@@ -1,6 +1,5 @@
 
 public abstract class Strategy {
 
-	abstract int returnRail(targetCities[],possibleRails[],wholeBoard[]); 
-	
+	abstract int returnRail(City[] targetCities, Rail[] possibleRails, Board wholeBoard);
 }
