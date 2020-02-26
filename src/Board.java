@@ -66,4 +66,11 @@ public class Board {
 	int getDistancetoCity(Player p, City c) {
 
 	}
+	public Player getActivePlayer() {
+		return activePlayer;
+	}
+	public String getGameState() {
+		return gameState;
+	}
+	
 }
