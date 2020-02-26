@@ -1,11 +1,11 @@
 
-public class BasicStrategy extends Strategy{
+public class BasicStrategy extends Strategy {
 	public String getName() {
 		return "Basic Strategy";
 	}
 
-	public Rail returnRail(possibleRails[]) {
-		int index=Math.random()*possibleRails.length;
+	public Rail returnRail(Rail[] possibleRails) {
+		int index = (int)Math.random() * possibleRails.length;
 		return possibleRails[index];
 	}
 }
