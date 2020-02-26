@@ -33,7 +33,7 @@ public class GamePanel extends JPanel implements MouseListener {
 	}
 
 	void drawBoard(Graphics g) {
-		
+		g.drawImage(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
 	}
 	
 	void drawGrid(Graphics g) {
