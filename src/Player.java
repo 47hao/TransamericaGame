@@ -34,6 +34,12 @@ public abstract class Player {
 
 	abstract void addScore(int amount);
 
-	abstract int getScore();
+	int getScore() {
+		return score;
+	}
 
+	ArrayList<City> getTargetCities() {
+		return targetCities;
+	}
+	
 }
