@@ -4,7 +4,8 @@ public class BasicStrategy extends Strategy {
 		return "Basic Strategy";
 	}
 
-	public Rail returnRail(Rail[] possibleRails) {
+	@Override
+	public Rail returnRail(City[] targetCities, Rail[] possibleRails) {
 		int index = (int)Math.random() * possibleRails.length;
 		return possibleRails[index];
 	}
