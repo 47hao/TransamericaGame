@@ -26,9 +26,9 @@ public class GamePanel extends JPanel implements MouseListener {
 			drawCity(g, new Point(getPixelX(c.getPos().getX()), getPixelY(c.getPos().getY())));
 		for (Player p : gameInfo.getPlayers())
 			drawMarker(g, new Point(getPixelX(p.getMarkerPos().getX()), getPixelY(p.getMarkerPos().getY())));
-		for (Rail r : gameInfo.getBoard().getRails()) {
+		for (Rail r : gameInfo.getBoard().getRails())
 			drawRails(g, new Point(getPixelX(r.startPos().getX()), getPixelY(r.startPos().getY())), new Point(getPixelX(r.endPos().getX()), getPixelY(r.endPos().getY())));
-		}
+		drawCityList(g, gameInfo.getBoard().getActivePlayer());
 		// draws board and game information
 	}
 
@@ -60,7 +60,7 @@ public class GamePanel extends JPanel implements MouseListener {
 		// Looks at states, draws rails
 	}
 
-	void drawInterface(Graphics g, Player p) {
+	void drawCityList(Graphics g, Player p) {
 
 	}
 
