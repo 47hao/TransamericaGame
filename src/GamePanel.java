@@ -1,8 +1,14 @@
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements MouseListener {
@@ -12,14 +18,22 @@ public class GamePanel extends JPanel implements MouseListener {
 	int yMousePos = 0;
 	Point mousePos = new Point(xMousePos, yMousePos);
 	
+	BufferedImage map;
+	
 	public GamePanel(Game g) {
 		gameInfo = g;
+		try {
+			map = ImageIO.read(new File("img/map.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void paintComponent(Graphics g) {
 		drawBoard(g);
 		drawGrid(g);
 		drawScoreboard(g);
+		/*
 		for (Player p : gameInfo.getPlayers())
 			drawTrain(g, new Point(getPixelX(p.score), 50));
 		for (City c : gameInfo.getBoard().getCities())
@@ -28,12 +42,13 @@ public class GamePanel extends JPanel implements MouseListener {
 			drawMarker(g, new Point(getPixelX(p.getMarkerPos().getX()), getPixelY(p.getMarkerPos().getY())));
 		for (Rail r : gameInfo.getBoard().getRails())
 			drawRails(g, new Point(getPixelX(r.startPos().getX()), getPixelY(r.startPos().getY())), new Point(getPixelX(r.endPos().getX()), getPixelY(r.endPos().getY())));
+		*/
 		drawCityList(g, gameInfo.getBoard().getActivePlayer());
 		// draws board and game information
 	}
 
 	void drawBoard(Graphics g) {
-		g.drawImage(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
+		g.drawImage(map, 0, 0, Color.black, null);
 	}
 	
 	void drawGrid(Graphics g) {
@@ -63,7 +78,8 @@ public class GamePanel extends JPanel implements MouseListener {
 	void drawCityList(Graphics g, Player p) {
 
 	}
-
+	
+	/*
 	int getPixelX(int x) {
 		// Returns x in pixel (screen space) position
 	}
@@ -75,6 +91,7 @@ public class GamePanel extends JPanel implements MouseListener {
 	Point pixelLoc(Position p) {
 		// Returns the x and y point in terms of screen space pixels
 	}
+	*/
 	
 	public void mouseMoved(MouseEvent e) {
 		xMousePos = e.getLocationOnScreen().x;

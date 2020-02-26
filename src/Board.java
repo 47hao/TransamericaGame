@@ -6,13 +6,13 @@ public class Board {
 	String gameState;
 	Queue<Rail> newRails;
 	Player activePlayer;
-	final Position[] positions;
+	final Position[] positions = new Position[100]; //temp
 	final City[] cities = new City[20]; // temp
 	final Rail[] rails = new Rail[100]; // temp
 	ArrayList<Position> possiblePlacements;
 
 	public Board() {
-
+		
 	}
 
 	public void addPlayer(Player p) {
@@ -59,18 +59,16 @@ public class Board {
 		return activePlayer;
 	}
 	
+	public String getGameState() {
+		return gameState;
+	}
+	
 	public Rail[] computeConnectedRails(Player p) {
 
 	}
 
 	int getDistancetoCity(Player p, City c) {
 
-	}
-	public Player getActivePlayer() {
-		return activePlayer;
-	}
-	public String getGameState() {
-		return gameState;
 	}
 	
 }
