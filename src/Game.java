@@ -27,10 +27,11 @@ public class Game {
 		fast = false;
 		games = 0;
 		frame.setContentPane(panel);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setPreferredSize(new Dimension(800, 600));
 		frame.setResizable(false);
-		frame.setVisible(true);
 		frame.pack();
+		frame.setVisible(true);
 		play(false);
 	}
 
