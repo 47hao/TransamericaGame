@@ -22,6 +22,10 @@ public abstract class Player {
 
 	abstract String getName();
 
+	void setMarkerPos(Position pos) {
+		markerPos = pos;
+	}
+	
 	Position getMarkerPos() {
 		return markerPos;
 	}

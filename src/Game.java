@@ -46,8 +46,10 @@ public class Game {
 		play(true);
 	}
 
-	void placeMarkers() {
-
+	void placeMarkers(Player p) {
+		Position pos = new Position(0, 0);
+		//Find position of mouse click
+		p.setMarkerPos(pos);
 	}
 
 	Player[] play(boolean cpu) {
@@ -56,20 +58,40 @@ public class Game {
 			while (!roundOver) {
 				for (Player p : players) {
 					panel.repaint();
+
+					if (turns == 0)
+						placeMarkers(p);
+					else {
+						
+					}
 				}
+				
+				turns++;
+				
 				for (Player p : players) {
-					if (p.getTargetCities().size() == 0)
-						roundOver = true;
+					roundOver = true;
+					for (City c : p.getTargetCities()) {
+						if (p.getDistanceToCity(c) == 0)
+							roundOver = false;
+					}
 				}
 			}
-			for (Player p : players) {
+
+			// end of round
+
+			for (
+
+			Player p : players) {
 				if (p.score <= 0)
 					gameOver = true;
 			}
 			roundOver = false;
 		}
 
+		// game over
+
 		return players;
+
 	}
 
 	Board getBoard() {
