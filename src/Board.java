@@ -34,7 +34,7 @@ public class Board {
 	}
 
 	int getDistancetoCity(Player p, City c) {
-
+		return p.getDistanceToCity(c);
 	}
 
 	public Rail[] getRails(Position pos) {
