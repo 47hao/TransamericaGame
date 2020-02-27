@@ -20,6 +20,11 @@ public class GamePanel extends JPanel implements MouseListener {
 	
 	BufferedImage map;
 	
+	final int railLength = 20;
+	
+	final static int gridStartX = 40;
+	final static int gridStartY = 40;
+	
 	public GamePanel(Game g) {
 		gameInfo = g;
 		try {
@@ -52,8 +57,38 @@ public class GamePanel extends JPanel implements MouseListener {
 	}
 	
 	void drawGrid(Graphics g) {
-
+		
 	}
+	
+	void drawRail(Graphics g, Rail rail) {
+		g.setColor(Color.BLACK);
+		
+		if(rail.getState() == Rail.EMPTY)
+		{
+			int startX = rail.startPos().getX();
+			int startY = rail.startPos().getY();
+			int endX = rail.endPos().getX();
+			int endY = rail.endPos().getY();
+			
+			if(rail.isDouble())
+			{
+				if(startY==endY)//horizontal rail
+				{
+					
+				} else if (startX < endX)//Southwest rail
+				{
+					
+				} else { //Southeast rail
+					
+				}
+			} else {
+				g.drawLine(, rail.startPos().getY(), 
+						rail.endPos().getX(), rail.endPos().getY());
+			}
+		}
+			
+	}
+
 
 	void drawScoreboard(Graphics g) {
 
@@ -71,10 +106,7 @@ public class GamePanel extends JPanel implements MouseListener {
 
 	}
 
-	void drawRails(Graphics g, Point startPos, Point endPos) {
-		// Looks at states, draws rails
-	}
-
+	
 	void drawCityList(Graphics g, Player p) {
 
 	}

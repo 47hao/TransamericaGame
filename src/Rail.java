@@ -1,11 +1,16 @@
 
 public class Rail {
-	Position startPoint;
-	Position endPoint;
-	String state = "";
-	boolean doubleRail = false;
+	private Position startPoint;
+	private Position endPoint;
+	private String state = "";
+	private boolean doubleRail = false;
 	boolean placedByCPU;
-
+	
+	final static String EMPTY = "empty";
+	final static String NEW = "new";
+	final static String PLACED = "placed";
+	final static String BLINKING = "blinking";
+                
 	public Rail(Position startPoint, Position endPoint) {
 		this(startPoint, endPoint, false, false);
 	}
@@ -29,18 +34,15 @@ public class Rail {
 		return state;
 	}
 
-	Position startPos() {
+	public Position startPos() {
 		return startPoint;
 	}
 
-	Position endPos() {
+	public Position endPos() {
 		return endPoint;
 	}
-	public boolean equals(Rail otherRail) {
-		if(startPoint.getX()==otherRail.startPoint.getX()&&startPoint.getY()==otherRail.startPoint.getY()&&
-			endPoint.getX()==otherRail.endPoint.getX()&&endPoint.getY()==otherRail.endPoint.getY()) {
-			return true;
-		}
-		return false;
+	
+	public boolean isDouble() {
+		return doubleRail;
 	}
 }
