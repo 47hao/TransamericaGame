@@ -34,14 +34,6 @@ public class Board {
 		return null;
 	}
 
-	public Rail[] computeConnectedRails(Player p) {
-
-	}
-
-	int getDistancetoCity(Player p, City c) {
-
-	}
-
 	public Rail[] getRails(Position pos) {
 		Rail[] returnRails = new Rail[0];
 		for (int i = 0; i < rails.length; i++) {
@@ -60,7 +52,23 @@ public class Board {
 		}
 		return returnRails;
 	}
+	
+	public Rail[] computeConnectedRails(Player p) {
+		
+	}
 
+	int getDistancetoCity(Player p, City c) {
+		
+	}
+	
+	City getCity(Position location) {
+		
+	}
+	
+	Rail[] computePossiblePlacements() {
+		
+	}
+	
 	public void setRailState(Rail r, String state) {
 		r.setState(state);
 	}
