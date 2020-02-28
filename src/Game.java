@@ -43,12 +43,18 @@ public class Game {
 		this.players = players;
 		this.fast = fast;
 		this.games = games;
+		frame.setContentPane(panel);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setPreferredSize(new Dimension(800, 600));
+		frame.setResizable(false);
+		frame.pack();
+		frame.setVisible(true);
 		play(true);
 	}
 
 	void placeMarkers(Player p) {
 		Position pos = new Position(0, 0);
-		//Find position of mouse click
+		// Find position of mouse click
 		p.setMarkerPos(pos);
 	}
 
@@ -62,12 +68,12 @@ public class Game {
 					if (turns == 0)
 						placeMarkers(p);
 					else {
-						
+
 					}
 				}
-				
+
 				turns++;
-				
+
 				for (Player p : players) {
 					roundOver = true;
 					for (City c : p.getTargetCities()) {
@@ -78,10 +84,9 @@ public class Game {
 			}
 
 			// end of round
+			turns = 0;
 
-			for (
-
-			Player p : players) {
+			for (Player p : players) {
 				if (p.score <= 0)
 					gameOver = true;
 			}
