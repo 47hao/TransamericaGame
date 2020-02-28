@@ -4,7 +4,7 @@ public class Rail {
 	private Position endPoint;
 	private String state = "";
 	private boolean doubleRail = false;
-	boolean placedByCPU;
+	private boolean placedByCPU;
 	
 	final static String EMPTY = "empty";
 	final static String NEW = "new";
