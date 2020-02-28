@@ -52,11 +52,13 @@ public class Board {
 					|| (railEnd.getX() == pos.getX() && railEnd.getY() == pos.getY())) {
 					Rail[] secondRail= new Rail[returnRails.length+1];
 					for(int j=0;j<returnRails.length;j++) {
-						returnRails[i]=rails[i];
+						secondRail[i]=returnRails[i];
 					}
 					secondRail[rails.length]=rail;
+					returnRails=secondRail;
 			}
 		}
+		return returnRails;
 	}
 
 	public void setRailState(Rail r, String state) {
