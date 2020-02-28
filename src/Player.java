@@ -24,11 +24,11 @@ public abstract class Player {
 	void setMarkerPos(Position pos) {
 		markerPos = pos;
 	}
-	
+
 	Position getMarkerPos() {
 		return markerPos;
 	}
-	
+
 	abstract int getDistanceToCity(City c);
 
 	abstract void setDistanceToCity(City c, int n);
@@ -44,5 +44,5 @@ public abstract class Player {
 	ArrayList<City> getTargetCities() {
 		return targetCities;
 	}
-	
+
 }

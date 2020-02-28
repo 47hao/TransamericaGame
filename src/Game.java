@@ -4,19 +4,19 @@ import javax.swing.JFrame;
 
 public class Game {
 
-	int games = 0;
-	boolean fast = false;
+	private int games = 0;
+	private boolean fast = false;
 
-	boolean gameOver = false;
-	boolean roundOver = false;
+	private boolean gameOver = false;
+	private boolean roundOver = false;
 
-	int turns = 0;
-	int railsPlaced = 0;
-	Player[] players;
-	Board board;
-	Scoreboard scoreboard;
-	JFrame frame;
-	GamePanel panel;
+	private int turns = 0;
+	private int railsPlaced = 0;
+	private Player[] players;
+	private Board board;
+	private Scoreboard scoreboard;
+	private JFrame frame;
+	private GamePanel panel;
 
 	public Game(Player[] players) {
 		frame = new JFrame();
@@ -87,7 +87,7 @@ public class Game {
 			turns = 0;
 
 			for (Player p : players) {
-				if (p.score <= 0)
+				if (p.getScore() <= 0)
 					gameOver = true;
 			}
 			roundOver = false;

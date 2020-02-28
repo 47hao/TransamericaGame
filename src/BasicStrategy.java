@@ -3,10 +3,8 @@ public class BasicStrategy extends Strategy {
 		return "Basic Strategy";
 	}
 
-
-	@Override
 	public Rail returnRail(City[] targetCities, Rail[] possibleRails, Board wholeBoard) {
-		int index = (int)Math.random() * possibleRails.length;
+		int index = (int) (Math.random() * possibleRails.length);
 		return possibleRails[index];
 	}
 }

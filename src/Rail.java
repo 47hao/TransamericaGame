@@ -5,12 +5,12 @@ public class Rail {
 	private String state = "";
 	private boolean doubleRail = false;
 	boolean placedByCPU;
-	
+
 	final static String EMPTY = "empty";
 	final static String NEW = "new";
 	final static String PLACED = "placed";
 	final static String BLINKING = "blinking";
-                
+
 	public Rail(Position startPoint, Position endPoint) {
 		this(startPoint, endPoint, false, false);
 	}
@@ -41,7 +41,7 @@ public class Rail {
 	public Position endPos() {
 		return endPoint;
 	}
-	
+
 	public boolean isDouble() {
 		return doubleRail;
 	}

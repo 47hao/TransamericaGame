@@ -1,12 +1,12 @@
 import java.awt.Color;
 
-class ComputerPlayer extends Player{
-	String offname;
-	Strategy s;
-	
+class ComputerPlayer extends Player {
+	private String offname;
+	private Strategy s;
+
 	public ComputerPlayer(String name, Color c, Strategy strat) {
-		offname=name;
-		s=strat;
+		offname = name;
+		s = strat;
 	}
 
 	public String getName() {
@@ -29,7 +29,8 @@ class ComputerPlayer extends Player{
 		distanceToCities.set(targetCities.indexOf(c), distance);
 	}
 
-	public int getRail(City[] targetCities, Rail[] possibleRails, Board board) {
-		return s.returnRail(targetCities, possibleRails,board);
+	public Rail getRail(City[] targetCities, Rail[] possibleRails, Board board) {
+		return s.returnRail(targetCities, possibleRails, board);
 	}
+
 }

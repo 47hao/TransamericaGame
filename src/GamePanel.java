@@ -12,19 +12,19 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements MouseListener {
-	
+
 	Game gameInfo;
 	int xMousePos = 0;
 	int yMousePos = 0;
 	Point mousePos = new Point(xMousePos, yMousePos);
-	
+
 	BufferedImage map;
-	
+
 	final int railLength = 20;
-	
+
 	final static int gridStartX = 40;
 	final static int gridStartY = 40;
-	
+
 	public GamePanel(Game g) {
 		gameInfo = g;
 		try {
@@ -33,21 +33,23 @@ public class GamePanel extends JPanel implements MouseListener {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void paintComponent(Graphics g) {
 		drawBoard(g);
 		drawGrid(g);
 		drawScoreboard(g);
 		/*
-		for (Player p : gameInfo.getPlayers())
-			drawTrain(g, new Point(getPixelX(p.score), 50));
-		for (City c : gameInfo.getBoard().getCities())
-			drawCity(g, new Point(getPixelX(c.getPos().getX()), getPixelY(c.getPos().getY())));
-		for (Player p : gameInfo.getPlayers())
-			drawMarker(g, new Point(getPixelX(p.getMarkerPos().getX()), getPixelY(p.getMarkerPos().getY())));
-		for (Rail r : gameInfo.getBoard().getRails())
-			drawRails(g, new Point(getPixelX(r.startPos().getX()), getPixelY(r.startPos().getY())), new Point(getPixelX(r.endPos().getX()), getPixelY(r.endPos().getY())));
-		*/
+		 * for (Player p : gameInfo.getPlayers()) drawTrain(g, new
+		 * Point(getPixelX(p.score), 50)); for (City c :
+		 * gameInfo.getBoard().getCities()) drawCity(g, new
+		 * Point(getPixelX(c.getPos().getX()), getPixelY(c.getPos().getY()))); for
+		 * (Player p : gameInfo.getPlayers()) drawMarker(g, new
+		 * Point(getPixelX(p.getMarkerPos().getX()),
+		 * getPixelY(p.getMarkerPos().getY()))); for (Rail r :
+		 * gameInfo.getBoard().getRails()) drawRails(g, new
+		 * Point(getPixelX(r.startPos().getX()), getPixelY(r.startPos().getY())), new
+		 * Point(getPixelX(r.endPos().getX()), getPixelY(r.endPos().getY())));
+		 */
 		drawCityList(g, gameInfo.getBoard().getActivePlayer());
 		// draws board and game information
 	}
@@ -55,47 +57,43 @@ public class GamePanel extends JPanel implements MouseListener {
 	void drawBoard(Graphics g) {
 		g.drawImage(map, 0, 0, this.getWidth(), this.getHeight(), Color.black, null);
 	}
-	
+
 	void drawGrid(Graphics g) {
-		
+
 	}
-	
+
 	void drawRail(Graphics g, Rail rail) {
 		g.setColor(Color.BLACK);
-		
-		if(rail.getState() == Rail.EMPTY)
-		{
+
+		if (rail.getState() == Rail.EMPTY) {
 			int startX = rail.startPos().getX();
 			int startY = rail.startPos().getY();
 			int endX = rail.endPos().getX();
 			int endY = rail.endPos().getY();
-			
-			if(rail.isDouble())
-			{
-				if(startY==endY)//horizontal rail
+
+			if (rail.isDouble()) {
+				if (startY == endY)// horizontal rail
 				{
-					
-				} else if (startX < endX)//Southwest rail
+
+				} else if (startX < endX)// Southwest rail
 				{
-					
-				} else { //Southeast rail
-					
+
+				} else { // Southeast rail
+
 				}
 			} else {
-				g.drawLine(, rail.startPos().getY(), 
-						rail.endPos().getX(), rail.endPos().getY());
+				g.drawLine(rail.startPos().getX(), rail.startPos().getY(), rail.endPos().getX(), rail.endPos().getY());
 			}
 		}
-			
-	}
 
+	}
 
 	void drawScoreboard(Graphics g) {
 
 	}
 
 	void drawTrain(Graphics g, Point location) {
-		
+
 	}
 
 	void drawCity(Graphics g, Point location) {
@@ -106,25 +104,19 @@ public class GamePanel extends JPanel implements MouseListener {
 
 	}
 
-	
 	void drawCityList(Graphics g, Player p) {
 
 	}
-	
+
 	/*
-	int getPixelX(int x) {
-		// Returns x in pixel (screen space) position
-	}
+	 * int getPixelX(int x) { // Returns x in pixel (screen space) position }
+	 * 
+	 * int getPixelY(int y) { // Returns y in pixel (screen space) position }
+	 * 
+	 * Point pixelLoc(Position p) { // Returns the x and y point in terms of screen
+	 * space pixels }
+	 */
 
-	int getPixelY(int y) {
-		// Returns y in pixel (screen space) position
-	}
-
-	Point pixelLoc(Position p) {
-		// Returns the x and y point in terms of screen space pixels
-	}
-	*/
-	
 	public void mouseMoved(MouseEvent e) {
 		xMousePos = e.getLocationOnScreen().x;
 		yMousePos = e.getLocationOnScreen().y;
@@ -155,5 +147,5 @@ public class GamePanel extends JPanel implements MouseListener {
 	public void mouseReleased(MouseEvent e) {
 
 	}
-	
+
 }
