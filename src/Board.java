@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Queue;
 
 public class Board {
-	String gameState;
-	Queue<Rail> newRails;
-	Player activePlayer;
-	final Position[] positions = new Position[100]; // temp
-	final City[] cities = new City[35];
-	final Rail[] rails = new Rail[100]; // temp
-	ArrayList<Position> possiblePlacements = new ArrayList<Position>(0);
-	ArrayList<Player> playerArray = new ArrayList<Player>(0);
+	private String gameState;
+	private Queue<Rail> newRails;
+	private Player activePlayer;
+	private final Position[] positions = new Position[100]; // temp
+	private final City[] cities = new City[35];
+	private final Rail[] rails = new Rail[100]; // temp
+	private ArrayList<Position> possiblePlacements = new ArrayList<Position>(0);
+	private ArrayList<Player> playerArray = new ArrayList<Player>(0);
 
 	public Board() {
 
