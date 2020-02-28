@@ -12,9 +12,8 @@ public abstract class Player {
 	ArrayList<City> targetCities;
 	ArrayList<Integer> distanceToCities;
 
-	Player(String n, Position markerP, City[] cities, Color c) {
+	Player(String n, City[] cities, Color c) {
 		name = n;
-		markerPos = markerP;
 		targetCities = new ArrayList<City>(Arrays.asList(cities));
 		color = c;
 		score = 0;

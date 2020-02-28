@@ -2,8 +2,8 @@ import java.awt.Color;
 
 public class HumanPlayer extends Player {
 
-	public HumanPlayer(String n, Position markerP, City[] cities, Color c) {
-		super(n, markerP, cities, c);
+	public HumanPlayer(String n, City[] cities, Color c) {
+		super(n, cities, c);
 	}
 
 	public String getName() {
