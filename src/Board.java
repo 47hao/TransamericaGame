@@ -61,11 +61,16 @@ public class Board {
 		
 	}
 	
-	City getCity(Position location) {
-		
+	public City getCity(Position location) {
+		for(int i=0;i<cities.length;i++) {
+			Position cityLoc= cities[i].getPos();
+				if(cityLoc.getX()==location.getX() && cityLoc.getY()==location.getY()) 
+					return cities[i];
+		}
+		return null;
 	}
 	
-	Rail[] computePossiblePlacements() {
+	public Rail[] computePossiblePlacements() {
 		
 	}
 	
