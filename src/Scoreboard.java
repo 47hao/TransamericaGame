@@ -28,6 +28,7 @@ public class Scoreboard {
 	}
 
 	public ArrayList<String> gameOver() {
+		//not accounted for players with same score
 		ArrayList<String> winnerOrder = new ArrayList<String>();
 		ArrayList<Integer> scores = new ArrayList<Integer>();
 		for (int i = 0; i < players.length; i++) {
