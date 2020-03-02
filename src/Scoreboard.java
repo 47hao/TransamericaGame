@@ -2,10 +2,11 @@ import java.util.ArrayList;
 
 public class Scoreboard {
 	private Player players[];
-	private int[] coordinates = new int[players.length * 2];
+	private int[] coordinates;;
 
 	Scoreboard() {
 		players = new Player[6];
+		coordinates = new int[players.length * 2];
 	}
 
 	public void addScores(int[] scores) {
