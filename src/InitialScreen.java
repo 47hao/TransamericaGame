@@ -312,6 +312,15 @@ public class InitialScreen {
 						computersOnly = false;
 					}
 				}
+				
+				ArrayList<Player> playerList = new ArrayList<Player>();
+				City[] cities = {new City(new Position(0, 0), "Test city", Color.GREEN)};
+
+				for (String s : players) {
+					playerList.add(new HumanPlayer(s, cities, Color.RED));
+				}
+				
+				
 				if (computersOnly) {
 					System.out.println("Strategy Evaluation mode is on!");
 					StrategyEvalPanel p = new StrategyEvalPanel();
