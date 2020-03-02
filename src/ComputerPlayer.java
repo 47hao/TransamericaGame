@@ -10,7 +10,7 @@ class ComputerPlayer extends Player {
 	}
 
 	public String getName() {
-		return name;
+		return offname;
 	}
 
 	public void addScore(int amount) {
