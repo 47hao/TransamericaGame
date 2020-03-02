@@ -4,7 +4,8 @@ class ComputerPlayer extends Player {
 	private String offname;
 	private Strategy s;
 
-	public ComputerPlayer(String name, Color c, Strategy strat) {
+	public ComputerPlayer(String name, Color c, Strategy strat,City[] cities) {
+		super(name, cities, c);
 		offname = name;
 		s = strat;
 	}
@@ -32,5 +33,7 @@ class ComputerPlayer extends Player {
 	public Rail getRail(City[] targetCities, Rail[] possibleRails, Board board) {
 		return s.returnRail(targetCities, possibleRails, board);
 	}
-
+	public int getRail(Rail[] rails) {
+		return 0;
+	}
 }
