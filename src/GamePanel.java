@@ -42,18 +42,16 @@ public class GamePanel extends JPanel implements MouseListener {
 		drawBoard(g);
 		drawGrid(g);
 		drawScoreboard(g);
-		/*
-		 * for (Player p : gameInfo.getPlayers()) drawTrain(g, new
-		 * Point(getPixelX(p.score), 50)); for (City c :
-		 * gameInfo.getBoard().getCities()) drawCity(g, new
-		 * Point(getPixelX(c.getPos().getX()), getPixelY(c.getPos().getY()))); for
-		 * (Player p : gameInfo.getPlayers()) drawMarker(g, new
-		 * Point(getPixelX(p.getMarkerPos().getX()),
-		 * getPixelY(p.getMarkerPos().getY()))); for (Rail r :
-		 * gameInfo.getBoard().getRails()) drawRails(g, new
-		 * Point(getPixelX(r.startPos().getX()), getPixelY(r.startPos().getY())), new
-		 * Point(getPixelX(r.endPos().getX()), getPixelY(r.endPos().getY())));
-		 */
+		
+		  //for (Player p : gameInfo.getPlayers()) 
+			  //drawTrain(g, p.score); 
+		  //for (City c : gameInfo.getBoard().getCities()) 
+			  //drawCity(g, newPoint(getPixelX(c.getPos().getX()), getPixelY(c.getPos().getY()))); 
+		  //for (Player p : gameInfo.getPlayers()) 
+			  //drawMarker(g, new Point(getPixelX(p.getMarkerPos().getX()), getPixelY(p.getMarkerPos().getY()))); 
+		  //for (Rail r : gameInfo.getBoard().getRails()) 
+			  //drawRail(g, new Point(getPixelX(r.startPos().getX()), getPixelY(r.startPos().getY())), new Point(getPixelX(r.endPos().getX()), getPixelY(r.endPos().getY())));
+		 
 		drawCityList(g, gameInfo.getBoard().getActivePlayer());
 		// draws board and game information
 	}
@@ -123,20 +121,28 @@ public class GamePanel extends JPanel implements MouseListener {
 		g.drawString(12 + "", xPos - (int)(cellSize / 2) - (g.getFontMetrics().stringWidth(12 + "") / 2), 35);
 	}
 
-	private void drawTrain(Graphics g, Point location) {
-
+	private void drawTrain(Graphics g, Player player) {
+		int xPos = 60;
+		BufferedImage train = null; //temo
+		double cellSize = 56.6666666667;
+		g.drawImage(train, xPos + (player.getScore() * (int)cellSize) - (train.getWidth() / 2), 45, 55, 25, Color.black, null);
 	}
 
 	private void drawCity(Graphics g, Point location) {
-
+		
 	}
 
-	private void drawMarker(Graphics g, Point location) {
-
+	private void drawMarker(Graphics g, Player player) {
+		g.drawOval(player.getMarkerPos().getX() - 5, player.getMarkerPos().getY() - 5, 10, 10);
 	}
 
-	private void drawCityList(Graphics g, Player p) {
-
+	private void drawCityList(Graphics g, Player player) {
+		Graphics2D g2 = (Graphics2D) g;
+		g.setColor(Color.WHITE);
+		g.fillRoundRect(0, this.getHeight() - 200, 125, 200, 50, 50);
+		g2.setStroke(new BasicStroke(7));
+		g.setColor(Color.BLACK);
+		g.drawRoundRect(0, this.getHeight() - 200, 125, 200, 50, 50);
 	}
 
 	private Point gridToPixel(Position pos) {
