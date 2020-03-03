@@ -13,7 +13,13 @@ public class Board {
 	private ArrayList<Player> playerArray = new ArrayList<Player>(0);
 
 	public Board() {
-
+		//Orange: Boston, New York, Washington, Richmond, Winston, Charleston, Jacksonville
+		//Blue: Buffalo, Chicago, Cincinnati, Minneapolis, Helena, Duluth, Bismark
+		//Yellow: Omaha, St.Louis, Kansas City, Oklahoma city, Sante Fe, Salt Lake City, Denver
+		//Red: Phoenix, El Paso, Dallas, Houston, Memphis, Atlanta, New Orleans
+		//Green: Seattle, Portland, Sacremento, San Francisco, Los Angeles, San Diego, Medford
+		
+		
 	}
 
 	public void addPlayer(Player p) {
