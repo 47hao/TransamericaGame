@@ -23,6 +23,7 @@ public class GamePanel extends JPanel implements MouseListener {
 	BufferedImage map;
 
 	final int railLength = 20;
+	final int doubleSpacing = 2;
 	final int shortLength;
 
 	final static int gridStartX = 360;
@@ -49,9 +50,6 @@ public class GamePanel extends JPanel implements MouseListener {
 			  //drawCity(g, newPoint(getPixelX(c.getPos().getX()), getPixelY(c.getPos().getY()))); 
 		  //for (Player p : gameInfo.getPlayers()) 
 			  //drawMarker(g, new Point(getPixelX(p.getMarkerPos().getX()), getPixelY(p.getMarkerPos().getY()))); 
-		  //for (Rail r : gameInfo.getBoard().getRails()) 
-			  //drawRail(g, new Point(getPixelX(r.startPos().getX()), getPixelY(r.startPos().getY())), new Point(getPixelX(r.endPos().getX()), getPixelY(r.endPos().getY())));
-		 
 		drawCityList(g, gameInfo.getBoard().getActivePlayer());
 		// draws board and game information
 	}
@@ -80,6 +78,11 @@ public class GamePanel extends JPanel implements MouseListener {
 				{
 					g.drawLine((int) p.getX(), (int) p.getY(), (int) (p.getX() + shortLength), (int) p.getY());
 					g.drawLine((int) p2.getX(), (int) p2.getY(), (int) (p2.getX() - shortLength), (int) p.getY());
+					g.drawLine((int) (int) (p2.getX() + shortLength +doubleSpacing ), (int) p.getY()+doubleSpacing, 
+									(int) (p2.getX() - shortLength -doubleSpacing ), (int) p.getY()+doubleSpacing);
+					g.drawLine((int) (int) (p2.getX() + shortLength +doubleSpacing ), (int) p.getY()-doubleSpacing, 
+									(int) (p2.getX() - shortLength -doubleSpacing ), (int) p.getY()-doubleSpacing);
+					
 				} else if (p.getX() < p2.getX())// Southwest rail
 				{
 				} else {
@@ -92,7 +95,6 @@ public class GamePanel extends JPanel implements MouseListener {
 			g.setStroke(new BasicStroke(4));
 			g.drawLine((int) p.getX(), (int) p.getY(), (int) p2.getX(), (int) p2.getY());
 		}
-
 		if(rail.getState() == Rail.HOVERING)
 		{
 			g.setStroke(new BasicStroke(4));
