@@ -46,13 +46,13 @@ public class Board {
 		cities[13] = new City(new Position(4,4), "Salt Lake City", Color.yellow);
 		cities[14] = new City(new Position(7, 5), "Denver", Color.yellow);
 
-		cities[22] = new City(new Position(0, 0), "Phoenix", Color.red);
-		cities[23] = new City(new Position(0, 0), "El Paso", Color.red);
-		cities[24] = new City(new Position(0, 0), "Dallas", Color.red);
-		cities[25] = new City(new Position(0, 0), "Houston", Color.red);
-		cities[26] = new City(new Position(0, 0), "Memphis", Color.red);
-		cities[27] = new City(new Position(0, 0), "Atlanta", Color.red);
-		cities[28] = new City(new Position(0, 0), "New Orleans", Color.red);
+		cities[21] = new City(new Position(8, 9), "Phoenix", Color.red);
+		cities[22] = new City(new Position(11, 11), "El Paso", Color.red);
+		cities[23] = new City(new Position(14, 10), "Dallas", Color.red);
+		cities[24] = new City(new Position(15, 12), "Houston", Color.red);
+		cities[25] = new City(new Position(16, 9), "Memphis", Color.red);
+		cities[26] = new City(new Position(18, 10), "Atlanta", Color.red);
+		cities[27] = new City(new Position(17, 12), "New Orleans", Color.red);
 
 		cities[29] = new City(new Position(0, 0), "Seattle", Color.green);
 		cities[30] = new City(new Position(0, 1), "Portland", Color.green);
