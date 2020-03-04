@@ -22,45 +22,45 @@ public class Board {
 		// Red: Phoenix, El Paso, Dallas, Houston, Memphis, Atlanta, New Orleans
 		// Green: Seattle, Portland, Sacremento, San Francisco, Los Angeles, San Diego, Medford
 		
-		cities[1] = new City(new Position(0, 0), "Boston", Color.orange);
-		cities[2] = new City(new Position(0, 0), "New York", Color.orange);
-		cities[3] = new City(new Position(0, 0), "Washington", Color.orange);
-		cities[4] = new City(new Position(0, 0), "Richmond", Color.orange);
-		cities[5] = new City(new Position(0, 0), "Winston", Color.orange);
-		cities[6] = new City(new Position(0, 0), "Charleston", Color.orange);
-		cities[7] = new City(new Position(0, 0), "Jacksonville", Color.orange);
+		cities[0] = new City(new Position(0, 0), "Boston", Color.orange);
+		cities[1] = new City(new Position(0, 0), "New York", Color.orange);
+		cities[2] = new City(new Position(0, 0), "Washington", Color.orange);
+		cities[3] = new City(new Position(0, 0), "Richmond", Color.orange);
+		cities[4] = new City(new Position(0, 0), "Winston", Color.orange);
+		cities[5] = new City(new Position(0, 0), "Charleston", Color.orange);
+		cities[6] = new City(new Position(0, 0), "Jacksonville", Color.orange);
 
-		cities[15] = new City(new Position(0, 0), "Buffalo", Color.blue);
-		cities[16] = new City(new Position(0, 0), "Chicago", Color.blue);
-		cities[17] = new City(new Position(0, 0), "Cincinnati", Color.blue);
-		cities[18] = new City(new Position(0, 0), "Minneapolis", Color.blue);
-		cities[19] = new City(new Position(0, 0), "Helena", Color.blue);
-		cities[20] = new City(new Position(0, 0), "Duluth", Color.blue);
-		cities[21] = new City(new Position(0, 0), "Bismark", Color.blue);
+		cities[14] = new City(new Position(0, 0), "Buffalo", Color.blue);
+		cities[15] = new City(new Position(0, 0), "Chicago", Color.blue);
+		cities[16] = new City(new Position(0, 0), "Cincinnati", Color.blue);
+		cities[17] = new City(new Position(0, 0), "Minneapolis", Color.blue);
+		cities[18] = new City(new Position(0, 0), "Helena", Color.blue);
+		cities[19] = new City(new Position(0, 0), "Duluth", Color.blue);
+		cities[20] = new City(new Position(0, 0), "Bismark", Color.blue);
 
-		cities[8] = new City(new Position(0, 0), "Omaha", Color.yellow);
-		cities[9] = new City(new Position(0, 0), "St. Louis", Color.yellow);
-		cities[10] = new City(new Position(0, 0), "Kansas City", Color.yellow);
-		cities[11] = new City(new Position(0, 0), "Oklahoma City", Color.yellow);
-		cities[12] = new City(new Position(0, 0), "Sante Fe", Color.yellow);
-		cities[13] = new City(new Position(0, 0), "Salt Lake City", Color.yellow);
-		cities[14] = new City(new Position(0, 0), "Denver", Color.yellow);
+		cities[7] = new City(new Position(0, 0), "Omaha", Color.yellow);
+		cities[8] = new City(new Position(0, 0), "St. Louis", Color.yellow);
+		cities[9] = new City(new Position(0, 0), "Kansas City", Color.yellow);
+		cities[10] = new City(new Position(0, 0), "Oklahoma City", Color.yellow);
+		cities[11] = new City(new Position(0, 0), "Sante Fe", Color.yellow);
+		cities[12] = new City(new Position(0, 0), "Salt Lake City", Color.yellow);
+		cities[13] = new City(new Position(0, 0), "Denver", Color.yellow);
 
-		cities[22] = new City(new Position(0, 0), "Phoenix", Color.red);
-		cities[23] = new City(new Position(0, 0), "El Paso", Color.red);
-		cities[24] = new City(new Position(0, 0), "Dallas", Color.red);
-		cities[25] = new City(new Position(0, 0), "Houston", Color.red);
-		cities[26] = new City(new Position(0, 0), "Memphis", Color.red);
-		cities[27] = new City(new Position(0, 0), "Atlanta", Color.red);
-		cities[28] = new City(new Position(0, 0), "New Orleans", Color.red);
+		cities[21] = new City(new Position(0, 0), "Phoenix", Color.red);
+		cities[22] = new City(new Position(0, 0), "El Paso", Color.red);
+		cities[23] = new City(new Position(0, 0), "Dallas", Color.red);
+		cities[24] = new City(new Position(0, 0), "Houston", Color.red);
+		cities[25] = new City(new Position(0, 0), "Memphis", Color.red);
+		cities[26] = new City(new Position(0, 0), "Atlanta", Color.red);
+		cities[27] = new City(new Position(0, 0), "New Orleans", Color.red);
 
-		cities[29] = new City(new Position(0, 0), "Seattle", Color.green);
-		cities[30] = new City(new Position(0, 0), "Portland", Color.green);
-		cities[31] = new City(new Position(0, 0), "Sacremento", Color.green);
-		cities[32] = new City(new Position(0, 0), "San Francisco", Color.green);
-		cities[33] = new City(new Position(0, 0), "Los Angeles", Color.green);
-		cities[34] = new City(new Position(0, 0), "San Diego", Color.green);
-		cities[35] = new City(new Position(0, 0), "Medford", Color.green);
+		cities[28] = new City(new Position(0, 0), "Seattle", Color.green);
+		cities[29] = new City(new Position(0, 0), "Portland", Color.green);
+		cities[30] = new City(new Position(0, 0), "Sacremento", Color.green);
+		cities[31] = new City(new Position(0, 0), "San Francisco", Color.green);
+		cities[32] = new City(new Position(0, 0), "Los Angeles", Color.green);
+		cities[33] = new City(new Position(0, 0), "San Diego", Color.green);
+		cities[34] = new City(new Position(0, 0), "Medford", Color.green);
 
 	}
 
