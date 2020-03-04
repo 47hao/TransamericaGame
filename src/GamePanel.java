@@ -63,16 +63,18 @@ public class GamePanel extends JPanel implements MouseListener {
 	private void drawGrid(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		for (Rail r : gameInfo.getBoard().getRails()) {
-
+			drawRail(g2d, r);
 		}
 	}
 
-	private void drawRail(Graphics g, Rail rail) {
+	private void drawRail(Graphics2D g, Rail rail) {
 		g.setColor(Color.BLACK);
 		Point p = gridToPixel(rail.startPos());
 		Point p2 = gridToPixel(rail.endPos());
 
-		if (rail.getState() == Rail.EMPTY) {
+		if (rail.getState() == Rail.EMPTY || rail.getState() == Rail.HOVERING) 
+		{
+			g.setStroke(new BasicStroke(2));
 			if (rail.isDouble()) {
 				if (p.getY() == p2.getY())// horizontal rail
 				{
@@ -85,6 +87,17 @@ public class GamePanel extends JPanel implements MouseListener {
 			} else {
 				g.drawLine((int) p.getX(), (int) p.getY(), (int) p2.getX(), (int) p2.getY());
 			}
+		} else if(rail.getState() == Rail.PLACED)
+		{
+			g.setStroke(new BasicStroke(4));
+			g.drawLine((int) p.getX(), (int) p.getY(), (int) p2.getX(), (int) p2.getY());
+		}
+
+		if(rail.getState() == Rail.HOVERING)
+		{
+			g.setStroke(new BasicStroke(4));
+			g.setColor(new Color(0,0,0,100));
+			g.drawLine((int) p.getX(), (int) p.getY(), (int) p2.getX(), (int) p2.getY());
 		}
 
 	}
