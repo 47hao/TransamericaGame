@@ -20,8 +20,8 @@ public class Board {
 		// Yellow: Omaha, St.Louis, Kansas City, Oklahoma City, Sante Fe, Salt Lake
 		// City, Denver
 		// Red: Phoenix, El Paso, Dallas, Houston, Memphis, Atlanta, New Orleans
-		// Green: Seattle, Portland, Sacremento, San Francisco, Los Angeles, San Diego,
-		// Medford
+		// Green: Seattle, Portland, Sacremento, San Francisco, Los Angeles, San Diego, Medford
+		
 		cities[1] = new City(new Position(0, 0), "Boston", Color.orange);
 		cities[2] = new City(new Position(0, 0), "New York", Color.orange);
 		cities[3] = new City(new Position(0, 0), "Washington", Color.orange);
