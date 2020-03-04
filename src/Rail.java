@@ -10,6 +10,7 @@ public class Rail {
 	final static String NEW = "new";
 	final static String PLACED = "placed";
 	final static String BLINKING = "blinking";
+	final static String HOVERING = "hovering";
 
 	public Rail(Position startPoint, Position endPoint) {
 		this(startPoint, endPoint, false, false);
