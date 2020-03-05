@@ -46,4 +46,8 @@ public class Rail {
 	public boolean isDouble() {
 		return doubleRail;
 	}
+
+	public String toString() {
+		return (startPos() + " --> " + endPos());
+	}
 }
