@@ -9,7 +9,7 @@ public class Board {
 	private Player activePlayer;
 	private final Position[] positions = new Position[188];
 	private final City[] cities = new City[35];
-	private final Rail[] rails = new Rail[508];
+	private  Rail[] rails = new Rail[508];
 	private ArrayList<Position> possiblePlacements = new ArrayList<Position>(0);
 	private ArrayList<Player> playerArray = new ArrayList<Player>(0);
 
@@ -61,7 +61,9 @@ public class Board {
 		cities[32] = new City(new Position(5,9), "Los Angeles", Color.GREEN);
 		cities[33] = new City(new Position(6,10), "San Diego", Color.GREEN);
 		cities[34] = new City(new Position(1,3), "Medford", Color.GREEN);
-
+		
+		
+		rails = new RailFactory().genRails().toArray(new Rail[508]);
 	}
 
 	public void addPlayer(Player p) {
