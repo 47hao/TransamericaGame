@@ -55,11 +55,11 @@ public class Game {
 	void placeMarkers(Player p) {
 		Position pos = new Position(0, 0);
 		// Find position of mouse click
-		p.setMarkerPos(pos);
+		//p.setMarkerPos(pos);
 	}
 
 	Player[] play(boolean cpu) {
-
+		
 		while (!gameOver) {
 			while (!roundOver) {
 				for (Player p : players) {

@@ -41,7 +41,7 @@ public class GamePanel extends JPanel implements MouseListener {
 
 	public void paintComponent(Graphics g) {
 		drawBoard(g);
-		drawGrid(g);
+		//drawGrid(g);
 		drawScoreboard(g);
 		
 		  //for (Player p : gameInfo.getPlayers()) 
@@ -53,7 +53,7 @@ public class GamePanel extends JPanel implements MouseListener {
 		drawCityList(g, gameInfo.getBoard().getActivePlayer());
 		// draws board and game information
 	}
-
+	
 	private void drawBoard(Graphics g) {
 		g.drawImage(map, 0, 0, this.getWidth(), this.getHeight(), Color.black, null);
 	}
