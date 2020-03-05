@@ -12,8 +12,9 @@ public class RailFactory {
     final static Position[] rightDiagonalPositions = {new Position(2, 6), new Position(1, 4), new Position(0, 2),
         new Position(0, 1), new Position(0, 0), new Position(1, 0), new Position(2, 0), new Position(3, 0),
         new Position(4, 0), new Position(5, 0), new Position(6, 0), new Position(7, 0), new Position(8, 0),
-        new Position(9, 0), new Position(11, 1), new Position(14, 4), new Position(15, 4), new Position(16, 3),
-        new Position(17, 2), new Position(18, 1)};
+        new Position(9, 0), new Position(11, 1), new Position(14, 3), new Position(15, 3), new Position(15, 2),
+        new Position(15, 1), new Position(16, 1)};
+
     final static int[] rDiagLengths = {4, 7, 9, 11, 12, 12, 12, 12, 12, 12, 12, 12, 11, 9, 8, 5, 2, 2, 2, 1};
 
     final static Position[] horizontalPositions = {new Position(0, 0), new Position(0, 1), new Position(0, 2),
@@ -33,21 +34,25 @@ public class RailFactory {
         Position endPos;
 
         for (int i = 0; i < leftDiagonalPositions.length; i++) {
-            for (int j = 0; j < lDiagLengths[i] - 1; j++) {
+            for (int j = 0; j < lDiagLengths[i]; j++) {
                 startPos = new Position(leftDiagonalPositions[i].getX(), leftDiagonalPositions[i].getY() + j);
                 endPos = new Position(startPos.getX(), startPos.getY() + 1);
                 rails.add(new Rail(startPos, endPos));
             }
         }
+        // int leftD = rails.size();
+        // System.out.println("left diagonal count: " + leftD);
 
         for (int i = 0; i < rightDiagonalPositions.length; i++) {
             for (int j = 0; j < rDiagLengths[i]; j++) {
                 startPos = new Position(rightDiagonalPositions[i].getX() + j, rightDiagonalPositions[i].getY() + j);
-                System.out.println("startPos: " + startPos);
                 endPos = new Position(startPos.getX() + 1, startPos.getY() + 1);
                 rails.add(new Rail(startPos, endPos));
             }
         }
+
+        // int rightD = rails.size() - leftD;
+        // System.out.println("right diagonal count: " + rightD);
 
         for (int i = 0; i < horizontalPositions.length; i++) {
             for (int j = 0; j < horizontalLengths[i]; j++) {
@@ -56,14 +61,64 @@ public class RailFactory {
                 rails.add(new Rail(startPos, endPos));
             }
         }
+
+        // int horizontal = rails.size() - rightD - leftD;
+        // System.out.println("horizontal count: " + horizontal);
+
         return rails;
     }
 
+    //this method is literally copy and pasted from the ArrayList implementation
+    //except for some reason, it works here but not in the contains() method
+    public static int containsRail(Position p, ArrayList<Position> posList) {
+        for (int i = 0; i < posList.size(); i++) {
+                if (p.equals(posList.get(i)))
+                    return i;
+        }
+        return -1;
+    }
     public static void main(String[] args) {
 
-    for (Rail r : new RailFactory().genRails()) {
-        System.out.println(r);
-    }
+        // System.out.println(new RailFactory().genRails().size());
+
+        for (Rail r : new RailFactory().genRails()) {
+            System.out.println(r);
+        }
+        ArrayList<Position> positions = new ArrayList<Position>();
+        ArrayList<Rail> rails = new RailFactory().genRails();
+
+
+
+        for (Rail rail : rails) {
+            if (containsRail(rail.startPos(), positions) == -1) {
+                positions.add(rail.startPos());
+            }
+            if (containsRail(rail.endPos(), positions) == -1) {
+                positions.add(rail.endPos());
+            }
+        }
+
+        // Position[] wrongs = {new Position(18, 5), new Position(18, 3), new Position(19, 4), new Position(18, 1), new Position(19, 2)};
+
+        // for (Rail rail : rails) {
+        //     for (int i = 0; i < wrongs.length; i++) {
+        //         if (rail.startPos().equals(wrongs[i]) || rail.endPos().equals(wrongs[i])) {
+        //             System.err.println("bad position at: ");
+        //             System.out.println(wrongs[i]);
+        //         }
+        //     }
+        // }
+
+
+
+
+        System.out.println("number of positions: " + positions.size());
+        System.out.println("number of rails: " + rails.size());
+
+        // for (Position p : positions) {
+        //     System.out.println(p);
+        // }
+        
 
 
         // System.out.println("lDiag positions length: " + leftDiagonalPositions.length);

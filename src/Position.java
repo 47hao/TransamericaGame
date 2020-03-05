@@ -26,5 +26,14 @@ public class Position {
 	public String toString() {
 		return "(" + x + ", " + y + ")";
 	}
+
+	public boolean equals(Position p) {
+		if (getX() == p.getX() && getY() == p.getY()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }
 

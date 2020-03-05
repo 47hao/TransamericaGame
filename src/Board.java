@@ -7,9 +7,9 @@ public class Board {
 	private String gameState;
 	private Queue<Rail> newRails;
 	private Player activePlayer;
-	private final Position[] positions = new Position[100]; // temp
+	private final Position[] positions = new Position[188];
 	private final City[] cities = new City[35];
-	private final Rail[] rails = new Rail[100]; // temp
+	private final Rail[] rails = new Rail[508];
 	private ArrayList<Position> possiblePlacements = new ArrayList<Position>(0);
 	private ArrayList<Player> playerArray = new ArrayList<Player>(0);
 
@@ -22,45 +22,45 @@ public class Board {
 		// Red: Phoenix, El Paso, Dallas, Houston, Memphis, Atlanta, New Orleans
 		// Green: Seattle, Portland, Sacremento, San Francisco, Los Angeles, San Diego, Medford
 		
-		cities[1] = new City(new Position(17,2), "Boston", Color.orange);
-		cities[2] = new City(new Position(17,4), "New York", Color.orange);
-		cities[3] = new City(new Position(17,5), "Washington", Color.orange);
-		cities[4] = new City(new Position(18,7), "Richmond", Color.orange);
-		cities[5] = new City(new Position(17,9), "Winston", Color.orange);
-		cities[6] = new City(new Position(20,10), "Charleston", Color.orange);
-		cities[7] = new City(new Position(20,12), "Jacksonville", Color.orange);
+		cities[0]  = new City(new Position(17,2), "Boston", Color.ORANGE);
+		cities[1]  = new City(new Position(17,4), "New York", Color.ORANGE);
+		cities[2]  = new City(new Position(17,5), "Washington", Color.ORANGE);
+		cities[3]  = new City(new Position(18,7), "Richmond", Color.ORANGE);
+		cities[4]  = new City(new Position(17,9), "Winston", Color.ORANGE);
+		cities[5]  = new City(new Position(20,10), "Charleston", Color.ORANGE);
+		cities[6]  = new City(new Position(20,12), "Jacksonville", Color.ORANGE);
 
-		cities[15] = new City(new Position(15,2), "Buffalo", Color.blue);
-		cities[16] = new City(new Position(13,3), "Chicago", Color.blue);
-		cities[17] = new City(new Position(0, 0), "Cincinnati", Color.blue);
-		cities[18] = new City(new Position(10,2), "Minneapolis", Color.blue);
-		cities[19] = new City(new Position(3,1), "Helena", Color.blue);
-		cities[20] = new City(new Position(10, 1), "Duluth", Color.blue);
-		cities[21] = new City(new Position(7,1), "Bismark", Color.blue);
+		cities[7]  = new City(new Position(15,2), "Buffalo", Color.BLUE);
+		cities[8]  = new City(new Position(13,3), "Chicago", Color.BLUE);
+		cities[9]  = new City(new Position(0, 0), "Cincinnati", Color.BLUE);
+		cities[10] = new City(new Position(10,2), "Minneapolis", Color.BLUE);
+		cities[11] = new City(new Position(3,1), "Helena", Color.BLUE);
+		cities[12] = new City(new Position(10, 1), "Duluth", Color.BLUE);
+		cities[13] = new City(new Position(7,1), "Bismark", Color.BLUE);
 
-		cities[8] = new City(new Position(9, 4), "Omaha", Color.yellow);
-		cities[9] = new City(new Position(13, 6), "St. Louis", Color.yellow);
-		cities[10] = new City(new Position(11, 6), "Kansas City", Color.yellow);
-		cities[11] = new City(new Position(11, 8), "Oklahoma City", Color.yellow);
-		cities[12] = new City(new Position(8,8), "Sante Fe", Color.yellow);
-		cities[13] = new City(new Position(4,4), "Salt Lake City", Color.yellow);
-		cities[14] = new City(new Position(7, 5), "Denver", Color.yellow);
+		cities[14] = new City(new Position(9, 4), "Omaha", Color.YELLOW);
+		cities[15] = new City(new Position(13, 6), "St. Louis", Color.YELLOW);
+		cities[16] = new City(new Position(11, 6), "Kansas City", Color.YELLOW);
+		cities[17] = new City(new Position(11, 8), "Oklahoma City", Color.YELLOW);
+		cities[18] = new City(new Position(8,8), "Sante Fe", Color.YELLOW);
+		cities[19] = new City(new Position(4,4), "Salt Lake City", Color.YELLOW);
+		cities[20] = new City(new Position(7, 5), "Denver", Color.YELLOW);
 
-		cities[21] = new City(new Position(8, 9), "Phoenix", Color.red);
-		cities[22] = new City(new Position(11, 11), "El Paso", Color.red);
-		cities[23] = new City(new Position(14, 10), "Dallas", Color.red);
-		cities[24] = new City(new Position(15, 12), "Houston", Color.red);
-		cities[25] = new City(new Position(16, 9), "Memphis", Color.red);
-		cities[26] = new City(new Position(18, 10), "Atlanta", Color.red);
-		cities[27] = new City(new Position(17, 12), "New Orleans", Color.red);
+		cities[21] = new City(new Position(8, 9), "Phoenix", Color.RED);
+		cities[22] = new City(new Position(11, 11), "El Paso", Color.RED);
+		cities[23] = new City(new Position(14, 10), "Dallas", Color.RED);
+		cities[24] = new City(new Position(15, 12), "Houston", Color.RED);
+		cities[25] = new City(new Position(16, 9), "Memphis", Color.RED);
+		cities[26] = new City(new Position(18, 10), "Atlanta", Color.RED);
+		cities[27] = new City(new Position(17, 12), "New Orleans", Color.RED);
 
-		cities[29] = new City(new Position(0, 0), "Seattle", Color.green);
-		cities[30] = new City(new Position(0, 1), "Portland", Color.green);
-		cities[31] = new City(new Position(2,5), "Sacremento", Color.green);
-		cities[32] = new City(new Position(2,6), "San Francisco", Color.green);
-		cities[33] = new City(new Position(5,9), "Los Angeles", Color.green);
-		cities[34] = new City(new Position(6,10), "San Diego", Color.green);
-		cities[35] = new City(new Position(1,3), "Medford", Color.green);
+		cities[28] = new City(new Position(0, 0), "Seattle", Color.GREEN);
+		cities[29] = new City(new Position(0, 1), "Portland", Color.GREEN);
+		cities[30] = new City(new Position(2,5), "Sacremento", Color.GREEN);
+		cities[31] = new City(new Position(2,6), "San Francisco", Color.GREEN);
+		cities[32] = new City(new Position(5,9), "Los Angeles", Color.GREEN);
+		cities[33] = new City(new Position(6,10), "San Diego", Color.GREEN);
+		cities[34] = new City(new Position(1,3), "Medford", Color.GREEN);
 
 	}
 
@@ -106,7 +106,7 @@ public class Board {
 	}
 
 	int getDistancetoCity(Player p, City c) {
-
+		return distanceBetweenTwoPoints(p.getMarkerPos(), c.getPos()).size();
 	}
 
 	public ArrayList<Rail> distanceBetweenTwoPoints(Position a, Position b) {
