@@ -46,4 +46,17 @@ public class Rail {
 	public boolean isDouble() {
 		return doubleRail;
 	}
+
+	public String toString() {
+		return (startPos() + " --> " + endPos());
+	}
+
+	public boolean equals(Rail r) {
+		if (r.startPos().equals(startPos()) && r.endPos().equals(endPos())) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }
