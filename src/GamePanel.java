@@ -163,7 +163,7 @@ public class GamePanel extends JPanel implements MouseListener {
 	private Point gridToPixel(Position pos) {
 		int yPos = (int) (pos.getY() * railLength * Math.cos(60)) + gridStartY;
 		int xPos = (pos.getX() * railLength) - (int) (0.5 * pos.getY() * railLength) + gridStartX;
-		return new Point();
+		return new Point(xPos,yPos);
 	}
 
 	public void mouseMoved(MouseEvent e) {
