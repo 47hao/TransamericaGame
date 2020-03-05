@@ -22,5 +22,9 @@ public class Position {
 	int getY() {
 		return y;
 	}
+
+	public String toString() {
+		return "(" + x + ", " + y + ")";
+	}
 }
 
