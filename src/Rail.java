@@ -43,6 +43,9 @@ public class Rail {
 		return endPoint;
 	}
 
+	public void setDouble() {
+		doubleRail = true;
+	}
 	public boolean isDouble() {
 		return doubleRail;
 	}
