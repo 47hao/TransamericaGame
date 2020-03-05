@@ -22,15 +22,15 @@ public class Board {
 		// Red: Phoenix, El Paso, Dallas, Houston, Memphis, Atlanta, New Orleans
 		// Green: Seattle, Portland, Sacremento, San Francisco, Los Angeles, San Diego, Medford
 		
-		cities[1] = new City(new Position(0, 0), "Boston", Color.orange);
-		cities[2] = new City(new Position(0, 0), "New York", Color.orange);
-		cities[3] = new City(new Position(0, 0), "Washington", Color.orange);
-		cities[4] = new City(new Position(0, 0), "Richmond", Color.orange);
-		cities[5] = new City(new Position(0, 0), "Winston", Color.orange);
-		cities[6] = new City(new Position(0, 0), "Charleston", Color.orange);
-		cities[7] = new City(new Position(0, 0), "Jacksonville", Color.orange);
+		cities[1] = new City(new Position(17,2), "Boston", Color.orange);
+		cities[2] = new City(new Position(17,4), "New York", Color.orange);
+		cities[3] = new City(new Position(17,5), "Washington", Color.orange);
+		cities[4] = new City(new Position(18,7), "Richmond", Color.orange);
+		cities[5] = new City(new Position(17,9), "Winston", Color.orange);
+		cities[6] = new City(new Position(20,10), "Charleston", Color.orange);
+		cities[7] = new City(new Position(20,12), "Jacksonville", Color.orange);
 
-		cities[15] = new City(new Position(0, 0), "Buffalo", Color.blue);
+		cities[15] = new City(new Position(15,2), "Buffalo", Color.blue);
 		cities[16] = new City(new Position(13,3), "Chicago", Color.blue);
 		cities[17] = new City(new Position(0, 0), "Cincinnati", Color.blue);
 		cities[18] = new City(new Position(10,2), "Minneapolis", Color.blue);
