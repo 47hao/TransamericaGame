@@ -9,7 +9,7 @@ public class Board {
 	private Player activePlayer;
 	private final Position[] positions = new Position[188];
 	private final City[] cities = new City[35];
-	private  Rail[] rails = new Rail[508];
+	private ArrayList<Rail> rails = new ArrayList<Rail>();
 	private ArrayList<Position> possiblePlacements = new ArrayList<Position>(0);
 	private ArrayList<Player> playerArray = new ArrayList<Player>(0);
 
@@ -63,7 +63,11 @@ public class Board {
 		cities[34] = new City(new Position(1,3), "Medford", Color.GREEN);
 		
 		
-		rails = new RailFactory().genRails().toArray(new Rail[508]);
+		rails = new RailFactory().genRails();
+		for(Rail r : rails)
+		{
+			r.setState(Rail.EMPTY);
+		}
 	}
 
 	public void addPlayer(Player p) {
@@ -71,14 +75,14 @@ public class Board {
 	}
 
 	public Rail getRail(Position start, Position end) {
-		for (int i = 0; i < rails.length; i++) {
-			Position railStart = rails[i].startPos();
-			Position railEnd = rails[i].endPos();
+		for (int i = 0; i < rails.size(); i++) {
+			Position railStart = rails.get(i).startPos();
+			Position railEnd = rails.get(i).endPos();
 			if (((railStart.getX() == start.getX() && railStart.getY() == start.getY())
 					|| (railEnd.getX() == end.getX() && railEnd.getY() == end.getY()))
 					|| ((railStart.getX() == end.getX() && railStart.getY() == end.getY())
 							|| (railEnd.getX() == start.getX() && railEnd.getY() == start.getY()))) {
-				return rails[i];
+				return rails.get(i);
 			}
 		}
 		return null;
@@ -86,8 +90,8 @@ public class Board {
 
 	public Rail[] getRails(Position pos) {
 		Rail[] returnRails = new Rail[0];
-		for (int i = 0; i < rails.length; i++) {
-			Rail rail = rails[i];
+		for (int i = 0; i < rails.size(); i++) {
+			Rail rail = rails.get(i);
 			Position railStart = rail.startPos();
 			Position railEnd = rail.endPos();
 			if ((railStart.getX() == pos.getX() && railStart.getY() == pos.getY())
@@ -96,7 +100,7 @@ public class Board {
 				for (int j = 0; j < returnRails.length; j++) {
 					secondRail[i] = returnRails[i];
 				}
-				secondRail[rails.length] = rail;
+				secondRail[rails.size()] = rail;
 				returnRails = secondRail;
 			}
 		}
@@ -122,11 +126,11 @@ public class Board {
 		return positionArray;
 	}
 	public boolean isDoubleRail(Position startPos, Position endPos) {
-		for(int i=0;i<rails.length;i++) {
-			Rail r= rails[i];
+		for(int i=0;i<rails.size();i++) {
+			Rail r= rails.get(i);
 			if(equals(r.startPos(),startPos) && equals(r.endPos(),endPos) ||
 					equals(r.startPos(),endPos) && equals(r.endPos(),startPos) 	){
-				if(rails[i].isDouble())
+				if(rails.get(i).isDouble())
 					return true;
 				return false;
 			}
@@ -140,10 +144,10 @@ public class Board {
 	}
 
 	public Rail thisRailOnRailsArray(Rail r) {
-		for (int i = 0; i < rails.length; i++) {
-			if (equals(r.startPos(), rails[i].startPos()) && equals(r.endPos(), rails[i].endPos()) ||
-					equals(r.endPos(), rails[i].startPos()) && equals(r.startPos(), rails[i].endPos()) 	) {
-				return rails[i];
+		for (int i = 0; i < rails.size(); i++) {
+			if (equals(r.startPos(), rails.get(i).startPos()) && equals(r.endPos(), rails.get(i).endPos()) ||
+					equals(r.endPos(), rails.get(i).startPos()) && equals(r.startPos(), rails.get(i).endPos()) 	) {
+				return rails.get(i);
 			}
 		}
 		System.out.print("Board Class: No Such Rails");
@@ -159,7 +163,7 @@ public class Board {
 		return null;
 	}
 
-	public Rail[] computePossiblePlacements() {
+	public ArrayList<Rail> computePossiblePlacements() {
 
 	}
 
@@ -171,7 +175,7 @@ public class Board {
 		return playerArray;
 	}
 
-	public Rail[] getRails() {
+	public ArrayList<Rail> getRails() {
 		return rails;
 	}
 
