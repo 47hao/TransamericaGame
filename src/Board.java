@@ -75,18 +75,9 @@ public class Board {
 	}
 
 	public Rail getRail(Position start, Position end) {
-		for (int i = 0; i < rails.size(); i++) {
-			Position railStart = rails.get(i).startPos();
-			Position railEnd = rails.get(i).endPos();
-			if (((railStart.getX() == start.getX() && railStart.getY() == start.getY())
-					|| (railEnd.getX() == end.getX() && railEnd.getY() == end.getY()))
-					|| ((railStart.getX() == end.getX() && railStart.getY() == end.getY())
-							|| (railEnd.getX() == start.getX() && railEnd.getY() == start.getY()))) {
-				return rails.get(i);
-			}
-		}
-		return null;
+		return thisRailOnRailsArray(new Rail(start,end));
 	}
+
 
 	public Rail[] getRails(Position pos) {
 		Rail[] returnRails = new Rail[0];
