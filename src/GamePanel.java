@@ -24,7 +24,7 @@ public class GamePanel extends JPanel implements MouseListener {
 	
 	final Color railColor = new Color(30,30,30);
 	final float railThickness = 1.5f;
-	final int railLength = 40;
+	public static final int railLength = 40;
 	final int doubleSpacing = 2;
 	final int shortLength;
 
@@ -106,7 +106,7 @@ public class GamePanel extends JPanel implements MouseListener {
 
 	}
 
-	private Point gridToPixel(Position pos) {
+	public static Point gridToPixel(Position pos) {
 		System.out.println(pos.getY());
 		int yPos = (int) (pos.getY() * railLength * Math.cos(Math.toRadians(30))) + gridStartY;
 
@@ -116,7 +116,6 @@ public class GamePanel extends JPanel implements MouseListener {
 	}
 
 	private void drawScoreboard(Graphics g) {
-		//52.3076923077
 		Graphics2D g2 = (Graphics2D) g;
 		int xPos = 60;
 		double cellSize = 56.6666666667;
