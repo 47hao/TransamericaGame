@@ -86,7 +86,7 @@ public class Board {
 	}
 
 
-	public Rail[] getRails(Position pos) {
+	public Rail[] getAroundRails(Position pos) {
 		Rail[] returnRails = new Rail[0];
 		for (int i = 0; i < rails.size(); i++) {
 			Rail rail = rails.get(i);
@@ -136,6 +136,7 @@ public class Board {
 		return false;
 	}
 	public boolean equals(Position a, Position b) {
+		//only compares the x and y values, excludes state boolean
 		if (a.getX() == b.getX() && a.getY() == b.getY())
 			return true;
 		return false;
