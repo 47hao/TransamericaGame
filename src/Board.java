@@ -73,9 +73,16 @@ public class Board {
 	public void addPlayer(Player p) {
 		playerArray.add(p);
 	}
-
+	
 	public Rail getRail(Position start, Position end) {
-		return thisRailOnRailsArray(new Rail(start,end));
+		for (int i = 0; i < rails.size(); i++) {
+			if (equals(start, rails.get(i).startPos()) && equals(end, rails.get(i).endPos()) ||
+					equals(end, rails.get(i).startPos()) && equals(start, rails.get(i).endPos()) 	) {
+				return rails.get(i);
+			}
+		}
+		System.out.print("Board Class: No Such Rails");
+		return null;
 	}
 
 
@@ -132,17 +139,6 @@ public class Board {
 		if (a.getX() == b.getX() && a.getY() == b.getY())
 			return true;
 		return false;
-	}
-
-	public Rail thisRailOnRailsArray(Rail r) {
-		for (int i = 0; i < rails.size(); i++) {
-			if (equals(r.startPos(), rails.get(i).startPos()) && equals(r.endPos(), rails.get(i).endPos()) ||
-					equals(r.endPos(), rails.get(i).startPos()) && equals(r.startPos(), rails.get(i).endPos()) 	) {
-				return rails.get(i);
-			}
-		}
-		System.out.print("Board Class: No Such Rails");
-		return null;
 	}
 
 	public City getCity(Position location) {
