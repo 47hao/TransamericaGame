@@ -27,6 +27,8 @@ public class GamePanel extends JPanel implements MouseListener {
 	final int railLength = 40;
 	final int doubleSpacing = 2;
 	final int shortLength;
+	
+	final boolean displayCoords = true;
 
 	final static int gridStartX = 90;
 	final static int gridStartY = 52;
@@ -94,14 +96,19 @@ public class GamePanel extends JPanel implements MouseListener {
 			}
 		} else if(rail.getState() == Rail.PLACED)
 		{
-			g.setStroke(new BasicStroke(railThickness*2));
+			g.setStroke(new BasicStroke(railThickness*3f));
 			g.drawLine((int) p.getX(), (int) p.getY(), (int) p2.getX(), (int) p2.getY());
 		}
 		if(rail.getState() == Rail.HOVERING)
 		{
-			g.setStroke(new BasicStroke(railThickness*2));
+			g.setStroke(new BasicStroke(railThickness*3f));
 			g.setColor(new Color(0,0,0,100));
 			g.drawLine((int) p.getX(), (int) p.getY(), (int) p2.getX(), (int) p2.getY());
+		}
+		
+		if(displayCoords)
+		{
+			g.drawString(rail.startPos().getX() + ", " + rail.startPos().getY(), (int)p.getX(), (int)p.getY());
 		}
 
 	}
