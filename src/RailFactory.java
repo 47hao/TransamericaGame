@@ -27,6 +27,18 @@ public class RailFactory {
 
     final static int[] horizontalLengths = {9, 11, 12, 16, 16, 15, 15, 15, 15, 14, 13, 11, 8, 2, 1};
 
+    final static Position[] leftDiagonalDoubleRails = { new Position(0,0)
+    		
+    		
+    };
+    final static Position[] rightDiagonalDoubleRails = { new Position(0,0)
+    		
+    		
+    };
+    final static Position[] rightDoubleRails = { new Position(4,4), new Position(10,10)
+		
+		
+    };
 
     public ArrayList<Rail> genRails() {
 
@@ -46,6 +58,9 @@ public class RailFactory {
                     (int) GamePanel.gridToPixel(r.endPos()).getX() + offset, (int) GamePanel.gridToPixel(r.endPos()).getX() - offset},
                     new int[] {(int) GamePanel.gridToPixel(r.startPos()).getY(), (int) GamePanel.gridToPixel(r.startPos()).getY(),
                     (int) GamePanel.gridToPixel(r.endPos()).getY(), (int) GamePanel.gridToPixel(r.endPos()).getY()}, 4));
+                for(Position p : leftDiagonalDoubleRails)
+                	if(startPos.equals(p))
+                		r.setDouble();
                 rails.add(r);
             }
         }
@@ -61,6 +76,9 @@ public class RailFactory {
                     (int) GamePanel.gridToPixel(r.endPos()).getX() + offset, (int) GamePanel.gridToPixel(r.endPos()).getX() - offset},
                     new int[] {(int) GamePanel.gridToPixel(r.startPos()).getY(), (int) GamePanel.gridToPixel(r.startPos()).getY(),
                     (int) GamePanel.gridToPixel(r.endPos()).getY(), (int) GamePanel.gridToPixel(r.endPos()).getY()}, 4));
+                for(Position p : rightDiagonalDoubleRails)
+                	if(startPos.equals(p))
+                		r.setDouble();
                 rails.add(r);
             }
         }
@@ -77,6 +95,9 @@ public class RailFactory {
                     (int) GamePanel.gridToPixel(r.endPos()).getX(), (int) GamePanel.gridToPixel(r.endPos()).getX()},
                     new int[] {(int) GamePanel.gridToPixel(r.startPos()).getY() + offset, (int) GamePanel.gridToPixel(r.startPos()).getY() - offset,
                     (int) GamePanel.gridToPixel(r.endPos()).getY() - offset, (int) GamePanel.gridToPixel(r.endPos()).getY() + offset}, 4));
+                for(Position p : rightDoubleRails)
+                	if(startPos.equals(p))
+                		r.setDouble();
                 rails.add(r);
             }
         }

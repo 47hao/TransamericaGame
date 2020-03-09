@@ -96,9 +96,9 @@ public class GamePanel extends JPanel implements MouseInputListener {
 				{
 					g.drawLine((int) p.getX(), (int) p.getY(), (int) (p.getX() + shortLength), (int) p.getY());
 					g.drawLine((int) p2.getX(), (int) p2.getY(), (int) (p2.getX() - shortLength), (int) p.getY());
-					g.drawLine((int) (int) (p2.getX() + shortLength +doubleSpacing ), (int) p.getY()+doubleSpacing, 
+					g.drawLine((int) (int) (p.getX() + shortLength + doubleSpacing ), (int) p.getY()+doubleSpacing, 
 									(int) (p2.getX() - shortLength -doubleSpacing ), (int) p.getY()+doubleSpacing);
-					g.drawLine((int) (int) (p2.getX() + shortLength +doubleSpacing ), (int) p.getY()-doubleSpacing, 
+					g.drawLine((int) (int) (p.getX() + shortLength +doubleSpacing ), (int) p.getY()-doubleSpacing, 
 									(int) (p2.getX() - shortLength -doubleSpacing ), (int) p.getY()-doubleSpacing);
 					
 				} else if (p.getX() < p2.getX())// Southwest rail
