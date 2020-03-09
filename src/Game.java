@@ -11,7 +11,7 @@ public class Game {
 	private boolean roundOver = false;
 
 	private int turns = 0;
-	private int railsPlaced = 0;
+	// private int railsPlaced = 0;
 	private Player[] players;
 	private Board board;
 	private Scoreboard scoreboard;
@@ -68,7 +68,19 @@ public class Game {
 					if (turns == 0)
 						placeMarkers(p);
 					else {
-
+						for (int i = 0; i < 2; i++) {
+							findValidRails(p);
+							int railIndex = -1;
+							do {
+								railIndex = p.getRail(validRails);
+							} while (railIndex == -1);
+							if (p instanceof HumanPlayer) {
+								validRails[railIndex].setState(Rail.NEW);
+							}
+							else {
+								validRails[railIndex].setState(Rail.BLINKING);
+							}
+						}
 					}
 				}
 
