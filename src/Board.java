@@ -150,7 +150,27 @@ public class Board {
 		int xDistance=-(a.getX()-b.getX());
 		int yDistance=-(a.getY()-b.getY());
 		while (!equals(a, b)) {
-			if()
+			if(xDistance>0) {
+				while(!isDoubleRail(currentPosition, new Position(currentPosition.getX()+1,currentPosition.getY()))&&currentPosition.getX()<b.getX()){
+					positionArray.add(new Rail(currentPosition, new Position(currentPosition.getX()+1,currentPosition.getY())));
+					currentPosition= new Position(currentPosition.getX()+1,currentPosition.getY());
+				}
+			}else {
+				while(!isDoubleRail(currentPosition, new Position(currentPosition.getX()-1,currentPosition.getY()))&&currentPosition.getX()>b.getX()){
+					positionArray.add(new Rail(currentPosition, new Position(currentPosition.getX()-1,currentPosition.getY())));
+					//this rail on rail array
+					currentPosition= new Position(currentPosition.getX()-1,currentPosition.getY());
+				}
+			}
+			if(yDistance>0) {
+				positionArray.add(new Rail(currentPosition, new Position(currentPosition.getX(),currentPosition.getY()+1)));		
+				currentPosition= new Position(currentPosition.getX()-1,currentPosition.getY());
+
+			}else {
+				positionArray.add(new Rail(currentPosition, new Position(currentPosition.getX(),currentPosition.getY()+1)));	
+				currentPosition= new Position(currentPosition.getX()-1,currentPosition.getY());
+
+			}
 		}
 		return positionArray;
 	}
