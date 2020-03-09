@@ -44,7 +44,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 			e.printStackTrace();
 		}
 	}
-
+	//Paints the components (board, grid, scoreboard, cityList, rails)
 	public void paintComponent(Graphics g) {
 		// System.out.println("repainted");
 		drawBoard(g);
