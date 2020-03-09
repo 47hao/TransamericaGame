@@ -1,11 +1,15 @@
+import java.awt.Polygon;
 
 public class Rail {
+	private Polygon hitbox;
+
 	private Position startPoint;
 	private Position endPoint;
 	private String state = "";
 	private boolean doubleRail = false;
 	private boolean placedByCPU;
 	
+	final static float THICKNESS = 1.5f;
 	final static String EMPTY = "empty";
 	final static String NEW = "new";
 	final static String PLACED = "placed";
@@ -61,5 +65,17 @@ public class Rail {
 		else {
 			return false;
 		}
+	}
+
+	public boolean isPlacedByCPU() {
+		return placedByCPU;
+	}
+
+	public Polygon getHitbox() {
+		return hitbox;
+	}
+
+	public void setHitbox(Polygon hitbox) {
+		this.hitbox = hitbox;
 	}
 }

@@ -59,6 +59,7 @@ public class InitialScreen {
 
 	public InitialScreen() {
 		frame = new JFrame("Player Selection");
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		panel = new JPanel(new GridBagLayout());
 		frame.setContentPane(panel);
 		frame.setPreferredSize(new Dimension(600, 700));
@@ -319,7 +320,6 @@ public class InitialScreen {
 				for (String s : players) {
 					playerList.add(new HumanPlayer(s, cities, Color.RED));
 				}
-				new Game(playerList.toArray(new Player[playerList.size()]));
 				if (computersOnly) {
 					System.out.println("Strategy Evaluation mode is on!");
 					StrategyEvalPanel p = new StrategyEvalPanel();
@@ -329,6 +329,10 @@ public class InitialScreen {
 					evalFrame.pack();
 					evalFrame.setVisible(true);
 				}
+				frame.setVisible(false);
+				frame.dispose();
+				new Game(playerList.toArray(new Player[playerList.size()]));
+				
 			}
 		}
 	}

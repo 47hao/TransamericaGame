@@ -106,7 +106,7 @@ public class Board {
 	}
 
 	public Rail[] computeConnectedRails(Player p) {
-
+		return null;
 	}
 
 	int getDistancetoCity(Player p, City c) {
@@ -119,7 +119,7 @@ public class Board {
 		int xDistance=-(a.getX()-b.getX());
 		int yDistance=-(a.getY()-b.getY());
 		while (!equals(a, b)) {
-			if()
+			// if()
 		}
 		return positionArray;
 	}
@@ -152,7 +152,7 @@ public class Board {
 	}
 
 	public ArrayList<Rail> computePossiblePlacements() {
-
+		return null;
 	}
 
 	public void setRailState(Rail r, String state) {

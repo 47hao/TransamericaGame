@@ -27,7 +27,7 @@ public class HumanPlayer extends Player {
 	}
 
 	public int getRail(Rail[] rails) {
-		
+		return 0;
 	}
 
 }

@@ -2,18 +2,17 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.event.MouseInputListener;
 
-public class GamePanel extends JPanel implements MouseListener {
+public class GamePanel extends JPanel implements MouseInputListener {
 
 	Game gameInfo;
 	int xMousePos = 0;
@@ -21,9 +20,10 @@ public class GamePanel extends JPanel implements MouseListener {
 	Point mousePos = new Point(xMousePos, yMousePos);
 
 	BufferedImage map;
+
+	Rail lastHovering;
 	
 	final Color railColor = new Color(30,30,30);
-	final float railThickness = 1.5f;
 	public static final int railLength = 40;
 	final int doubleSpacing = 2;
 	final int shortLength;
@@ -34,6 +34,8 @@ public class GamePanel extends JPanel implements MouseListener {
 	final static int gridStartY = 52;
 
 	public GamePanel(Game game) {
+		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
 		gameInfo = game;
 		shortLength = (int) (railLength * 0.1);
 		try {
@@ -44,6 +46,7 @@ public class GamePanel extends JPanel implements MouseListener {
 	}
 
 	public void paintComponent(Graphics g) {
+		// System.out.println("repainted");
 		drawBoard(g);
 		drawGrid(g);
 		drawScoreboard(g);
@@ -55,6 +58,10 @@ public class GamePanel extends JPanel implements MouseListener {
 		  //for (Player p : gameInfo.getPlayers()) 
 			  //drawMarker(g, new Point(getPixelX(p.getMarkerPos().getX()), getPixelY(p.getMarkerPos().getY()))); 
 		drawCityList(g, gameInfo.getBoard().getActivePlayer());
+
+		for (Rail r : gameInfo.getBoard().getRails()) {
+			drawRail((Graphics2D) g, r);
+		}
 		// draws board and game information
 	}
 
@@ -74,9 +81,16 @@ public class GamePanel extends JPanel implements MouseListener {
 		Point p = gridToPixel(rail.startPos());
 		Point p2 = gridToPixel(rail.endPos());
 
+		// if (rail.startPos().equals(new Position(15, 8)) && rail.endPos().equals(new Position(15, 9))) {
+		// 	//XXX: drawing hitbox
+		// 	g.setColor(Color.GREEN);
+		// 	g.drawPolygon(rail.getHitbox());
+		// 	return;
+		// }
+
 		if (rail.getState() == Rail.EMPTY || rail.getState() == Rail.HOVERING) 
 		{
-			g.setStroke(new BasicStroke(railThickness));
+			g.setStroke(new BasicStroke(Rail.THICKNESS));
 			if (rail.isDouble()) {
 				if (p.getY() == p2.getY())// horizontal rail
 				{
@@ -92,17 +106,26 @@ public class GamePanel extends JPanel implements MouseListener {
 				} else {
 				}
 			} else {
+				//XXX: drawing hitbox
+				// g.drawPolygon(rail.getHitbox());
 				g.drawLine((int) p.getX(), (int) p.getY(), (int) p2.getX(), (int) p2.getY());
 			}
 		} else if(rail.getState() == Rail.PLACED)
 		{
-			g.setStroke(new BasicStroke(railThickness*3f));
+			g.setStroke(new BasicStroke(Rail.THICKNESS*3f));
 			g.drawLine((int) p.getX(), (int) p.getY(), (int) p2.getX(), (int) p2.getY());
 		}
 		if(rail.getState() == Rail.HOVERING)
 		{
-			g.setStroke(new BasicStroke(railThickness*3f));
-			g.setColor(new Color(0,0,0,100));
+			g.setStroke(new BasicStroke(Rail.THICKNESS*3f));
+			g.setColor(new Color(0,0,0,50));
+			// g.setColor(Color.RED);
+
+			//XXX: drawing hitbox
+			// g.drawPolygon(rail.getHitbox());
+
+			// System.out.println("HOVER RAIL");
+			//XXX: normal drawing: 
 			g.drawLine((int) p.getX(), (int) p.getY(), (int) p2.getX(), (int) p2.getY());
 		}
 		
@@ -114,10 +137,10 @@ public class GamePanel extends JPanel implements MouseListener {
 	}
 
 	public static Point gridToPixel(Position pos) {
-		System.out.println(pos.getY());
+		// System.out.println(pos.getY());
 		int yPos = (int) (pos.getY() * railLength * Math.cos(Math.toRadians(30))) + gridStartY;
 
-		System.out.println(yPos);
+		// System.out.println(yPos);
 		int xPos = (pos.getX() * railLength) - (int) (0.5 * pos.getY() * railLength) + gridStartX;
 		return new Point(xPos,yPos);
 	}
@@ -177,9 +200,25 @@ public class GamePanel extends JPanel implements MouseListener {
 		g.drawRoundRect(0, this.getHeight() - 200, 125, 200, 50, 50);
 	}
 	public void mouseMoved(MouseEvent e) {
-		xMousePos = e.getLocationOnScreen().x;
-		yMousePos = e.getLocationOnScreen().y;
-		mousePos = new Point(xMousePos, yMousePos);
+		// System.out.println("moved");
+		// xMousePos = e.getLocationOnScreen().x;
+		// yMousePos = e.getLocationOnScreen().y;
+		// mousePos = new Point(xMousePos, yMousePos);
+		mousePos = e.getPoint();
+		for (Rail r : gameInfo.getBoard().getRails()) {
+			if (r.getHitbox().contains(mousePos)) {
+				// System.out.println("on rail");
+				if (lastHovering != null && !lastHovering.equals(r)) {
+					lastHovering.setState(Rail.EMPTY);
+				}
+				lastHovering = r;
+				r.setState(Rail.HOVERING);
+				repaint();
+
+				//stop before setting more than 1 to hovering
+				return;
+			}
+		}
 	}
 
 	public Point clickPosition() {
@@ -187,7 +226,7 @@ public class GamePanel extends JPanel implements MouseListener {
 	}
 
 	public void mouseClicked(MouseEvent e) {
-		mouseMoved(e);
+		// System.out.println("click");
 		clickPosition();
 	}
 
@@ -204,6 +243,11 @@ public class GamePanel extends JPanel implements MouseListener {
 	}
 
 	public void mouseReleased(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
 
 	}
 
