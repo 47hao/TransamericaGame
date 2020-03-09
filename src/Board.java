@@ -13,37 +13,38 @@ public class Board {
 	private ArrayList<Position> possiblePlacements = new ArrayList<Position>(0);
 	private ArrayList<Player> playerArray = new ArrayList<Player>(0);
 
-		public Board() {
+	public Board() {
 		// Orange: Boston, New York, Washington, Richmond, Winston, Charleston,
 		// Jacksonville
 		// Blue: Buffalo, Chicago, Cincinnati, Minneapolis, Helena, Duluth, Bismark
 		// Yellow: Omaha, St.Louis, Kansas City, Oklahoma City, Sante Fe, Salt Lake
 		// City, Denver
 		// Red: Phoenix, El Paso, Dallas, Houston, Memphis, Atlanta, New Orleans
-		// Green: Seattle, Portland, Sacremento, San Francisco, Los Angeles, San Diego, Medford
-		
-		cities[0]  = new City(new Position(17,2), "Boston", Color.ORANGE);
-		cities[1]  = new City(new Position(17,4), "New York", Color.ORANGE);
-		cities[2]  = new City(new Position(17,5), "Washington", Color.ORANGE);
-		cities[3]  = new City(new Position(18,7), "Richmond", Color.ORANGE);
-		cities[4]  = new City(new Position(17,9), "Winston", Color.ORANGE);
-		cities[5]  = new City(new Position(20,10), "Charleston", Color.ORANGE);
-		cities[6]  = new City(new Position(20,12), "Jacksonville", Color.ORANGE);
+		// Green: Seattle, Portland, Sacremento, San Francisco, Los Angeles, San Diego,
+		// Medford
 
-		cities[7]  = new City(new Position(15,2), "Buffalo", Color.BLUE);
-		cities[8]  = new City(new Position(13,3), "Chicago", Color.BLUE);
-		cities[9]  = new City(new Position(0, 0), "Cincinnati", Color.BLUE);
-		cities[10] = new City(new Position(10,2), "Minneapolis", Color.BLUE);
-		cities[11] = new City(new Position(3,1), "Helena", Color.BLUE);
+		cities[0] = new City(new Position(17, 2), "Boston", Color.ORANGE);
+		cities[1] = new City(new Position(17, 4), "New York", Color.ORANGE);
+		cities[2] = new City(new Position(17, 5), "Washington", Color.ORANGE);
+		cities[3] = new City(new Position(18, 7), "Richmond", Color.ORANGE);
+		cities[4] = new City(new Position(17, 9), "Winston", Color.ORANGE);
+		cities[5] = new City(new Position(20, 10), "Charleston", Color.ORANGE);
+		cities[6] = new City(new Position(20, 12), "Jacksonville", Color.ORANGE);
+
+		cities[7] = new City(new Position(15, 2), "Buffalo", Color.BLUE);
+		cities[8] = new City(new Position(13, 3), "Chicago", Color.BLUE);
+		cities[9] = new City(new Position(0, 0), "Cincinnati", Color.BLUE);
+		cities[10] = new City(new Position(10, 2), "Minneapolis", Color.BLUE);
+		cities[11] = new City(new Position(3, 1), "Helena", Color.BLUE);
 		cities[12] = new City(new Position(10, 1), "Duluth", Color.BLUE);
-		cities[13] = new City(new Position(7,1), "Bismark", Color.BLUE);
+		cities[13] = new City(new Position(7, 1), "Bismark", Color.BLUE);
 
 		cities[14] = new City(new Position(9, 4), "Omaha", Color.YELLOW);
 		cities[15] = new City(new Position(13, 6), "St. Louis", Color.YELLOW);
 		cities[16] = new City(new Position(11, 6), "Kansas City", Color.YELLOW);
 		cities[17] = new City(new Position(11, 8), "Oklahoma City", Color.YELLOW);
-		cities[18] = new City(new Position(8,8), "Sante Fe", Color.YELLOW);
-		cities[19] = new City(new Position(4,4), "Salt Lake City", Color.YELLOW);
+		cities[18] = new City(new Position(8, 8), "Sante Fe", Color.YELLOW);
+		cities[19] = new City(new Position(4, 4), "Salt Lake City", Color.YELLOW);
 		cities[20] = new City(new Position(7, 5), "Denver", Color.YELLOW);
 
 		cities[21] = new City(new Position(8, 9), "Phoenix", Color.RED);
@@ -56,16 +57,14 @@ public class Board {
 
 		cities[28] = new City(new Position(0, 0), "Seattle", Color.GREEN);
 		cities[29] = new City(new Position(0, 1), "Portland", Color.GREEN);
-		cities[30] = new City(new Position(2,5), "Sacremento", Color.GREEN);
-		cities[31] = new City(new Position(2,6), "San Francisco", Color.GREEN);
-		cities[32] = new City(new Position(5,9), "Los Angeles", Color.GREEN);
-		cities[33] = new City(new Position(6,10), "San Diego", Color.GREEN);
-		cities[34] = new City(new Position(1,3), "Medford", Color.GREEN);
-		
-		
+		cities[30] = new City(new Position(2, 5), "Sacremento", Color.GREEN);
+		cities[31] = new City(new Position(2, 6), "San Francisco", Color.GREEN);
+		cities[32] = new City(new Position(5, 9), "Los Angeles", Color.GREEN);
+		cities[33] = new City(new Position(6, 10), "San Diego", Color.GREEN);
+		cities[34] = new City(new Position(1, 3), "Medford", Color.GREEN);
+
 		rails = new RailFactory().genRails();
-		for(Rail r : rails)
-		{
+		for (Rail r : rails) {
 			r.setState(Rail.EMPTY);
 		}
 	}
@@ -73,11 +72,11 @@ public class Board {
 	public void addPlayer(Player p) {
 		playerArray.add(p);
 	}
-	
+
 	public Rail getRail(Position start, Position end) {
 		for (int i = 0; i < rails.size(); i++) {
-			if (equals(start, rails.get(i).startPos()) && equals(end, rails.get(i).endPos()) ||
-					equals(end, rails.get(i).startPos()) && equals(start, rails.get(i).endPos()) 	) {
+			if (equals(start, rails.get(i).startPos()) && equals(end, rails.get(i).endPos())
+					|| equals(end, rails.get(i).startPos()) && equals(start, rails.get(i).endPos())) {
 				return rails.get(i);
 			}
 		}
@@ -85,58 +84,92 @@ public class Board {
 		return null;
 	}
 
-
-	public Rail[] getAroundRails(Position pos) {
-		Rail[] returnRails = new Rail[0];
-		for (int i = 0; i < rails.size(); i++) {
-			Rail rail = rails.get(i);
+	public ArrayList<Rail> getAroundRails(Position pos) {
+		ArrayList<Rail> returnRails = new ArrayList<Rail>();
+		for (Rail rail : rails) {
 			Position railStart = rail.startPos();
 			Position railEnd = rail.endPos();
 			if ((railStart.getX() == pos.getX() && railStart.getY() == pos.getY())
 					|| (railEnd.getX() == pos.getX() && railEnd.getY() == pos.getY())) {
-				Rail[] secondRail = new Rail[returnRails.length + 1];
-				for (int j = 0; j < returnRails.length; j++) {
-					secondRail[i] = returnRails[i];
-				}
-				secondRail[rails.size()] = rail;
-				returnRails = secondRail;
+				returnRails.add(rail);
 			}
 		}
 		return returnRails;
 	}
+	/*
+	 * public Rail[] getAroundRails(Position pos) { Rail[] returnRails = new
+	 * Rail[0]; for (int i = 0; i < rails.size(); i++) { Rail rail = rails.get(i);
+	 * Position railStart = rail.startPos(); Position railEnd = rail.endPos(); if
+	 * ((railStart.getX() == pos.getX() && railStart.getY() == pos.getY()) ||
+	 * (railEnd.getX() == pos.getX() && railEnd.getY() == pos.getY())) { Rail[]
+	 * secondRail = new Rail[returnRails.length + 1]; for (int j = 0; j <
+	 * returnRails.length; j++) { secondRail[i] = returnRails[i]; }
+	 * secondRail[rails.size()] = rail; returnRails = secondRail; } } return
+	 * returnRails; }
+	 */
 
-	public Rail[] computeConnectedRails(Player p) {
-		return null;
+	public ArrayList<Rail> computeConnectedRails(Player p) {
+		ArrayList<Rail> returnVal = new ArrayList<Rail>();
+		ArrayList<Position> current = new ArrayList<Position>();
+		boolean stop = false;
+		current.add(p.getMarkerPos());
+		while (!stop) {
+			for (Position aroundPos : current) {
+				for (Rail check : getAroundRails(aroundPos)) {
+					for (Rail r : rails) {
+						boolean exists = false;
+						for (Rail previous : returnVal) {
+							if (previous.equals(r)) {
+								exists = true;
+							}
+						}
+						if (!exists && r.getState() == Rail.PLACED && r.equals(check)) {
+							returnVal.add(r);
+							current.add(r.endPos());
+							stop = false;
+						} else {
+							current.remove(aroundPos);
+						}
+					}
+				}
+			}
+			if (current.size() == 0) {
+				stop = true;
+			}
+		}
+		return returnVal;
 	}
 
 	int getDistancetoCity(Player p, City c) {
-		return distanceBetweenTwoPoints(p.getMarkerPos(), c.getPos()).size();
+		return quickestPath(p.getMarkerPos(), c.getPos()).size();
 	}
 
-	public ArrayList<Rail> distanceBetweenTwoPoints(Position a, Position b) {
+	public ArrayList<Rail> quickestPath(Position a, Position b) {
 		ArrayList<Rail> positionArray = new ArrayList<Rail>(0);
 		Position currentPosition=a;
 		int xDistance=-(a.getX()-b.getX());
 		int yDistance=-(a.getY()-b.getY());
 		while (!equals(a, b)) {
-			// if()
+			if()
 		}
 		return positionArray;
 	}
+
 	public boolean isDoubleRail(Position startPos, Position endPos) {
-		for(int i=0;i<rails.size();i++) {
-			Rail r= rails.get(i);
-			if(equals(r.startPos(),startPos) && equals(r.endPos(),endPos) ||
-					equals(r.startPos(),endPos) && equals(r.endPos(),startPos) 	){
-				if(rails.get(i).isDouble())
+		for (int i = 0; i < rails.size(); i++) {
+			Rail r = rails.get(i);
+			if (equals(r.startPos(), startPos) && equals(r.endPos(), endPos)
+					|| equals(r.startPos(), endPos) && equals(r.endPos(), startPos)) {
+				if (rails.get(i).isDouble())
 					return true;
 				return false;
 			}
 		}
 		return false;
 	}
+
 	public boolean equals(Position a, Position b) {
-		//only compares the x and y values, excludes state boolean
+		// only compares the x and y values, excludes state boolean
 		if (a.getX() == b.getX() && a.getY() == b.getY())
 			return true;
 		return false;
@@ -151,8 +184,44 @@ public class Board {
 		return null;
 	}
 
-	public ArrayList<Rail> computePossiblePlacements() {
-		return null;
+	public ArrayList<Rail> computePossiblePlacements(Player p) {
+		ArrayList<Rail> returnVal = new ArrayList<Rail>();
+		ArrayList<Rail> currentRails = computeConnectedRails(p);
+		for (Rail r : currentRails) {
+			for (Rail r2 : getAroundRails(r.startPos())) {
+				boolean duplicate = false;
+				for (Rail check : returnVal) {
+					if (check.equals(r2)) {
+						duplicate = true;
+					}
+				}
+				for (Rail check : currentRails) {
+					if (check.equals(r2)) {
+						duplicate = true;
+					}
+				}
+				if (!duplicate && r2.getState() == Rail.EMPTY) {
+					returnVal.add(r2);
+				}
+			}
+			for (Rail r2 : getAroundRails(r.endPos())) {
+				boolean duplicate = false;
+				for (Rail check : returnVal) {
+					if (check.equals(r2)) {
+						duplicate = true;
+					}
+				}
+				for (Rail check : currentRails) {
+					if (check.equals(r2)) {
+						duplicate = true;
+					}
+				}
+				if (!duplicate && r2.getState() == Rail.EMPTY) {
+					returnVal.add(r2);
+				}
+			}
+		}
+		return returnVal;
 	}
 
 	public void setRailState(Rail r, String state) {
@@ -188,4 +257,3 @@ public class Board {
 	}
 
 }
-
