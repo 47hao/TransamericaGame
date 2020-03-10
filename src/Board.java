@@ -96,18 +96,7 @@ public class Board {
 		}
 		return returnRails;
 	}
-	/*
-	 * public Rail[] getAroundRails(Position pos) { Rail[] returnRails = new
-	 * Rail[0]; for (int i = 0; i < rails.size(); i++) { Rail rail = rails.get(i);
-	 * Position railStart = rail.startPos(); Position railEnd = rail.endPos(); if
-	 * ((railStart.getX() == pos.getX() && railStart.getY() == pos.getY()) ||
-	 * (railEnd.getX() == pos.getX() && railEnd.getY() == pos.getY())) { Rail[]
-	 * secondRail = new Rail[returnRails.length + 1]; for (int j = 0; j <
-	 * returnRails.length; j++) { secondRail[i] = returnRails[i]; }
-	 * secondRail[rails.size()] = rail; returnRails = secondRail; } } return
-	 * returnRails; }
-	 */
-
+	
 	public ArrayList<Rail> computeConnectedRails(Player p) {
 		ArrayList<Rail> returnVal = new ArrayList<Rail>();
 		ArrayList<Position> current = new ArrayList<Position>();
