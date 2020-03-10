@@ -27,7 +27,7 @@ public class RailFactory {
 
     final static int[] horizontalLengths = {9, 11, 12, 16, 16, 15, 15, 15, 15, 14, 13, 11, 8, 2, 1};
 
-    final static Position[] leftDiagonalDoubleRails = { new Position(0,0)
+    final static Position[] leftDiagonalDoubleRails = { new Position(0,0), new Position(8,6)
     		
     		
     };

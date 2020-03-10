@@ -88,7 +88,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		// 	return;
 		// }
 
-		if (rail.getState() == Rail.EMPTY || rail.getState() == Rail.HOVERING) 
+		if (rail.getState().equals(Rail.EMPTY) || rail.getState().equals(Rail.HOVERING)) 
 		{
 			g.setStroke(new BasicStroke(Rail.THICKNESS));
 			if (rail.isDouble()) {
@@ -96,26 +96,37 @@ public class GamePanel extends JPanel implements MouseInputListener {
 				{
 					g.drawLine((int) p.getX(), (int) p.getY(), (int) (p.getX() + shortLength), (int) p.getY());
 					g.drawLine((int) p2.getX(), (int) p2.getY(), (int) (p2.getX() - shortLength), (int) p.getY());
-					g.drawLine((int) (int) (p.getX() + shortLength + doubleSpacing ), (int) p.getY()+doubleSpacing, 
-									(int) (p2.getX() - shortLength -doubleSpacing ), (int) p.getY()+doubleSpacing);
-					g.drawLine((int) (int) (p.getX() + shortLength +doubleSpacing ), (int) p.getY()-doubleSpacing, 
-									(int) (p2.getX() - shortLength -doubleSpacing ), (int) p.getY()-doubleSpacing);
+					g.drawLine((int) (p.getX() + shortLength + doubleSpacing ), (int) p.getY()+doubleSpacing, 
+							   (int) (p2.getX() - shortLength -doubleSpacing ), (int) p.getY()+doubleSpacing);
+					g.drawLine((int) (p.getX() + shortLength +doubleSpacing ), (int) p.getY()-doubleSpacing, 
+							   (int) (p2.getX() - shortLength -doubleSpacing ), (int) p.getY()-doubleSpacing);
 					
-				} else if (p.getX() < p2.getX())// Southwest rail
+				} else if (p.getX() < p2.getX())// Southeast rail
 				{
+					
 				} else {
+					double cos60 = Math.cos(Math.toRadians(60));
+					double sin60 = Math.sin(Math.toRadians(60));
+					g.drawLine((int) p.getX(), (int) p.getY(), 
+							(int)(p.getX() - shortLength*cos60), (int) (p.getY() + shortLength*sin60));
+					g.drawLine((int) p2.getX(), (int) p2.getY(), 
+							(int) (p2.getX() + shortLength*cos60), (int)(p2.getY() - shortLength*sin60));
+					g.drawLine((int)(p.getX() - shortLength*cos60-doubleSpacing*sin60), (int)(p.getY()+(shortLength*sin60-doubleSpacing*cos60)), 
+							   (int) (p2.getX() + shortLength*cos60-doubleSpacing*sin60), (int)(p2.getY() - shortLength*sin60 + doubleSpacing*cos60));
+					//g.drawLine((int) (p.getX() + shortLength +doubleSpacing ), (int) p.getY()-doubleSpacing, 
+						//	   (int) (p2.getX() - shortLength -doubleSpacing ), (int) p.getY()-doubleSpacing);
 				}
 			} else {
 				//XXX: drawing hitbox
 				// g.drawPolygon(rail.getHitbox());
 				g.drawLine((int) p.getX(), (int) p.getY(), (int) p2.getX(), (int) p2.getY());
 			}
-		} else if(rail.getState() == Rail.PLACED)
+		} else if(rail.getState().equals(Rail.PLACED))
 		{
 			g.setStroke(new BasicStroke(Rail.THICKNESS*3f));
 			g.drawLine((int) p.getX(), (int) p.getY(), (int) p2.getX(), (int) p2.getY());
 		}
-		if(rail.getState() == Rail.HOVERING)
+		if(rail.getState().equals(Rail.HOVERING))
 		{
 			g.setStroke(new BasicStroke(Rail.THICKNESS*3f));
 			g.setColor(new Color(0,0,0,50));
