@@ -26,8 +26,8 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	final Color railColor = new Color(30,30,30);
 	public static final int railLength = 40;
 	final int doubleSpacing = 2;
-	final int shortLength;
-	
+	final int shortLength = 6;
+	 
 	final boolean displayCoords = true;
 
 	final static int gridStartX = 90;
@@ -37,7 +37,6 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		gameInfo = game;
-		shortLength = (int) (railLength * 0.1);
 		try {
 			map = ImageIO.read(new File("img/map.png"));
 		} catch (IOException e) {
@@ -102,19 +101,27 @@ public class GamePanel extends JPanel implements MouseInputListener {
 							   (int) (p2.getX() - shortLength -doubleSpacing ), (int) p.getY()-doubleSpacing);
 					
 				} else if (p.getX() < p2.getX())// Southeast rail
-				{
-					
+				{	double cos60 = Math.cos(Math.toRadians(60));
+					double sin60 = Math.sin(Math.toRadians(60));
+					g.drawLine(	(int) p.getX(), (int) p.getY(), 
+								(int)(p.getX() + shortLength*cos60), (int) (p.getY() + shortLength*sin60));
+					g.drawLine(	(int) p2.getX(), (int) p2.getY(), 
+								(int) (p2.getX() - shortLength*cos60), (int)(p2.getY() - shortLength*sin60));
+					g.drawLine(	(int)(p.getX() + shortLength*cos60+doubleSpacing*sin60), (int)(p.getY()+ shortLength*sin60- doubleSpacing*cos60), 
+								(int) (p2.getX() - shortLength*cos60+ doubleSpacing*sin60), (int)(p2.getY() - shortLength*sin60 - doubleSpacing*cos60));
+					g.drawLine(	(int)(p.getX() + shortLength*cos60-doubleSpacing*sin60), (int)(p.getY()+shortLength*sin60+doubleSpacing*cos60), 
+								(int) (p2.getX() - shortLength*cos60-doubleSpacing*sin60), (int)(p2.getY() - shortLength*sin60 + doubleSpacing*cos60));
 				} else {
 					double cos60 = Math.cos(Math.toRadians(60));
 					double sin60 = Math.sin(Math.toRadians(60));
-					g.drawLine((int) p.getX(), (int) p.getY(), 
-							(int)(p.getX() - shortLength*cos60), (int) (p.getY() + shortLength*sin60));
-					g.drawLine((int) p2.getX(), (int) p2.getY(), 
-							(int) (p2.getX() + shortLength*cos60), (int)(p2.getY() - shortLength*sin60));
-					g.drawLine((int)(p.getX() - shortLength*cos60-doubleSpacing*sin60), (int)(p.getY()+(shortLength*sin60-doubleSpacing*cos60)), 
-							   (int) (p2.getX() + shortLength*cos60-doubleSpacing*sin60), (int)(p2.getY() - shortLength*sin60 + doubleSpacing*cos60));
-					//g.drawLine((int) (p.getX() + shortLength +doubleSpacing ), (int) p.getY()-doubleSpacing, 
-						//	   (int) (p2.getX() - shortLength -doubleSpacing ), (int) p.getY()-doubleSpacing);
+					g.drawLine(	(int) p.getX(), (int) p.getY(), 
+								(int)(p.getX() - shortLength*cos60), (int) (p.getY() + shortLength*sin60));
+					g.drawLine(	(int) p2.getX(), (int) p2.getY(), 
+								(int) (p2.getX() + shortLength*cos60), (int)(p2.getY() - shortLength*sin60));
+					g.drawLine(	(int)(p.getX() - shortLength*cos60-doubleSpacing*sin60), (int)(p.getY()+ shortLength*sin60- doubleSpacing*cos60), 
+							   	(int) (p2.getX() + shortLength*cos60-doubleSpacing*sin60), (int)(p2.getY() - shortLength*sin60 - doubleSpacing*cos60));
+					g.drawLine(	(int)(p.getX() - shortLength*cos60+doubleSpacing*sin60), (int)(p.getY()+shortLength*sin60+doubleSpacing*cos60), 
+							   	(int) (p2.getX() + shortLength*cos60+doubleSpacing*sin60), (int)(p2.getY() - shortLength*sin60 + doubleSpacing*cos60));
 				}
 			} else {
 				//XXX: drawing hitbox

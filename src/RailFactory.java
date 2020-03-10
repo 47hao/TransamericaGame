@@ -31,11 +31,12 @@ public class RailFactory {
     		
     		
     };
-    final static Position[] rightDiagonalDoubleRails = { new Position(0,0)
+    final static Position[] rightDiagonalDoubleRails = { new Position(0,0), new Position(8,6)
     		
     		
     };
-    final static Position[] rightDoubleRails = { new Position(4,4), new Position(10,10)
+    final static Position[] rightDoubleRails = { new Position(4,4), new Position(10,10),
+    		new Position(8,7)
 		
 		
     };
