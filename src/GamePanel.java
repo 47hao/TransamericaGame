@@ -27,6 +27,11 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	public static final int railLength = 40;
 	final int doubleSpacing = 2;
 	final int shortLength = 6;
+	
+	
+	final int cityInnerDiam = 12;
+	final int cityStrokeDiam = 26;
+	final int cityStroke = 4;
 	 
 	final boolean displayCoords = true;
 
@@ -49,7 +54,6 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		drawBoard(g);
 		drawGrid(g);
 		drawScoreboard(g);
-		
 		  //for (Player p : gameInfo.getPlayers()) 
 			  //drawTrain(g, p.score); 
 		  //for (City c : gameInfo.getBoard().getCities()) 
@@ -61,6 +65,9 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		for (Rail r : gameInfo.getBoard().getRails()) {
 			drawRail((Graphics2D) g, r);
 		}
+		
+
+		drawCities(g, gameInfo.getBoard().getCities());
 		// draws board and game information
 	}
 
@@ -200,14 +207,44 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		double cellSize = 56.6666666667;
 		g.drawImage(train, xPos + (player.getScore() * (int)cellSize) - (train.getWidth() / 2), 45, 55, 25, Color.black, null);
 	}
+	
 
-	private void drawCity(Graphics g, Point location) {
-		
+	private void drawCities(Graphics g, City[] cityList, Player activePlayer)
+	{
+		Graphics2D g2d = (Graphics2D) g;
+		for(City c: cityList)
+		{
+			if(activePlayer.getTargetCities().contains(c)) //POTENTIAL ERROR IN CONTAINS
+				drawCity(g2d, c, true);
+			else
+				drawCity(g2d, c, false);
+		}
+	}
+	
+	private void drawCities(Graphics g, City[] cityList) //without player
+	{
+		Graphics2D g2d = (Graphics2D) g;
+		for(City c: cityList)
+		{
+			drawCity(g2d, c, false);
+		}
+	}
+
+	private void drawCity(Graphics2D g2d, City c, boolean active) {
+		Point pixelLoc = gridToPixel(c.getPos());
+		g2d.setColor(c.getColor());
+		g2d.setStroke(new BasicStroke(cityStroke));
+		if(active)
+			g2d.drawOval((int)pixelLoc.getX(), (int)pixelLoc.getY(), 
+				cityStrokeDiam - cityStroke, cityStrokeDiam - cityStroke);
+		g2d.fillOval((int)(pixelLoc.getX()-cityInnerDiam/2), (int)(pixelLoc.getY()-cityInnerDiam/2),
+						cityInnerDiam, cityInnerDiam);
 	}
 
 	private void drawMarker(Graphics g, Player player) {
 		g.drawOval(player.getMarkerPos().getX() - 5, player.getMarkerPos().getY() - 5, 10, 10);
 	}
+	
 
 	private void drawCityList(Graphics g, Player player) {
 		Graphics2D g2 = (Graphics2D) g;
