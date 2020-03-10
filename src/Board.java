@@ -72,6 +72,28 @@ public class Board {
 	public void addPlayer(Player p) {
 		playerArray.add(p);
 	}
+		public ArrayList quickestPath(Position initialNode, Position endNode) {
+		int leftLimit, rightLimit, topLimit, botLimit;
+		ArrayList<Rail> shortestPath= new ArrayList<Rail>(0);
+		
+		if(initialNode.getX()<endNode.getX()) {
+			//The plus two is just in case there are quicker routes that are beyond the original borders
+			leftLimit=initialNode.getX()+2;
+			rightLimit=endNode.getX()+2;
+		}else {
+				leftLimit=endNode.getX()+2;	
+				rightLimit=initialNode.getX()+2;
+		}
+		
+		if(initialNode.getY()<endNode.getY()+2) {
+			topLimit=initialNode.getY()+2;
+			botLimit=endNode.getY()+2;
+		}else {
+			topLimit=endNode.getY()+2;
+			botLimit=initialNode.getY()+2;
+		}
+		
+	}
 
 	public Rail getRail(Position start, Position end) {
 		for (int i = 0; i < rails.size(); i++) {
