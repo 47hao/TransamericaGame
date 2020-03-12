@@ -122,7 +122,7 @@ public class InitialScreen {
 			nameTextFields[i] = new JTextField("Player " + (i + 1), 7);
 			// set invisible by default because human not selected
 			nameTextFields[i].setVisible(false);
-			nameTextFields[i].addKeyListener(new Jank());
+			nameTextFields[i].addKeyListener(new NameKeyListener());
 		}
 
 		// create constraint object to be edited:
@@ -399,7 +399,7 @@ public class InitialScreen {
 		}
 	}
 
-	class Jank implements KeyListener {
+	class NameKeyListener implements KeyListener {
 
 		@Override
 		public void keyPressed(KeyEvent e) {

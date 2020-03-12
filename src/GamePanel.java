@@ -21,7 +21,10 @@ public class GamePanel extends JPanel implements MouseInputListener {
 
 	BufferedImage map;
 
+	Rail clickedRail;
+
 	Rail lastHovering;
+	String previousState;
 	
 	final Color railColor = new Color(30,30,30);
 	public static final int railLength = 40;
@@ -93,9 +96,12 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		// 	g.drawPolygon(rail.getHitbox());
 		// 	return;
 		// }
-
+		// if (rail.getState().equals(Rail.PLACED)) {
+		// 	System.out.println("placed rail found");
+		// }
 		if (rail.getState().equals(Rail.EMPTY) || rail.getState().equals(Rail.HOVERING)) 
 		{
+			// System.out.println("empty/hovering");
 			g.setStroke(new BasicStroke(Rail.THICKNESS));
 			if (rail.isDouble()) {
 				if (p.getY() == p2.getY())// horizontal rail
@@ -137,8 +143,10 @@ public class GamePanel extends JPanel implements MouseInputListener {
 			}
 		} else if(rail.getState().equals(Rail.PLACED))
 		{
+			// g.setColor(Color.RED);
 			g.setStroke(new BasicStroke(Rail.THICKNESS*3f));
 			g.drawLine((int) p.getX(), (int) p.getY(), (int) p2.getX(), (int) p2.getY());
+			// g.setColor(Color.BLACK);
 		}
 		if(rail.getState().equals(Rail.HOVERING))
 		{
@@ -259,15 +267,36 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		// xMousePos = e.getLocationOnScreen().x;
 		// yMousePos = e.getLocationOnScreen().y;
 		// mousePos = new Point(xMousePos, yMousePos);
+
 		mousePos = e.getPoint();
+		if (gameInfo.getBoard().getGameState().equals("noInput")) {
+			return;
+		}
+
+		//TODO: make constant for gameStates
+		else if (gameInfo.getBoard().getGameState().equals("marker")) {
+			//place markers
+		}
+		else {
 		for (Rail r : gameInfo.getBoard().getRails()) {
 			if (r.getHitbox().contains(mousePos)) {
 				// System.out.println("on rail");
+
+
+				//if the rail that is being hovered is different, unhighlight
 				if (lastHovering != null && !lastHovering.equals(r)) {
-					lastHovering.setState(Rail.EMPTY);
+					if (previousState.equals(Rail.HOVERING)) {
+						lastHovering.setState(Rail.EMPTY);
+					}
+					else {
+						lastHovering.setState(previousState);
+					}
 				}
-				lastHovering = r;
-				r.setState(Rail.HOVERING);
+				if (!r.getState().equals(Rail.PLACED)) {
+					r.setState(Rail.HOVERING);
+					lastHovering = r;
+					previousState = r.getState();
+				}
 				repaint();
 
 				//stop before setting more than 1 to hovering
@@ -275,18 +304,24 @@ public class GamePanel extends JPanel implements MouseInputListener {
 			}
 		}
 	}
-
-	public Point clickPosition() {
-		return mousePos;
-	}
+}
 
 	public void mouseClicked(MouseEvent e) {
 		// System.out.println("click");
-		clickPosition();
+		// clickPosition();
+		System.out.println("a");
+		for (Rail r : gameInfo.getBoard().getRails()) {
+			if (r.getHitbox().contains(e.getPoint())) {
+				System.out.println("b");
+				clickedRail = r;
+				clickedRail.setState(Rail.PLACED);
+				return;
+			}
+		}
 	}
 
 	public void mouseEntered(MouseEvent e) {
-		mouseMoved(e);
+		// mouseMoved(e);
 	}
 
 	public void mouseExited(MouseEvent e) {

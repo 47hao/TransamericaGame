@@ -14,6 +14,8 @@ public class Board {
 	private ArrayList<Player> playerArray = new ArrayList<Player>(0);
 
 	public Board() {
+		//XXX: setting default gamestate as "round"
+		gameState = "round";
 		// Orange: Boston, New York, Washington, Richmond, Winston, Charleston,
 		// Jacksonville
 		// Blue: Buffalo, Chicago, Cincinnati, Minneapolis, Helena, Duluth, Bismark
@@ -64,36 +66,34 @@ public class Board {
 		cities[34] = new City(new Position(1, 3), "Medford", Color.GREEN);
 
 		rails = new RailFactory().genRails();
-		for (Rail r : rails) {
-			r.setState(Rail.EMPTY);
-		}
+		
 	}
 
 	public void addPlayer(Player p) {
 		playerArray.add(p);
 	}
-		public ArrayList quickestPath(Position initialNode, Position endNode) {
-		int leftLimit, rightLimit, topLimit, botLimit;
-		ArrayList<Rail> shortestPath= new ArrayList<Rail>(0);
+	// 	public ArrayList quickestPath(Position initialNode, Position endNode) {
+	// 	int leftLimit, rightLimit, topLimit, botLimit;
+	// 	ArrayList<Rail> shortestPath= new ArrayList<Rail>(0);
 		
-		if(initialNode.getX()<endNode.getX()) {
-			//The plus two is just in case there are quicker routes that are beyond the original borders
-			leftLimit=initialNode.getX()+2;
-			rightLimit=endNode.getX()+2;
-		}else {
-				leftLimit=endNode.getX()+2;	
-				rightLimit=initialNode.getX()+2;
-		}
+	// 	if(initialNode.getX()<endNode.getX()) {
+	// 		//The plus two is just in case there are quicker routes that are beyond the original borders
+	// 		leftLimit=initialNode.getX()+2;
+	// 		rightLimit=endNode.getX()+2;
+	// 	}else {
+	// 			leftLimit=endNode.getX()+2;	
+	// 			rightLimit=initialNode.getX()+2;
+	// 	}
 		
-		if(initialNode.getY()<endNode.getY()+2) {
-			topLimit=initialNode.getY()+2;
-			botLimit=endNode.getY()+2;
-		}else {
-			topLimit=endNode.getY()+2;
-			botLimit=initialNode.getY()+2;
-		}
+	// 	if(initialNode.getY()<endNode.getY()+2) {
+	// 		topLimit=initialNode.getY()+2;
+	// 		botLimit=endNode.getY()+2;
+	// 	}else {
+	// 		topLimit=endNode.getY()+2;
+	// 		botLimit=initialNode.getY()+2;
+	// 	}
 		
-	}
+	// }
 
 	public Rail getRail(Position start, Position end) {
 		for (int i = 0; i < rails.size(); i++) {
