@@ -30,8 +30,8 @@ public class Board {
 		cities[2] = new City(new Position(17, 5), "Washington", Color.ORANGE);
 		cities[3] = new City(new Position(18, 7), "Richmond", Color.ORANGE);
 		cities[4] = new City(new Position(17, 9), "Winston", Color.ORANGE);
-		cities[5] = new City(new Position(20, 10), "Charleston", Color.ORANGE);
-		cities[6] = new City(new Position(20, 12), "Jacksonville", Color.ORANGE);
+		cities[5] = new City(new Position(19, 10), "Charleston", Color.ORANGE);
+		cities[6] = new City(new Position(19, 12), "Jacksonville", Color.ORANGE);
 
 		cities[7] = new City(new Position(15, 2), "Buffalo", Color.BLUE);
 		cities[8] = new City(new Position(13, 3), "Chicago", Color.BLUE);
