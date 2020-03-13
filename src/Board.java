@@ -153,7 +153,40 @@ public class Board {
 	int getDistancetoCity(Player p, City c) {
 		return quickestPath(p.getMarkerPos(), c.getPos()).size();
 	}
+		
+	public ArrayList<Rail> quickestPath(Position a, Position b) {
+		ArrayList<Rail> possiblePaths= new ArrayList<Rail>(0);
 
+		int leftBound, rightBound, topBound, botBound;
+		if(a.getX()<b.getX()) {
+			leftBound=a.getX()-2;
+			rightBound=b.getX()+2;
+		}else {
+			if(a.getX()>b.getX()) {
+				leftBound=b.getX()-2;
+				rightBound=a.getX()+2;
+			}else {
+				leftBound=b.getX()-2;
+				rightBound=a.getX()+2;
+			}
+		}
+		
+		if(a.getY()<b.getY()) {
+			topBound=a.getY()-2;
+			botBound=b.getY()+2;
+		}else {
+			if(a.getY()>b.getY()) {
+				topBound=b.getY()-2;
+				botBound=a.getY()+2;
+			}else {
+				topBound=b.getY()-2;
+				botBound=a.getY()+2;
+			}
+		}
+		int[] boundaries= {leftBound,rightBound,topBound, botBound};
+		possiblePaths.add();
+		
+	}
 	public ArrayList<Rail> quickestPath(Position a, Position b) {
 		ArrayList<Rail> positionArray = new ArrayList<Rail>(0);
 		Position currentPosition=a;
