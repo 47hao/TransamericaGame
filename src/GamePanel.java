@@ -35,6 +35,12 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	final int cityInnerDiam = 12;
 	final int cityStrokeDiam = 26;
 	final int cityStroke = 4;
+	public final static Color cityRed = new Color(220, 35, 25);
+	public final static Color cityBlue = new Color(15, 70, 200);
+	public final static Color cityGreen = new Color(10, 180, 60);
+	public final static Color cityYellow = new Color(245,180,25);
+	public final static Color cityOrange = new Color(245, 85, 25);
+	
 	 
 	final boolean displayCoords = true;
 
