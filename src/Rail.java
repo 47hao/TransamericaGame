@@ -8,6 +8,7 @@ public class Rail {
 	private String state = "";
 	private boolean doubleRail = false;
 	private boolean placedByCPU;
+	private boolean debug = false;
 	
 	final static float THICKNESS = 1.5f;
 	final static String EMPTY = "empty";
@@ -77,5 +78,15 @@ public class Rail {
 
 	public void setHitbox(Polygon hitbox) {
 		this.hitbox = hitbox;
+	}
+	
+	public void setDebug(boolean state)
+	{
+		debug = state;
+	}
+	
+	public boolean debug()
+	{
+		return debug;
 	}
 }
