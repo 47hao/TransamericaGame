@@ -33,8 +33,8 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	
 	
 	final int cityInnerDiam = 12;
-	final int cityStrokeDiam = 26;
-	final int cityStroke = 4;
+	final int cityStrokeDiam = 24;
+	final int cityStroke = 3;
 	public final static Color cityRed = new Color(220, 35, 25);
 	public final static Color cityBlue = new Color(15, 70, 200);
 	public final static Color cityGreen = new Color(10, 180, 60);
@@ -240,7 +240,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		Graphics2D g2d = (Graphics2D) g;
 		for(City c: cityList)
 		{
-			drawCity(g2d, c, false);
+			drawCity(g2d, c, true);
 		}
 	}
 
@@ -248,9 +248,10 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		Point pixelLoc = gridToPixel(c.getPos());
 		g2d.setColor(c.getColor());
 		g2d.setStroke(new BasicStroke(cityStroke));
+		int strokeOffset = cityStrokeDiam - cityStroke;
 		if(active)
-			g2d.drawOval((int)pixelLoc.getX(), (int)pixelLoc.getY(), 
-				cityStrokeDiam - cityStroke, cityStrokeDiam - cityStroke);
+			g2d.drawOval((int)(pixelLoc.getX()-strokeOffset/2), (int)(pixelLoc.getY()-strokeOffset/2), 
+				strokeOffset, strokeOffset);
 		g2d.fillOval((int)(pixelLoc.getX()-cityInnerDiam/2), (int)(pixelLoc.getY()-cityInnerDiam/2),
 						cityInnerDiam, cityInnerDiam);
 	}
