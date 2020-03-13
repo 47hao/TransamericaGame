@@ -27,7 +27,7 @@ public class RailFactory {
 
     final static int[] horizontalLengths = {9, 11, 12, 16, 16, 15, 15, 15, 15, 14, 13, 11, 8, 2, 1};
 
-    final static Position[] leftDiagonalDoubleRails = { new Position(0,0), new Position(8,6)
+    final static Position[] leftDiagonalDoubleRails = {   new Position(1,2), new Position(2, 0), new Position(3, 1), new Position(2,4), new Position(3,4), new Position(3,6), new Position(4, 8), new Position(5, 4), new Position()
     		
     		
     };
@@ -42,7 +42,7 @@ public class RailFactory {
     };
 
     public ArrayList<Rail> genRails() {
-
+    	
 
         ArrayList<Rail> rails = new ArrayList<Rail>();
 
@@ -118,7 +118,7 @@ public class RailFactory {
         }
         return -1;
     }
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 
         // System.out.println(new RailFactory().genRails().size());
 
@@ -227,5 +227,5 @@ public class RailFactory {
     //         }
     //         // System.out.println();
     //     }
-    // }
+    // }*/
 }
