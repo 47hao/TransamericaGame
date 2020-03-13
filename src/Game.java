@@ -69,17 +69,19 @@ public class Game {
 						placeMarkers(p);
 					else {
 						for (int i = 0; i < 2; i++) {
-							findValidRails(p);
-							int railIndex = -1;
-							do {
-								railIndex = p.getRail(validRails);
-							} while (railIndex == -1);
-							if (p instanceof HumanPlayer) {
-								validRails[railIndex].setState(Rail.NEW);
-							}
-							else {
-								validRails[railIndex].setState(Rail.BLINKING);
-							}
+							//FIXME: aaaaaa
+							
+							// findValidRails(p);
+							// int railIndex = -1;
+							// do {
+							// 	railIndex = p.getRail(validRails);
+							// } while (railIndex == -1);
+							// if (p instanceof HumanPlayer) {
+							// 	validRails[railIndex].setState(Rail.NEW);
+							// }
+							// else {
+							// 	validRails[railIndex].setState(Rail.BLINKING);
+							// }
 						}
 					}
 				}
@@ -89,8 +91,8 @@ public class Game {
 				for (Player p : players) {
 					roundOver = true;
 					for (City c : p.getTargetCities()) {
-						if (p.getDistanceToCity(c) == 0)
-							roundOver = false;
+						// if (p.getDistanceToCity(c) == 0)
+						// 	roundOver = false;
 					}
 				}
 			}

@@ -5,11 +5,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.awt.event.*;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -125,6 +122,7 @@ public class InitialScreen {
 			nameTextFields[i] = new JTextField("Player " + (i + 1), 7);
 			// set invisible by default because human not selected
 			nameTextFields[i].setVisible(false);
+			nameTextFields[i].addKeyListener(new NameKeyListener());
 		}
 
 		// create constraint object to be edited:
@@ -313,9 +311,9 @@ public class InitialScreen {
 						computersOnly = false;
 					}
 				}
-				
+
 				ArrayList<Player> playerList = new ArrayList<Player>();
-				City[] cities = {new City(new Position(0, 0), "Test city", Color.GREEN)};
+				City[] cities = { new City(new Position(0, 0), "Test city", Color.GREEN) };
 
 				for (String s : players) {
 					playerList.add(new HumanPlayer(s, cities, Color.RED));
@@ -332,7 +330,7 @@ public class InitialScreen {
 				frame.setVisible(false);
 				frame.dispose();
 				new Game(playerList.toArray(new Player[playerList.size()]));
-				
+
 			}
 		}
 	}
@@ -399,6 +397,33 @@ public class InitialScreen {
 			}
 
 		}
+	}
+
+	class NameKeyListener implements KeyListener {
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			int index = -1;
+			for (int i = 0; i < nameTextFields.length; i++) {
+				if (e.getSource() == nameTextFields[i]) {
+					index = i + 1;
+				}
+			}
+			if (((JTextField) e.getSource()).getText().equals("Player " + index)) {
+				((JTextField) e.getSource()).setText("");
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+
+		}
+
+		@Override
+		public void keyTyped(KeyEvent arg0) {
+			keyPressed(arg0);
+		}
+
 	}
 
 	public static void main(String[] args) {

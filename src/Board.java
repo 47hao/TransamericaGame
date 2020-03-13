@@ -14,6 +14,8 @@ public class Board {
 	private ArrayList<Player> playerArray = new ArrayList<Player>(0);
 
 	public Board() {
+		//XXX: setting default gamestate as "round"
+		gameState = "round";
 		// Orange: Boston, New York, Washington, Richmond, Winston, Charleston,
 		// Jacksonville
 		// Blue: Buffalo, Chicago, Cincinnati, Minneapolis, Helena, Duluth, Bismark
@@ -22,14 +24,14 @@ public class Board {
 		// Red: Phoenix, El Paso, Dallas, Houston, Memphis, Atlanta, New Orleans
 		// Green: Seattle, Portland, Sacremento, San Francisco, Los Angeles, San Diego,
 		// Medford
-
-		cities[0] = new City(new Position(17, 2), "Boston", Color.ORANGE);
-		cities[1] = new City(new Position(17, 4), "New York", Color.ORANGE);
-		cities[2] = new City(new Position(17, 5), "Washington", Color.ORANGE);
-		cities[3] = new City(new Position(18, 7), "Richmond", Color.ORANGE);
-		cities[4] = new City(new Position(17, 9), "Winston", Color.ORANGE);
-		cities[5] = new City(new Position(20, 10), "Charleston", Color.ORANGE);
-		cities[6] = new City(new Position(20, 12), "Jacksonville", Color.ORANGE);
+		Color c= new Color(252,102,3);
+		cities[0] = new City(new Position(17, 2), "Boston", c);
+		cities[1] = new City(new Position(17, 4), "New York", c);
+		cities[2] = new City(new Position(17, 5), "Washington", c);
+		cities[3] = new City(new Position(18, 7), "Richmond", c);
+		cities[4] = new City(new Position(17, 8), "Winston", c);
+		cities[5] = new City(new Position(19, 10), "Charleston", c);
+		cities[6] = new City(new Position(19, 12), "Jacksonville", c);
 
 		cities[7] = new City(new Position(15, 2), "Buffalo", Color.BLUE);
 		cities[8] = new City(new Position(13, 3), "Chicago", Color.BLUE);
@@ -47,13 +49,13 @@ public class Board {
 		cities[19] = new City(new Position(4, 4), "Salt Lake City", Color.YELLOW);
 		cities[20] = new City(new Position(7, 5), "Denver", Color.YELLOW);
 
-		cities[21] = new City(new Position(8, 9), "Phoenix", Color.RED);
-		cities[22] = new City(new Position(11, 11), "El Paso", Color.RED);
-		cities[23] = new City(new Position(14, 10), "Dallas", Color.RED);
-		cities[24] = new City(new Position(15, 12), "Houston", Color.RED);
-		cities[25] = new City(new Position(16, 9), "Memphis", Color.RED);
-		cities[26] = new City(new Position(18, 10), "Atlanta", Color.RED);
-		cities[27] = new City(new Position(17, 12), "New Orleans", Color.RED);
+		cities[21] = new City(new Position(7, 9), "Phoenix", Color.RED);
+		cities[22] = new City(new Position(10, 11), "El Paso", Color.RED);
+		cities[23] = new City(new Position(13, 10), "Dallas", Color.RED);
+		cities[24] = new City(new Position(14, 12), "Houston", Color.RED);
+		cities[25] = new City(new Position(15, 9), "Memphis", Color.RED);
+		cities[26] = new City(new Position(17, 10), "Atlanta", Color.RED);
+		cities[27] = new City(new Position(16, 12), "New Orleans", Color.RED);
 
 		cities[28] = new City(new Position(0, 0), "Seattle", Color.GREEN);
 		cities[29] = new City(new Position(0, 1), "Portland", Color.GREEN);
@@ -64,36 +66,34 @@ public class Board {
 		cities[34] = new City(new Position(1, 3), "Medford", Color.GREEN);
 
 		rails = new RailFactory().genRails();
-		for (Rail r : rails) {
-			r.setState(Rail.EMPTY);
-		}
+		
 	}
 
 	public void addPlayer(Player p) {
 		playerArray.add(p);
 	}
-		public ArrayList quickestPath(Position initialNode, Position endNode) {
-		int leftLimit, rightLimit, topLimit, botLimit;
-		ArrayList<Rail> shortestPath= new ArrayList<Rail>(0);
+	// 	public ArrayList quickestPath(Position initialNode, Position endNode) {
+	// 	int leftLimit, rightLimit, topLimit, botLimit;
+	// 	ArrayList<Rail> shortestPath= new ArrayList<Rail>(0);
 		
-		if(initialNode.getX()<endNode.getX()) {
-			//The plus two is just in case there are quicker routes that are beyond the original borders
-			leftLimit=initialNode.getX()+2;
-			rightLimit=endNode.getX()+2;
-		}else {
-				leftLimit=endNode.getX()+2;	
-				rightLimit=initialNode.getX()+2;
-		}
+	// 	if(initialNode.getX()<endNode.getX()) {
+	// 		//The plus two is just in case there are quicker routes that are beyond the original borders
+	// 		leftLimit=initialNode.getX()+2;
+	// 		rightLimit=endNode.getX()+2;
+	// 	}else {
+	// 			leftLimit=endNode.getX()+2;	
+	// 			rightLimit=initialNode.getX()+2;
+	// 	}
 		
-		if(initialNode.getY()<endNode.getY()+2) {
-			topLimit=initialNode.getY()+2;
-			botLimit=endNode.getY()+2;
-		}else {
-			topLimit=endNode.getY()+2;
-			botLimit=initialNode.getY()+2;
-		}
+	// 	if(initialNode.getY()<endNode.getY()+2) {
+	// 		topLimit=initialNode.getY()+2;
+	// 		botLimit=endNode.getY()+2;
+	// 	}else {
+	// 		topLimit=endNode.getY()+2;
+	// 		botLimit=initialNode.getY()+2;
+	// 	}
 		
-	}
+	// }
 
 	public Rail getRail(Position start, Position end) {
 		for (int i = 0; i < rails.size(); i++) {

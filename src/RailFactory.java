@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class RailFactory {
 
-    final static int offset = 1;
+    final static int offset = 2;
 
     final static int[] lDiagLengths = {2, 4, 6, 7, 8, 9, 10, 10, 11, 11, 10, 11, 10, 9, 9, 11, 11, 10, 5, 4};
     final static Position[] leftDiagonalPositions = {new Position(0, 0), new Position(1, 0), new Position(2, 0),
@@ -42,7 +42,7 @@ public class RailFactory {
     };
 
     public ArrayList<Rail> genRails() {
-    	
+        System.out.println("debugging, rail at 4, 2 set to placed");
 
         ArrayList<Rail> rails = new ArrayList<Rail>();
 
@@ -61,7 +61,8 @@ public class RailFactory {
                     (int) GamePanel.gridToPixel(r.endPos()).getY(), (int) GamePanel.gridToPixel(r.endPos()).getY()}, 4));
                 for(Position p : leftDiagonalDoubleRails)
                 	if(startPos.equals(p))
-                		r.setDouble();
+                        r.setDouble();
+                
                 rails.add(r);
             }
         }
@@ -105,6 +106,23 @@ public class RailFactory {
 
         // int horizontal = rails.size() - rightD - leftD;
         // System.out.println("horizontal count: " + horizontal);
+        
+        // for (Rail rail : rails) {
+        //     if (rail.getState().equals(Rail.PLACED)) {
+        //         for (int i = 0; i < 10; i++) {
+        //             System.out.println("PLACED RAIL");
+        //         }
+        //     }
+        // }
+        for (Rail rail : rails) {
+            rail.setState(Rail.EMPTY);
+        }
+        for (Rail rail : rails) {
+            if (rail.startPos().equals(new Position(4, 0)) && rail.endPos().equals(new Position(4, 1))) {
+                rail.setState(Rail.PLACED);
+                System.out.println("placed rail");
+            }
+        }
 
         return rails;
     }
