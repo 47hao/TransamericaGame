@@ -24,46 +24,45 @@ public class Board {
 		// Red: Phoenix, El Paso, Dallas, Houston, Memphis, Atlanta, New Orleans
 		// Green: Seattle, Portland, Sacremento, San Francisco, Los Angeles, San Diego,
 		// Medford
-		Color c= new Color(252,102,3);
-		cities[0] = new City(new Position(17, 2), "Boston", c);
-		cities[1] = new City(new Position(17, 4), "New York", c);
-		cities[2] = new City(new Position(17, 5), "Washington", c);
-		cities[3] = new City(new Position(18, 7), "Richmond", c);
-		cities[4] = new City(new Position(17, 8), "Winston", c);
-		cities[5] = new City(new Position(19, 10), "Charleston", c);
-		cities[6] = new City(new Position(19, 12), "Jacksonville", c);
+		cities[0] = new City(new Position(17, 2), "Boston", 		GamePanel.cityOrange);
+		cities[1] = new City(new Position(17, 4), "New York", 		GamePanel.cityOrange);
+		cities[2] = new City(new Position(17, 5), "Washington", 	GamePanel.cityOrange);
+		cities[3] = new City(new Position(18, 7), "Richmond", 		GamePanel.cityOrange);
+		cities[4] = new City(new Position(17, 8), "Winston", 		GamePanel.cityOrange);	
+		cities[5] = new City(new Position(19, 10), "Charleston", 	GamePanel.cityOrange);
+		cities[6] = new City(new Position(19, 12), "Jacksonville", 	GamePanel.cityOrange);
 
-		cities[7] = new City(new Position(15, 2), "Buffalo", Color.BLUE);
-		cities[8] = new City(new Position(13, 3), "Chicago", Color.BLUE);
-		cities[9] = new City(new Position(0, 0), "Cincinnati", Color.BLUE);
-		cities[10] = new City(new Position(10, 2), "Minneapolis", Color.BLUE);
-		cities[11] = new City(new Position(3, 1), "Helena", Color.BLUE);
-		cities[12] = new City(new Position(10, 1), "Duluth", Color.BLUE);
-		cities[13] = new City(new Position(7, 1), "Bismark", Color.BLUE);
+		cities[7] = new City(new Position(15, 2), "Buffalo", 		GamePanel.cityBlue);
+		cities[8] = new City(new Position(13, 3), "Chicago", 		GamePanel.cityBlue);
+		cities[9] = new City(new Position(0, 0), "Cincinnati",  	GamePanel.cityBlue);
+		cities[10] = new City(new Position(10, 2), "Minneapolis",	GamePanel.cityBlue);
+		cities[11] = new City(new Position(3, 1), "Helena", 		GamePanel.cityBlue);
+		cities[12] = new City(new Position(10, 1), "Duluth", 		GamePanel.cityBlue);
+		cities[13] = new City(new Position(7, 1), "Bismark", 		GamePanel.cityBlue);
 
-		cities[14] = new City(new Position(9, 4), "Omaha", Color.YELLOW);
-		cities[15] = new City(new Position(13, 6), "St. Louis", Color.YELLOW);
-		cities[16] = new City(new Position(11, 6), "Kansas City", Color.YELLOW);
-		cities[17] = new City(new Position(11, 8), "Oklahoma City", Color.YELLOW);
-		cities[18] = new City(new Position(8, 8), "Sante Fe", Color.YELLOW);
-		cities[19] = new City(new Position(4, 4), "Salt Lake City", Color.YELLOW);
-		cities[20] = new City(new Position(7, 5), "Denver", Color.YELLOW);
+		cities[14] = new City(new Position(9, 4), "Omaha", 		GamePanel.cityYellow);
+		cities[15] = new City(new Position(13, 6), "St. Louis", 	GamePanel.cityYellow);
+		cities[16] = new City(new Position(11, 6), "Kansas City", 	GamePanel.cityYellow);
+		cities[17] = new City(new Position(11, 8), "Oklahoma City", 	GamePanel.cityYellow);
+		cities[18] = new City(new Position(8, 8), "Sante Fe", 		GamePanel.cityYellow);
+		cities[19] = new City(new Position(4, 4), "Salt Lake City", 	GamePanel.cityYellow);
+		cities[20] = new City(new Position(7, 5), "Denver", 		GamePanel.cityYellow);
 
-		cities[21] = new City(new Position(7, 9), "Phoenix", Color.RED);
-		cities[22] = new City(new Position(10, 11), "El Paso", Color.RED);
-		cities[23] = new City(new Position(13, 10), "Dallas", Color.RED);
-		cities[24] = new City(new Position(14, 12), "Houston", Color.RED);
-		cities[25] = new City(new Position(15, 9), "Memphis", Color.RED);
-		cities[26] = new City(new Position(17, 10), "Atlanta", Color.RED);
-		cities[27] = new City(new Position(16, 12), "New Orleans", Color.RED);
+		cities[21] = new City(new Position(7, 9), "Phoenix", 		GamePanel.cityRed);
+		cities[22] = new City(new Position(10, 11), "El Paso", 		GamePanel.cityRed);
+		cities[23] = new City(new Position(13, 10), "Dallas", 		GamePanel.cityRed);
+		cities[24] = new City(new Position(14, 12), "Houston", 		GamePanel.cityRed);
+		cities[25] = new City(new Position(15, 9), "Memphis", 		GamePanel.cityRed);
+		cities[26] = new City(new Position(17, 10), "Atlanta", 		GamePanel.cityRed);
+		cities[27] = new City(new Position(16, 12), "New Orleans", 	GamePanel.cityRed);
 
-		cities[28] = new City(new Position(0, 0), "Seattle", Color.GREEN);
-		cities[29] = new City(new Position(0, 1), "Portland", Color.GREEN);
-		cities[30] = new City(new Position(2, 5), "Sacremento", Color.GREEN);
-		cities[31] = new City(new Position(2, 6), "San Francisco", Color.GREEN);
-		cities[32] = new City(new Position(5, 9), "Los Angeles", Color.GREEN);
-		cities[33] = new City(new Position(6, 10), "San Diego", Color.GREEN);
-		cities[34] = new City(new Position(1, 3), "Medford", Color.GREEN);
+		cities[28] = new City(new Position(0, 0), "Seattle", 		GamePanel.cityGreen);
+		cities[29] = new City(new Position(0, 1), "Portland", 		GamePanel.cityGreen);
+		cities[30] = new City(new Position(2, 5), "Sacremento", 	GamePanel.cityGreen);
+		cities[31] = new City(new Position(2, 6), "San Francisco", 	GamePanel.cityGreen);
+		cities[32] = new City(new Position(5, 9), "Los Angeles", 	GamePanel.cityGreen);
+		cities[33] = new City(new Position(6, 10), "San Diego",		GamePanel.cityGreen);
+		cities[34] = new City(new Position(1, 3), "Medford", 		GamePanel.cityGreen);
 
 		rails = new RailFactory().genRails();
 		
