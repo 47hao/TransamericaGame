@@ -27,7 +27,7 @@ public class RailFactory {
 
     final static int[] horizontalLengths = {9, 11, 12, 16, 16, 15, 15, 15, 15, 14, 13, 11, 8, 2, 1};
 
-    final static Position[] leftDiagonalDoubleRails = {   new Position(1,2), new Position(2, 0), new Position(3, 1), new Position(2,4), new Position(3,4), new Position(3,6), new Position(4, 8), new Position(5, 4), new Position()
+    final static Position[] leftDiagonalDoubleRails = {   new Position(1,2), new Position(2, 0), new Position(3, 1), new Position(2,4), new Position(3,4), new Position(3,6), new Position(4, 8), new Position(5, 4)
     		
     		
     };
@@ -42,7 +42,7 @@ public class RailFactory {
     };
 
     public ArrayList<Rail> genRails() {
-        System.out.println("debugging, rail at 4, 2 set to placed");
+        // System.out.println("debugging, rail at 4, 2 set to placed");
 
         ArrayList<Rail> rails = new ArrayList<Rail>();
 
@@ -117,12 +117,13 @@ public class RailFactory {
         for (Rail rail : rails) {
             rail.setState(Rail.EMPTY);
         }
-        for (Rail rail : rails) {
-            if (rail.startPos().equals(new Position(4, 0)) && rail.endPos().equals(new Position(4, 1))) {
-                rail.setState(Rail.PLACED);
-                System.out.println("placed rail");
-            }
-        }
+
+        // for (Rail rail : rails) {
+        //     if (rail.startPos().equals(new Position(4, 0)) && rail.endPos().equals(new Position(4, 1))) {
+        //         rail.setState(Rail.PLACED);
+        //         System.out.println("placed rail");
+        //     }
+        // }
 
         return rails;
     }
