@@ -13,6 +13,7 @@ public class Game {
 	private int turns = 0;
 	// private int railsPlaced = 0;
 	private Player[] players;
+	private Player currentPlayer;
 	private Board board;
 	private Scoreboard scoreboard;
 	private JFrame frame;
@@ -52,66 +53,96 @@ public class Game {
 		play(true);
 	}
 
-	void placeMarkers(Player p) {
-		Position pos = new Position(0, 0);
-		// Find position of mouse click
-		//p.setMarkerPos(pos);
+	public Player getcurrentPlayer() {
+		return currentPlayer;
 	}
+
+	// void placeMarkers(Player p) {
+	// Position pos = new Position(0, 0);
+	// // Find position of mouse click
+	// //p.setMarkerPos(pos);
+	// }
 
 	Player[] play(boolean cpu) {
-		
-		while (!gameOver) {
-			while (!roundOver) {
-				for (Player p : players) {
-					panel.repaint();
 
-					if (turns == 0)
-						placeMarkers(p);
-					else {
-						for (int i = 0; i < 2; i++) {
-							//FIXME: aaaaaa
-							
-							// findValidRails(p);
-							// int railIndex = -1;
-							// do {
-							// 	railIndex = p.getRail(validRails);
-							// } while (railIndex == -1);
-							// if (p instanceof HumanPlayer) {
-							// 	validRails[railIndex].setState(Rail.NEW);
-							// }
-							// else {
-							// 	validRails[railIndex].setState(Rail.BLINKING);
-							// }
-						}
-					}
-				}
+		// first, place the markers for each player
 
-				turns++;
-
-				for (Player p : players) {
-					roundOver = true;
-					for (City c : p.getTargetCities()) {
-						// if (p.getDistanceToCity(c) == 0)
-						// 	roundOver = false;
-					}
-				}
+		// synchronized (this) {
+		for (Player p : players) {
+			currentPlayer = p;
+			while (currentPlayer.getMarkerPos() == null) {
+				System.out.println("hey");
 			}
-
-			// end of round
-			turns = 0;
-
-			for (Player p : players) {
-				if (p.getScore() <= 0)
-					gameOver = true;
-			}
-			roundOver = false;
+			// try {
+			// // wait();
+			// } catch (InterruptedException e) {
+			// e.printStackTrace();
+			// }
 		}
+		// }
 
-		// game over
-
-		return players;
-
+		// while (currentPlayer.getMarkerPos() == null) {
+		// System.out.println("in loop");
+		// try {
+		// Thread.sleep(100);
+		// } catch (InterruptedException e) {
+		// e.printStackTrace();
+		// }
+		// panel.repaint();
+		// }
+		System.out.println("markers done.");
+		// all markers have been placed at this point
+		return null;
 	}
+
+	// while (!gameOver) {
+	// while (!roundOver) {
+	// for (Player p : players) {
+	// panel.repaint();
+	// for (int i = 0; i < 2; i++) {
+	// // FIXME: aaaaaa
+
+	// // findValidRails(p);
+	// // int railIndex = -1;
+	// // do {
+	// // railIndex = p.getRail(validRails);
+	// // } while (railIndex == -1);
+	// // if (p instanceof HumanPlayer) {
+	// // validRails[railIndex].setState(Rail.NEW);
+	// // }
+	// // else {
+	// // validRails[railIndex].setState(Rail.BLINKING);
+	// // }
+	// }
+	// }
+	// }
+
+	// turns++;
+
+	// for (Player p : players) {
+	// roundOver = true;
+	// for (City c : p.getTargetCities()) {
+	// // if (p.getDistanceToCity(c) == 0)
+	// // roundOver = false;
+	// }
+	// }
+	// }
+
+	// // end of round
+	// turns = 0;
+
+	// for (Player p : players) {
+	// if (p.getScore() <= 0)
+	// gameOver = true;
+	// }
+	// roundOver = false;
+	// }
+
+	// // game over
+
+	// return players;
+
+	// }
 
 	Board getBoard() {
 		return board;

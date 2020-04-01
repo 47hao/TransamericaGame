@@ -21,11 +21,11 @@ public abstract class Player {
 
 	abstract String getName();
 
-	void setMarkerPos(Position pos) {
+	public void setMarkerPos(Position pos) {
 		markerPos = pos;
 	}
 
-	Position getMarkerPos() {
+	public Position getMarkerPos() {
 		return markerPos;
 	}
 
@@ -37,12 +37,16 @@ public abstract class Player {
 
 	abstract void addScore(int amount);
 
-	int getScore() {
+	public int getScore() {
 		return score;
 	}
 
-	ArrayList<City> getTargetCities() {
+	public ArrayList<City> getTargetCities() {
 		return targetCities;
+	}
+
+	public Color getColor() {
+		return color;
 	}
 
 }

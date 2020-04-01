@@ -6,13 +6,14 @@ import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
 import javax.swing.*;
 
-public class EndGame extends JPanel{
+public class EndGame extends JPanel {
 	JFrame frame;
 	JPanel panel;
 	JLabel title;
 	JLabel ranking;
 	private Scoreboard scoreboard;
-	EndGame(){
+
+	EndGame() {
 		frame = new JFrame("Game Over");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		panel = new JPanel(new GridBagLayout());
@@ -28,20 +29,16 @@ public class EndGame extends JPanel{
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		
+
 	}
 
 	public void paintComponent(Graphics g) {
-		int temp=scoreboard.getWinnerOrder().size();
-		int yCoord =350; 
-		for (int i=0; i<temp; i++) {
-			g.drawString(scoreboard.getWinnerOrder().get(i), 300, yCoord+30);
-		}
-		
+		// int temp=scoreboard.getWinnerOrder().size();
+		int yCoord = 350;
+		// for (int i=0; i<temp; i++) {
+		// g.drawString(scoreboard.getWinnerOrder().get(i), 300, yCoord+30);
 	}
-	
-	public static void main(String args[]) {
-		
-	}
+
+	// }
 
 }

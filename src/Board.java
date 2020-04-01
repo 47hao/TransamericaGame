@@ -2,20 +2,29 @@
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Queue;
+import java.awt.geom.*;
 
 public class Board {
+	final static String GS_MARKER = "marker";
+	final static String GS_ROUND = "round";
+	final static String GS_ROUND_END = "roundEnd";
+	final static String GS_GAME_END = "gameEnd";
+
 	private String gameState;
 	private Queue<Rail> newRails;
 	private Player activePlayer;
-	private final Position[] positions = new Position[188];
+	// private final Position[] positions = new Position[188];
+
 	private final City[] cities = new City[35];
 	private ArrayList<Rail> rails = new ArrayList<Rail>();
+	private ArrayList<Position> positions;
+	private ArrayList<Ellipse2D> positionHitboxes;
 	private ArrayList<Position> possiblePlacements = new ArrayList<Position>(0);
 	private ArrayList<Player> playerArray = new ArrayList<Player>(0);
 
 	public Board() {
-		//XXX: setting default gamestate as "round"
-		gameState = "round";
+		// XXX: setting default gamestate as "round"
+		gameState = GS_MARKER;
 		// Orange: Boston, New York, Washington, Richmond, Winston, Charleston,
 		// Jacksonville
 		// Blue: Buffalo, Chicago, Cincinnati, Minneapolis, Helena, Duluth, Bismark
@@ -24,74 +33,86 @@ public class Board {
 		// Red: Phoenix, El Paso, Dallas, Houston, Memphis, Atlanta, New Orleans
 		// Green: Seattle, Portland, Sacremento, San Francisco, Los Angeles, San Diego,
 		// Medford
-		cities[0] = new City(new Position(17, 2), "Boston", 		GamePanel.cityOrange);
-		cities[1] = new City(new Position(17, 4), "New York", 		GamePanel.cityOrange);
-		cities[2] = new City(new Position(17, 5), "Washington", 	GamePanel.cityOrange);
-		cities[3] = new City(new Position(18, 7), "Richmond", 		GamePanel.cityOrange);
-		cities[4] = new City(new Position(17, 8), "Winston", 		GamePanel.cityOrange);	
-		cities[5] = new City(new Position(19, 10), "Charleston", 	GamePanel.cityOrange);
-		cities[6] = new City(new Position(19, 12), "Jacksonville", 	GamePanel.cityOrange);
+		cities[0] = new City(new Position(17, 2), "Boston", GamePanel.cityOrange);
+		cities[1] = new City(new Position(17, 4), "New York", GamePanel.cityOrange);
+		cities[2] = new City(new Position(17, 5), "Washington", GamePanel.cityOrange);
+		cities[3] = new City(new Position(18, 7), "Richmond", GamePanel.cityOrange);
+		cities[4] = new City(new Position(17, 8), "Winston", GamePanel.cityOrange);
+		cities[5] = new City(new Position(19, 10), "Charleston", GamePanel.cityOrange);
+		cities[6] = new City(new Position(19, 12), "Jacksonville", GamePanel.cityOrange);
 
-		cities[7] = new City(new Position(15, 2), "Buffalo", 		GamePanel.cityBlue);
-		cities[8] = new City(new Position(13, 3), "Chicago", 		GamePanel.cityBlue);
-		cities[9] = new City(new Position(0, 0), "Cincinnati",  	GamePanel.cityBlue);
-		cities[10] = new City(new Position(10, 2), "Minneapolis",	GamePanel.cityBlue);
-		cities[11] = new City(new Position(3, 1), "Helena", 		GamePanel.cityBlue);
-		cities[12] = new City(new Position(10, 1), "Duluth", 		GamePanel.cityBlue);
-		cities[13] = new City(new Position(7, 1), "Bismark", 		GamePanel.cityBlue);
+		cities[7] = new City(new Position(15, 2), "Buffalo", GamePanel.cityBlue);
+		cities[8] = new City(new Position(13, 3), "Chicago", GamePanel.cityBlue);
+		cities[9] = new City(new Position(0, 0), "Cincinnati", GamePanel.cityBlue);
+		cities[10] = new City(new Position(10, 2), "Minneapolis", GamePanel.cityBlue);
+		cities[11] = new City(new Position(3, 1), "Helena", GamePanel.cityBlue);
+		cities[12] = new City(new Position(10, 1), "Duluth", GamePanel.cityBlue);
+		cities[13] = new City(new Position(7, 1), "Bismark", GamePanel.cityBlue);
 
-		cities[14] = new City(new Position(9, 4), "Omaha", 		GamePanel.cityYellow);
-		cities[15] = new City(new Position(13, 6), "St. Louis", 	GamePanel.cityYellow);
-		cities[16] = new City(new Position(11, 6), "Kansas City", 	GamePanel.cityYellow);
-		cities[17] = new City(new Position(11, 8), "Oklahoma City", 	GamePanel.cityYellow);
-		cities[18] = new City(new Position(8, 8), "Sante Fe", 		GamePanel.cityYellow);
-		cities[19] = new City(new Position(4, 4), "Salt Lake City", 	GamePanel.cityYellow);
-		cities[20] = new City(new Position(7, 5), "Denver", 		GamePanel.cityYellow);
+		cities[14] = new City(new Position(9, 4), "Omaha", GamePanel.cityYellow);
+		cities[15] = new City(new Position(13, 6), "St. Louis", GamePanel.cityYellow);
+		cities[16] = new City(new Position(11, 6), "Kansas City", GamePanel.cityYellow);
+		cities[17] = new City(new Position(11, 8), "Oklahoma City", GamePanel.cityYellow);
+		cities[18] = new City(new Position(8, 8), "Sante Fe", GamePanel.cityYellow);
+		cities[19] = new City(new Position(4, 4), "Salt Lake City", GamePanel.cityYellow);
+		cities[20] = new City(new Position(7, 5), "Denver", GamePanel.cityYellow);
 
-		cities[21] = new City(new Position(7, 9), "Phoenix", 		GamePanel.cityRed);
-		cities[22] = new City(new Position(10, 11), "El Paso", 		GamePanel.cityRed);
-		cities[23] = new City(new Position(13, 10), "Dallas", 		GamePanel.cityRed);
-		cities[24] = new City(new Position(14, 12), "Houston", 		GamePanel.cityRed);
-		cities[25] = new City(new Position(15, 9), "Memphis", 		GamePanel.cityRed);
-		cities[26] = new City(new Position(17, 10), "Atlanta", 		GamePanel.cityRed);
-		cities[27] = new City(new Position(16, 12), "New Orleans", 	GamePanel.cityRed);
+		cities[21] = new City(new Position(7, 9), "Phoenix", GamePanel.cityRed);
+		cities[22] = new City(new Position(10, 11), "El Paso", GamePanel.cityRed);
+		cities[23] = new City(new Position(13, 10), "Dallas", GamePanel.cityRed);
+		cities[24] = new City(new Position(14, 12), "Houston", GamePanel.cityRed);
+		cities[25] = new City(new Position(15, 9), "Memphis", GamePanel.cityRed);
+		cities[26] = new City(new Position(17, 10), "Atlanta", GamePanel.cityRed);
+		cities[27] = new City(new Position(16, 12), "New Orleans", GamePanel.cityRed);
 
-		cities[28] = new City(new Position(0, 0), "Seattle", 		GamePanel.cityGreen);
-		cities[29] = new City(new Position(0, 1), "Portland", 		GamePanel.cityGreen);
-		cities[30] = new City(new Position(2, 5), "Sacremento", 	GamePanel.cityGreen);
-		cities[31] = new City(new Position(2, 6), "San Francisco", 	GamePanel.cityGreen);
-		cities[32] = new City(new Position(5, 9), "Los Angeles", 	GamePanel.cityGreen);
-		cities[33] = new City(new Position(6, 10), "San Diego",		GamePanel.cityGreen);
-		cities[34] = new City(new Position(1, 3), "Medford", 		GamePanel.cityGreen);
+		cities[28] = new City(new Position(0, 0), "Seattle", GamePanel.cityGreen);
+		cities[29] = new City(new Position(0, 1), "Portland", GamePanel.cityGreen);
+		cities[30] = new City(new Position(2, 5), "Sacremento", GamePanel.cityGreen);
+		cities[31] = new City(new Position(2, 6), "San Francisco", GamePanel.cityGreen);
+		cities[32] = new City(new Position(5, 9), "Los Angeles", GamePanel.cityGreen);
+		cities[33] = new City(new Position(6, 10), "San Diego", GamePanel.cityGreen);
+		cities[34] = new City(new Position(1, 3), "Medford", GamePanel.cityGreen);
 
-		rails = new RailFactory().genRails();
-		
+		RailFactory rf = new RailFactory();
+		rails = rf.genRails();
+		positions = rf.getPositions();
+		positionHitboxes = rf.getPositionHitboxes();
+
+	}
+
+	public ArrayList<Ellipse2D> getPositionHitboxes() {
+		return positionHitboxes;
+	}
+
+	public ArrayList<Position> getPositions() {
+		return positions;
 	}
 
 	public void addPlayer(Player p) {
 		playerArray.add(p);
 	}
-	// 	public ArrayList quickestPath(Position initialNode, Position endNode) {
-	// 	int leftLimit, rightLimit, topLimit, botLimit;
-	// 	ArrayList<Rail> shortestPath= new ArrayList<Rail>(0);
-		
-	// 	if(initialNode.getX()<endNode.getX()) {
-	// 		//The plus two is just in case there are quicker routes that are beyond the original borders
-	// 		leftLimit=initialNode.getX()+2;
-	// 		rightLimit=endNode.getX()+2;
-	// 	}else {
-	// 			leftLimit=endNode.getX()+2;	
-	// 			rightLimit=initialNode.getX()+2;
-	// 	}
-		
-	// 	if(initialNode.getY()<endNode.getY()+2) {
-	// 		topLimit=initialNode.getY()+2;
-	// 		botLimit=endNode.getY()+2;
-	// 	}else {
-	// 		topLimit=endNode.getY()+2;
-	// 		botLimit=initialNode.getY()+2;
-	// 	}
-		
+	// public ArrayList quickestPath(Position initialNode, Position endNode) {
+	// int leftLimit, rightLimit, topLimit, botLimit;
+	// ArrayList<Rail> shortestPath= new ArrayList<Rail>(0);
+
+	// if(initialNode.getX()<endNode.getX()) {
+	// //The plus two is just in case there are quicker routes that are beyond the
+	// original borders
+	// leftLimit=initialNode.getX()+2;
+	// rightLimit=endNode.getX()+2;
+	// }else {
+	// leftLimit=endNode.getX()+2;
+	// rightLimit=initialNode.getX()+2;
+	// }
+
+	// if(initialNode.getY()<endNode.getY()+2) {
+	// topLimit=initialNode.getY()+2;
+	// botLimit=endNode.getY()+2;
+	// }else {
+	// topLimit=endNode.getY()+2;
+	// botLimit=initialNode.getY()+2;
+	// }
+
 	// }
 
 	public Rail getRail(Position start, Position end) {
@@ -117,7 +138,7 @@ public class Board {
 		}
 		return returnRails;
 	}
-	
+
 	public ArrayList<Rail> computeConnectedRails(Player p) {
 		ArrayList<Rail> returnVal = new ArrayList<Rail>();
 		ArrayList<Position> current = new ArrayList<Position>();
@@ -153,65 +174,72 @@ public class Board {
 	int getDistancetoCity(Player p, City c) {
 		return quickestPath(p.getMarkerPos(), c.getPos()).size();
 	}
-		
-	public ArrayList<Rail> quickestPath(Position a, Position b) {
-		ArrayList<Rail> possiblePaths= new ArrayList<Rail>(0);
 
-		int leftBound, rightBound, topBound, botBound;
-		if(a.getX()<b.getX()) {
-			leftBound=a.getX()-2;
-			rightBound=b.getX()+2;
-		}else {
-			if(a.getX()>b.getX()) {
-				leftBound=b.getX()-2;
-				rightBound=a.getX()+2;
-			}else {
-				leftBound=b.getX()-2;
-				rightBound=a.getX()+2;
-			}
-		}
-		
-		if(a.getY()<b.getY()) {
-			topBound=a.getY()-2;
-			botBound=b.getY()+2;
-		}else {
-			if(a.getY()>b.getY()) {
-				topBound=b.getY()-2;
-				botBound=a.getY()+2;
-			}else {
-				topBound=b.getY()-2;
-				botBound=a.getY()+2;
-			}
-		}
-		int[] boundaries= {leftBound,rightBound,topBound, botBound};
-		possiblePaths.add();
-		
-	}
+	// public ArrayList<Rail> quickestPath(Position a, Position b) {
+	// ArrayList<Rail> possiblePaths = new ArrayList<Rail>(0);
+
+	// int leftBound, rightBound, topBound, botBound;
+	// if (a.getX() < b.getX()) {
+	// leftBound = a.getX() - 2;
+	// rightBound = b.getX() + 2;
+	// } else {
+	// if (a.getX() > b.getX()) {
+	// leftBound = b.getX() - 2;
+	// rightBound = a.getX() + 2;
+	// } else {
+	// leftBound = b.getX() - 2;
+	// rightBound = a.getX() + 2;
+	// }
+	// }
+
+	// if (a.getY() < b.getY()) {
+	// topBound = a.getY() - 2;
+	// botBound = b.getY() + 2;
+	// } else {
+	// if (a.getY() > b.getY()) {
+	// topBound = b.getY() - 2;
+	// botBound = a.getY() + 2;
+	// } else {
+	// topBound = b.getY() - 2;
+	// botBound = a.getY() + 2;
+	// }
+	// }
+	// int[] boundaries = { leftBound, rightBound, topBound, botBound };
+	// possiblePaths.add();
+
+	// }
+
 	public ArrayList<Rail> quickestPath(Position a, Position b) {
 		ArrayList<Rail> positionArray = new ArrayList<Rail>(0);
-		Position currentPosition=a;
-		int xDistance=-(a.getX()-b.getX());
-		int yDistance=-(a.getY()-b.getY());
+		Position currentPosition = a;
+		int xDistance = -(a.getX() - b.getX());
+		int yDistance = -(a.getY() - b.getY());
 		while (!equals(a, b)) {
-			if(xDistance>0) {
-				while(!isDoubleRail(currentPosition, new Position(currentPosition.getX()+1,currentPosition.getY()))&&currentPosition.getX()<b.getX()){
-					positionArray.add(new Rail(currentPosition, new Position(currentPosition.getX()+1,currentPosition.getY())));
-					currentPosition= new Position(currentPosition.getX()+1,currentPosition.getY());
+			if (xDistance > 0) {
+				while (!isDoubleRail(currentPosition, new Position(currentPosition.getX() + 1, currentPosition.getY()))
+						&& currentPosition.getX() < b.getX()) {
+					positionArray.add(new Rail(currentPosition,
+							new Position(currentPosition.getX() + 1, currentPosition.getY())));
+					currentPosition = new Position(currentPosition.getX() + 1, currentPosition.getY());
 				}
-			}else {
-				while(!isDoubleRail(currentPosition, new Position(currentPosition.getX()-1,currentPosition.getY()))&&currentPosition.getX()>b.getX()){
-					positionArray.add(new Rail(currentPosition, new Position(currentPosition.getX()-1,currentPosition.getY())));
-					//this rail on rail array
-					currentPosition= new Position(currentPosition.getX()-1,currentPosition.getY());
+			} else {
+				while (!isDoubleRail(currentPosition, new Position(currentPosition.getX() - 1, currentPosition.getY()))
+						&& currentPosition.getX() > b.getX()) {
+					positionArray.add(new Rail(currentPosition,
+							new Position(currentPosition.getX() - 1, currentPosition.getY())));
+					// this rail on rail array
+					currentPosition = new Position(currentPosition.getX() - 1, currentPosition.getY());
 				}
 			}
-			if(yDistance>0) {
-				positionArray.add(new Rail(currentPosition, new Position(currentPosition.getX(),currentPosition.getY()+1)));		
-				currentPosition= new Position(currentPosition.getX()-1,currentPosition.getY());
+			if (yDistance > 0) {
+				positionArray.add(
+						new Rail(currentPosition, new Position(currentPosition.getX(), currentPosition.getY() + 1)));
+				currentPosition = new Position(currentPosition.getX() - 1, currentPosition.getY());
 
-			}else {
-				positionArray.add(new Rail(currentPosition, new Position(currentPosition.getX(),currentPosition.getY()+1)));	
-				currentPosition= new Position(currentPosition.getX()-1,currentPosition.getY());
+			} else {
+				positionArray.add(
+						new Rail(currentPosition, new Position(currentPosition.getX(), currentPosition.getY() + 1)));
+				currentPosition = new Position(currentPosition.getX() - 1, currentPosition.getY());
 
 			}
 		}
