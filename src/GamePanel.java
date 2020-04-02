@@ -3,8 +3,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Ellipse2D;
+import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,9 +18,6 @@ import javax.swing.event.MouseInputListener;
 public class GamePanel extends JPanel implements MouseInputListener {
 
 	Game gameInfo;
-	int xMousePos = 0;
-	int yMousePos = 0;
-	Point mousePos = new Point(xMousePos, yMousePos);
 
 	BufferedImage map;
 
@@ -34,6 +32,16 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	public static final int railLength = 40;
 	final int doubleSpacing = 2;
 	final int shortLength = 6;
+
+	// final int[] starPointsX = { 0, 8, 5, 13, 21, 18, 26, 16, 13, 10, 0 };
+	// final int[] starPointsY = { 10, 15, 25, 19, 25, 15, 10, 10, 0, 10, 10 };
+	// final int[] starPointsX = { 0, 4, 2, 7, 11, 9, 13, 8, 7, 5, 0 };
+	// final int[] starPointsY = { 5, 8, 13, 9, 13, 8, 5, 5, 0, 5, 5 };
+
+	final int[] starPointsX = { 0, 5, 3, 8, 12, 10, 14, 9, 8, 6, 0 };
+	final int[] starPointsY = { 6, 9, 15, 10, 14, 9, 6, 6, 0, 6, 6 };
+	int starRangeX;
+	int starRangeY;
 
 	final int cityInnerDiam = 12;
 	final int cityStrokeDiam = 24;
@@ -50,6 +58,20 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	final static int gridStartY = 52;
 
 	public GamePanel(Game game) {
+
+		int xMax = 0;
+		for (int i = 0; i < starPointsX.length - 1; i++) {
+			xMax = Math.max(xMax, starPointsX[i]);
+		}
+		int yMin = 100; // arbitrary large value
+		int yMax = 0;
+		for (int i = 0; i < starPointsY.length; i++) {
+			yMin = Math.min(yMin, starPointsY[i]);
+			yMax = Math.max(yMax, starPointsY[i]);
+		}
+		starRangeX = xMax;
+		starRangeY = yMax - yMin;
+
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		gameInfo = game;
@@ -78,9 +100,6 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		// drawMarker(g, new Point(getPixelX(p.getMarkerPos().getX()),
 		// getPixelY(p.getMarkerPos().getY())));
 
-		for (Player player : gameInfo.getPlayers()) {
-			drawMarker(g, player);
-		}
 		drawCityList(g, gameInfo.getBoard().getActivePlayer());
 
 		for (Rail r : gameInfo.getBoard().getRails()) {
@@ -98,11 +117,18 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		// e.getHeight());
 		// }
 
+		for (Player player : gameInfo.getPlayers()) {
+			drawMarker(g, player);
+		}
+
 		if (outlinedPoint != null) {
 			g2d.setColor(Color.WHITE);
 			g2d.setStroke(new BasicStroke(1.5f));
 			g2d.draw(outlinedPoint);
 		}
+
+		g2d.setColor(Color.GREEN);
+		g2d.draw(new Polygon(starPointsX, starPointsY, 11));
 	}
 
 	private void drawBoard(Graphics g) {
@@ -287,7 +313,16 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	private void drawMarker(Graphics g, Player player) {
 		g.setColor(player.getColor());
 		if (player.getMarkerPos() != null) {
-			g.drawOval(player.getMarkerPos().getX() - 5, player.getMarkerPos().getY() - 5, 10, 10);
+			Point p = gridToPixel(player.getMarkerPos());
+			// g.drawOval((int) (p.getX() - 5), (int) (p.getY() - 5), 10, 10);
+			int[] markerPointsX = new int[starPointsX.length];
+			int[] markerPointsY = new int[starPointsY.length];
+			for (int i = 0; i < markerPointsX.length; i++) {
+				markerPointsX[i] = (int) p.getX() - (starRangeX / 2) + starPointsX[i];
+				markerPointsY[i] = (int) p.getY() - (starRangeY / 2) + starPointsY[i];
+			}
+
+			g.fillPolygon(markerPointsX, markerPointsY, markerPointsX.length);
 		}
 	}
 
@@ -377,39 +412,36 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	}
 
 	public void mouseClicked(MouseEvent e) {
-		// System.out.println("click");
-		// clickPosition();
-		// System.out.println("a");
-
-		if (gameInfo.getBoard().getGameState().equals(Board.GS_GAME_END)
-				|| gameInfo.getBoard().getGameState().equals(Board.GS_ROUND_END)) {
-			// no user input
-			return;
-		} else if (gameInfo.getBoard().getGameState().equals(Board.GS_MARKER)) {
-			for (Ellipse2D ellipse : gameInfo.getBoard().getPositionHitboxes()) {
-				if (ellipse.contains(e.getPoint())) {
-					gameInfo.getcurrentPlayer().setMarkerPos(gameInfo.getBoard().getPositions()
-							.get(gameInfo.getBoard().getPositionHitboxes().indexOf(ellipse)));
-					// TODO: point array and have same index
-					// set current player's start marker to this location
+		synchronized (gameInfo) {
+			if (gameInfo.getBoard().getGameState().equals(Board.GS_GAME_END)
+					|| gameInfo.getBoard().getGameState().equals(Board.GS_ROUND_END)) {
+				// no user input
+				return;
+			} else if (gameInfo.getBoard().getGameState().equals(Board.GS_MARKER)) {
+				for (Ellipse2D ellipse : gameInfo.getBoard().getPositionHitboxes()) {
+					if (ellipse.contains(e.getPoint())) {
+						gameInfo.getcurrentPlayer().setMarkerPos(gameInfo.getBoard().getPositions()
+								.get(gameInfo.getBoard().getPositionHitboxes().indexOf(ellipse)));
+						gameInfo.notify();
+					}
 				}
-			}
-
-		} else if (gameInfo.getBoard().getGameState().equals(Board.GS_ROUND)) {
-			for (Rail r : gameInfo.getBoard().getRails()) {
-				if (r.getHitbox().contains(e.getPoint())) {
-					// System.out.println("b");
-					clickedRail = r;
-					clickedRail.setState(Rail.PLACED);
-					repaint();
-					return;
+				repaint();
+			} else if (gameInfo.getBoard().getGameState().equals(Board.GS_ROUND)) {
+				for (Rail r : gameInfo.getBoard().getRails()) {
+					if (r.getHitbox().contains(e.getPoint())) {
+						clickedRail = r;
+						clickedRail.setState(Rail.PLACED);
+						gameInfo.getRecentRails().add(r);
+						repaint();
+						return;
+					}
 				}
 			}
 		}
 	}
 
 	public void mouseEntered(MouseEvent e) {
-		// mouseMoved(e);
+
 	}
 
 	public void mouseExited(MouseEvent e) {
@@ -427,6 +459,10 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	@Override
 	public void mouseDragged(MouseEvent e) {
 
+	}
+
+	public void clearOutlinedPoint() {
+		outlinedPoint = null;
 	}
 
 }

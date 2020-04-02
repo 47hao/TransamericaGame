@@ -44,6 +44,12 @@ public class InitialScreen {
 	// create player name input fields
 	final JTextField[] nameTextFields = new JTextField[6];
 
+	// create list to track player colors
+	ArrayList<Color> colorList = new ArrayList<Color>();
+
+	// create color lookup table
+	final Color[] playerColors = { Color.CYAN, Color.YELLOW, Color.RED, Color.GREEN, Color.PINK, Color.ORANGE };
+
 	final static int TOP_PADDING = 10;
 	final static int LEFT_PADDING = 15;
 	final static int BOTTOM_PADDING = 15;
@@ -288,12 +294,14 @@ public class InitialScreen {
 							// if player is human, take their name input
 							if (radioGroups[i][j].getText().equals("Human")) {
 								players.add(nameTextFields[i].getText());
+								colorList.add(playerColors[i]);
 							}
 							// TODO: update naming scheme
 							// if computer player, name them $difficulty CPU $playerPos
 							// ex: expert CPU 2 (in second player position)
 							else if (radioGroups[i][j].getText().equals("Computer")) {
 								players.add(strategyChooserBoxes[i].getSelectedItem().toString() + " CPU " + (i + 1));
+								colorList.add(playerColors[i]);
 							} else {
 								// none is selected, don't add to player list
 							}
@@ -313,10 +321,11 @@ public class InitialScreen {
 				}
 
 				ArrayList<Player> playerList = new ArrayList<Player>();
+				// TODO: generate city lists based on number of players
 				City[] cities = { new City(new Position(0, 0), "Test city", Color.GREEN) };
 
-				for (String s : players) {
-					playerList.add(new HumanPlayer(s, cities, Color.RED));
+				for (int i = 0; i < players.size(); i++) {
+					playerList.add(new HumanPlayer(players.get(i), cities, colorList.get(i)));
 				}
 				if (computersOnly) {
 					System.out.println("Strategy Evaluation mode is on!");

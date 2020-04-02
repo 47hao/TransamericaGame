@@ -22,9 +22,9 @@ public class Board {
 	private ArrayList<Position> possiblePlacements = new ArrayList<Position>(0);
 	private ArrayList<Player> playerArray = new ArrayList<Player>(0);
 
+	private int remainingRails;
+
 	public Board() {
-		// XXX: setting default gamestate as "round"
-		gameState = GS_MARKER;
 		// Orange: Boston, New York, Washington, Richmond, Winston, Charleston,
 		// Jacksonville
 		// Blue: Buffalo, Chicago, Cincinnati, Minneapolis, Helena, Duluth, Bismark
@@ -78,6 +78,15 @@ public class Board {
 		positions = rf.getPositions();
 		positionHitboxes = rf.getPositionHitboxes();
 
+		// newRails = new AbstractQueue<Rail>();
+	}
+
+	public void setRemainingRails(int r) {
+		remainingRails = r;
+	}
+
+	public int getRemainingRails() {
+		return remainingRails;
 	}
 
 	public ArrayList<Ellipse2D> getPositionHitboxes() {
