@@ -256,6 +256,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 				}
 			} else {
 				// XXX: drawing hitbox
+				// g.setColor(Color.GREEN);
 				// g.drawPolygon(rail.getHitbox());
 				g.drawLine((int) p.getX(), (int) p.getY(), (int) p2.getX(), (int) p2.getY());
 			}
@@ -294,34 +295,37 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	}
 
 	private void drawScoreboard(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
+		Graphics2D g2d = (Graphics2D) g;
 		int xPos = 60;
+		int yPos = 7;
 		double cellSize = 56.6666666667;
-		g.setColor(Color.WHITE);
-		g.fillRect(xPos, 20, 60, 30);
-		g.setColor(Color.BLACK);
-		g2.setStroke(new BasicStroke(7));
-		g.drawLine(60, 10, 60, 60);
-		g2.setStroke(new BasicStroke(5));
+
+		g2d.setColor(Color.WHITE);
+		g2d.fillRect(xPos, yPos, 60, 30);
+		g2d.setColor(Color.BLACK);
+		g2d.setStroke(new BasicStroke(7));
+		g2d.drawLine(60, yPos - 5, 60, yPos + 35);
+		g2d.setStroke(new BasicStroke(5));
 
 		for (int i = 1; i < 12; i++) {
 			xPos = 60 + (int) (i * cellSize);
-			g.setColor(Color.WHITE);
-			g.fillRect(xPos, 20, 59, 30);
-			g.setColor(Color.BLACK);
-			g.drawLine(xPos, 20, xPos, 50);
-			g.drawString(i + "", xPos - (int) (cellSize / 2) - (g.getFontMetrics().stringWidth(i + "") / 2), 35);
+			g2d.setColor(Color.WHITE);
+			g2d.fillRect(xPos, yPos, 59, 30);
+			g2d.setColor(Color.BLACK);
+			g2d.drawLine(xPos, yPos, xPos, yPos + 30);
+			g2d.drawString(i + "", xPos - (int) (cellSize / 2) - (g.getFontMetrics().stringWidth(i + "") / 2),
+					yPos + 20);
 		}
-		g2.setStroke(new BasicStroke(5));
-		g.drawLine(60, 20, getWidth() - 60, 20);
-		g.drawLine(60, 50, getWidth() - 60, 50);
+		g2d.setStroke(new BasicStroke(5));
+		g2d.drawLine(60, yPos, getWidth() - 60, yPos);
+		g2d.drawLine(60, yPos + 30, getWidth() - 60, yPos + 30);
 
 		xPos = (int) Math.round(xPos + cellSize) - 1;
-		g.setColor(Color.WHITE);
-		g.fillRect(xPos, 15, 40, 40);
-		g.setColor(Color.BLACK);
-		g.drawRect(xPos, 15, 40, 40);
-		g.drawString(12 + "", xPos - (int) (cellSize / 2) - (g.getFontMetrics().stringWidth(12 + "") / 2), 35);
+		g2d.setColor(Color.WHITE);
+		g2d.fillRect(xPos, yPos - 5, 40, 40);
+		g2d.setColor(Color.BLACK);
+		g2d.drawRect(xPos, yPos - 5, 40, 40);
+		g2d.drawString(12 + "", xPos - (int) (cellSize / 2) - (g.getFontMetrics().stringWidth(12 + "") / 2), yPos + 20);
 	}
 
 	private void drawTrain(Graphics g, Player player) {
@@ -414,6 +418,12 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	}
 
 	public void mouseMoved(MouseEvent e) {
+		// FIXME: there's a bug where rails stay stuck as hovering
+		// try moving the mouse very quickly over the first diagonal right rail
+		// (leftmost, near california)
+		System.out.println("lastHovering: " + lastHovering);
+		System.out.println("(" + e.getPoint().getX() + ", " + e.getPoint().getY() + ")");
+
 		if (gameInfo.getBoard().getGameState().equals(Board.GS_GAME_END)
 				|| gameInfo.getBoard().getGameState().equals(Board.GS_GAME_END)) {
 			// disallow user input to the board on round end/game end
@@ -436,57 +446,20 @@ public class GamePanel extends JPanel implements MouseInputListener {
 						lastHovering.setState(Rail.HOVERING);
 					}
 					repaint();
+					System.out.println("hitbox contained");
 					return;
 				}
 				if (lastHovering != null && !lastHovering.equals(r) && lastHovering.getState().equals(Rail.HOVERING)) {
 					lastHovering.setState(Rail.EMPTY);
+					System.out.println("reset1");
 				}
 			}
 
 			if (lastHovering != null && lastHovering.getState().equals(Rail.HOVERING)) {
 				lastHovering.setState(Rail.EMPTY);
+				System.out.println("reset2");
 			}
 		}
-
-		// System.out.println("moved");
-		// xMousePos = e.getLocationOnScreen().x;
-		// yMousePos = e.getLocationOnScreen().y;
-		// mousePos = new Point(xMousePos, yMousePos);
-
-		// mousePos = e.getPoint();
-		// if (gameInfo.getBoard().getGameState().equals("noInput")) {
-		// return;
-		// }
-
-		// //TODO: make constant for gameStates
-		// else if (gameInfo.getBoard().getGameState().equals("marker")) {
-		// //place markers
-		// }
-		// else {
-		// for (Rail r : gameInfo.getBoard().getRails()) {
-		// if (r.getHitbox().contains(mousePos)) {
-		// // System.out.println("on rail");
-
-		// //if the rail that is being hovered is different, unhighlight
-		// if (lastHovering != null && !lastHovering.equals(r)) {
-		// if (previousState.equals(Rail.HOVERING)) {
-		// lastHovering.setState(Rail.EMPTY);
-		// }
-		// else {
-		// lastHovering.setState(previousState);
-		// }
-		// }
-		// if (!r.getState().equals(Rail.PLACED)) {
-		// r.setState(Rail.HOVERING);
-		// lastHovering = r;
-		// previousState = r.getState();
-		// }
-		// repaint();
-
-		// //stop before setting more than 1 to hovering
-		// return;
-		// }
-		// }
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -506,10 +479,14 @@ public class GamePanel extends JPanel implements MouseInputListener {
 				repaint();
 			} else if (gameInfo.getBoard().getGameState().equals(Board.GS_ROUND)) {
 				for (Rail r : gameInfo.getBoard().getRails()) {
-					if (r.getHitbox().contains(e.getPoint())) {
+					// IFF the rail is in the list of possible rails for the current player and
+					// the rail's state is empty or hovering (not placed) and
+					// the click is within the rail's boundary
+					if (gameInfo.getCurrentPlayer().getPossibleRails().contains(r)
+							&& (r.getState().equals(Rail.EMPTY) || r.getState().equals(Rail.HOVERING))
+							&& r.getHitbox().contains(e.getPoint())) {
 						clickedRail = r;
 						clickedRail.setState(Rail.PLACED);
-						// gameInfo.getRecentRails().add(r);
 						gameInfo.getTurnRails().add(r);
 						gameInfo.notify();
 						repaint();

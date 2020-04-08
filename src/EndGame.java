@@ -18,7 +18,7 @@ public class EndGame {
 	// private Scoreboard scoreboard;
 
 	// XXX: Scoreboard isn't needed because Game class will be able to provide
-	// XXX: the player array directly
+	// XXX: the player array directly (Game class is the highest level)
 	public EndGame(Player[] p) {
 		players = p;
 		// scoreboard = new Scoreboard(p);
@@ -94,12 +94,15 @@ public class EndGame {
 		}
 	}
 
-	public static void main(String[] args) {
+	// public static void main(String[] args) {
 
-		SwingUtilities.invokeLater(() -> {
-			new EndGame(new Player[] { new HumanPlayer("Human", Color.CYAN), new HumanPlayer("Human 2", Color.YELLOW),
-					new HumanPlayer("Human 3", Color.GREEN), new HumanPlayer("Loser", Color.GREEN),
-					new HumanPlayer("Loser", Color.GREEN), new HumanPlayer("Loser", Color.GREEN) });
-		});
-	}
+	// SwingUtilities.invokeLater(() -> {
+	// new EndGame(new Player[] { new HumanPlayer("Human", Color.CYAN), new
+	// HumanPlayer("Human 2", Color.YELLOW),
+	// new HumanPlayer("Human 3", Color.GREEN), new HumanPlayer("Loser",
+	// Color.GREEN),
+	// new HumanPlayer("Loser", Color.GREEN), new HumanPlayer("Loser", Color.GREEN)
+	// });
+	// });
+	// }
 }

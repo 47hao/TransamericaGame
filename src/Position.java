@@ -27,13 +27,8 @@ public class Position {
 		return "(" + x + ", " + y + ")";
 	}
 
-	public boolean equals(Position p) {
-		if (getX() == p.getX() && getY() == p.getY()) {
-			return true;
-		}
-		else {
-			return false;
-		}
+	public boolean equals(Object obj) {
+		Position p = (Position) obj;
+		return (getX() == p.getX() && getY() == p.getY());
 	}
 }
-

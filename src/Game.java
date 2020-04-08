@@ -29,7 +29,12 @@ public class Game {
 	// where recent refers to new rails placed since that player has had a turn
 	LinkedList<ArrayList<Rail>> recentRails;
 
+	// TODO: look at a better way to organize these constructors (don't repeat code)
+
 	public Game(Player[] players) {
+		gameOver = false;
+		roundOver = false;
+
 		recentRails = new LinkedList<ArrayList<Rail>>();
 		turnRails = new ArrayList<Rail>();
 
@@ -53,6 +58,9 @@ public class Game {
 	}
 
 	public Game(Player[] players, boolean fast, int games) {
+		gameOver = false;
+		roundOver = false;
+
 		frame = new JFrame();
 		panel = new GamePanel(this);
 		board = new Board();
@@ -81,7 +89,8 @@ public class Game {
 	// //p.setMarkerPos(pos);
 	// }
 
-	Player[] play(boolean cpu) {
+	// XXX:changed return type to void: Game is root, not returning to anywhere
+	public void play(boolean cpu) {
 
 		synchronized (this) {
 
@@ -91,19 +100,15 @@ public class Game {
 				currentPlayer = p;
 				while (currentPlayer.getMarkerPos() == null) {
 					try {
+						// TODO: code strategy to notify() after marker placed
 						wait();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 				}
-				System.out.println("player: " + p.getName() + " just placed");
 			}
-			System.out.println("outside of loop");
-			// calculateDistances();
-
-			// XXX: temporary debug code
-
-			// XXX
+			// TODO: fix distance calculation
+			calculateDistances();
 
 			panel.clearOutlinedPoint();
 			turns = 0;
@@ -150,15 +155,24 @@ public class Game {
 						}
 					}
 				}
-				System.out.println("round over");
+				// System.out.println("round over");
 				board.setGameState(Board.GS_ROUND_END);
 				// TODO: show round end dialog
-
+				// TODO: increment scoreboard
+				JOptionPane.showMessageDialog(null, "round over");
+				// TODO:
+				// if (scoreboard.isGameOver()) {
+				gameOver = true;
+				// }
+				// else {
+				roundOver = false;
+				// }
 			}
 			board.setGameState(Board.GS_GAME_END);
-			JOptionPane.showMessageDialog(panel, new EndGame(getPlayers()));
+			// Player[] endResults = scoreboard.getEndResults();
+
+			new EndGame(getPlayers());
 		}
-		return null;
 	}
 
 	public void calculateDistances() {

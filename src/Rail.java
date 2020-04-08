@@ -9,7 +9,7 @@ public class Rail {
 	private boolean doubleRail = false;
 	private boolean placedByCPU;
 	private boolean debug = false;
-	
+
 	final static float THICKNESS = 1.5f;
 	final static String EMPTY = "empty";
 	final static String NEW = "new";
@@ -51,6 +51,7 @@ public class Rail {
 	public void setDouble() {
 		doubleRail = true;
 	}
+
 	public boolean isDouble() {
 		return doubleRail;
 	}
@@ -59,13 +60,9 @@ public class Rail {
 		return (startPos() + " --> " + endPos());
 	}
 
-	public boolean equals(Rail r) {
-		if (r.startPos().equals(startPos()) && r.endPos().equals(endPos())) {
-			return true;
-		}
-		else {
-			return false;
-		}
+	public boolean equals(Object obj) {
+		Rail r = (Rail) obj;
+		return r.startPos().equals(startPos()) && r.endPos().equals(endPos());
 	}
 
 	public boolean isPlacedByCPU() {
@@ -79,14 +76,12 @@ public class Rail {
 	public void setHitbox(Polygon hitbox) {
 		this.hitbox = hitbox;
 	}
-	
-	public void setDebug(boolean state)
-	{
+
+	public void setDebug(boolean state) {
 		debug = state;
 	}
-	
-	public boolean debug()
-	{
+
+	public boolean debug() {
 		return debug;
 	}
 }

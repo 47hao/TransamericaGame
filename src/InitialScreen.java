@@ -218,13 +218,19 @@ public class InitialScreen {
 		exitButton.addActionListener(controlListener);
 
 		// set constraints for play/exit buttons:
-		c.gridx = 1;
+		c.gridx = 0;
 		c.gridy = radioGroups.length * 2 + 1; // offset from title label
 		c.insets = new Insets(5, LEFT_PADDING, RIGHT_PADDING, BOTTOM_PADDING);
 
 		// add buttons to panel
+		// make play button 2 xgrid width
+		c.gridwidth = 2;
 		panel.add(playButton, c);
-		c.gridx = 2; // makes exit button next to play button
+		c.gridwidth = 1;
+		c.gridx = 2;
+		// TODO: add instructions page: buttonlistener + JOptionPane.showDialog
+		panel.add(new JButton("Instructions"), c);
+		c.gridx = 3;
 		panel.add(exitButton, c);
 
 		frame.pack();

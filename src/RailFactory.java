@@ -58,28 +58,6 @@ public class RailFactory {
         Position endPos;
         Rail r;
 
-        for (int i = 0; i < leftDiagonalPositions.length; i++) {
-            for (int j = 0; j < lDiagLengths[i]; j++) {
-                startPos = new Position(leftDiagonalPositions[i].getX(), leftDiagonalPositions[i].getY() + j);
-                endPos = new Position(startPos.getX(), startPos.getY() + 1);
-                r = new Rail(startPos, endPos);
-                r.setHitbox(new Polygon(
-                        new int[] { (int) GamePanel.gridToPixel(r.startPos()).getX() - railOffset,
-                                (int) GamePanel.gridToPixel(r.startPos()).getX() + railOffset,
-                                (int) GamePanel.gridToPixel(r.endPos()).getX() + railOffset,
-                                (int) GamePanel.gridToPixel(r.endPos()).getX() - railOffset },
-                        new int[] { (int) GamePanel.gridToPixel(r.startPos()).getY(),
-                                (int) GamePanel.gridToPixel(r.startPos()).getY(),
-                                (int) GamePanel.gridToPixel(r.endPos()).getY(),
-                                (int) GamePanel.gridToPixel(r.endPos()).getY() },
-                        4));
-                for (Position p : leftDiagonalDoubleRails)
-                    if (startPos.equals(p))
-                        r.setDouble();
-
-                rails.add(r);
-            }
-        }
         // int leftD = rails.size();
         // System.out.println("left diagonal count: " + leftD);
 
@@ -101,6 +79,29 @@ public class RailFactory {
                 for (Position p : rightDiagonalDoubleRails)
                     if (startPos.equals(p))
                         r.setDouble();
+                rails.add(r);
+            }
+        }
+
+        for (int i = 0; i < leftDiagonalPositions.length; i++) {
+            for (int j = 0; j < lDiagLengths[i]; j++) {
+                startPos = new Position(leftDiagonalPositions[i].getX(), leftDiagonalPositions[i].getY() + j);
+                endPos = new Position(startPos.getX(), startPos.getY() + 1);
+                r = new Rail(startPos, endPos);
+                r.setHitbox(new Polygon(
+                        new int[] { (int) GamePanel.gridToPixel(r.startPos()).getX() - railOffset,
+                                (int) GamePanel.gridToPixel(r.startPos()).getX() + railOffset,
+                                (int) GamePanel.gridToPixel(r.endPos()).getX() + railOffset,
+                                (int) GamePanel.gridToPixel(r.endPos()).getX() - railOffset },
+                        new int[] { (int) GamePanel.gridToPixel(r.startPos()).getY(),
+                                (int) GamePanel.gridToPixel(r.startPos()).getY(),
+                                (int) GamePanel.gridToPixel(r.endPos()).getY(),
+                                (int) GamePanel.gridToPixel(r.endPos()).getY() },
+                        4));
+                for (Position p : leftDiagonalDoubleRails)
+                    if (startPos.equals(p))
+                        r.setDouble();
+
                 rails.add(r);
             }
         }
@@ -152,6 +153,7 @@ public class RailFactory {
         // }
         // }
 
+        // XXX: can now clean this code up
         for (Rail rail : rails) {
             if (containsRail(rail.startPos(), positions) == -1) {
                 positions.add(rail.startPos());
@@ -180,6 +182,8 @@ public class RailFactory {
 
     // this method is literally copy pasted from the ArrayList implementation
     // except for some reason, it works here but not in the contains() method
+
+    // XXX: I now know why this worked. obsolete
     public static int containsRail(Position p, ArrayList<Position> posList) {
         for (int i = 0; i < posList.size(); i++) {
             if (p.equals(posList.get(i)))

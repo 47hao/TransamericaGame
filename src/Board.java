@@ -269,12 +269,14 @@ public class Board {
 	// }
 
 	public ArrayList<Rail> quickestPath(Position a, Position b) {
+		// XXX: note that this is dummy code for testing
 		ArrayList<Rail> test = new ArrayList<Rail>();
-		test.add(new Rail(new Position(1, 1), new Position(1, 2)));
+		// test.add(new Rail(new Position(1, 1), new Position(1, 2)));
 		// test.add(new Rail(new Position(2, 1), new Position(2, 2)));
 		if (1 == 1) {
 			return test;
 		}
+		// end dummy code
 
 		ArrayList<Rail> positionArray = new ArrayList<Rail>();
 		Position currentPosition = a;
