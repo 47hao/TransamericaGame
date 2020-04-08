@@ -2,8 +2,8 @@ import java.awt.Color;
 
 public class HumanPlayer extends Player {
 
-	public HumanPlayer(String n, City[] cities, Color c) {
-		super(n, cities, c);
+	public HumanPlayer(String n, Color c) {
+		super(n, c);
 	}
 
 	public String getName() {
@@ -18,13 +18,10 @@ public class HumanPlayer extends Player {
 		return score;
 	}
 
-	public int getDistanceToCity(City c) {
-		return distanceToCities.get(targetCities.indexOf(c));
-	}
-
-	public void setDistanceToCity(City c, int distance) {
-		distanceToCities.set(targetCities.indexOf(c), distance);
-	}
+	// public void setDistanceToCity(City c, int distance) {
+	// distancesToCities.set(targetCities.indexOf(c), distance);
+	// distanc
+	// }
 
 	public int getRail(Rail[] rails) {
 		return 0;

@@ -1,34 +1,35 @@
 import java.util.ArrayList;
 
 public class Scoreboard {
-	private Player players[];
-	private int[] coordinates;;
+	private Player[] players;
+	private int[] locations;
 
-	Scoreboard() {
-		players = new Player[6];
-		coordinates = new int[players.length * 2];
+	Scoreboard(Player[] p) {
+		players = new Player[p.length];
+		System.arraycopy(p, 0, players, 0, p.length);
+		locations = new int[players.length * 2];
 	}
 
 	public void addScores(int[] scores) {
 		for (int i = 0; i < players.length; i++) {
-			coordinates[i * 2] = players[i].getScore();
+			locations[i * 2] = players[i].getScore();
 		}
 		for (int z = 0; z < players.length; z++) {
 			players[z].addScore(scores[z]);
 		}
 		int i = 0;
 		for (int j = 1; j < 12; j = j + 2) {
-			coordinates[j] = players[i].getScore();
+			locations[j] = players[i].getScore();
 			i++;
 		}
 	}
 
-	public int[] trainCoordinates() {
-		return coordinates;
+	public int[] getLocations() {
+		return locations;
 	}
 
 	public ArrayList<String> gameOver() {
-		//not accounted for players with same score
+		// not accounted for players with same score
 		ArrayList<String> winnerOrder = new ArrayList<String>();
 		ArrayList<Integer> scores = new ArrayList<Integer>();
 		for (int i = 0; i < players.length; i++) {

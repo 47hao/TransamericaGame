@@ -1,7 +1,9 @@
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class Game {
 
@@ -21,22 +23,30 @@ public class Game {
 	private GamePanel panel;
 
 	// XXX: kinda temporary, just to test turns
-	ArrayList<Rail> recentRails;
+	// turnRails stores the rails that make up a player's turn
+	ArrayList<Rail> turnRails;
+	// recentRails is a queue that holds all recent rails placed
+	// where recent refers to new rails placed since that player has had a turn
+	LinkedList<ArrayList<Rail>> recentRails;
 
 	public Game(Player[] players) {
+		recentRails = new LinkedList<ArrayList<Rail>>();
+		turnRails = new ArrayList<Rail>();
+
 		frame = new JFrame();
 		panel = new GamePanel(this);
 		board = new Board();
-		scoreboard = new Scoreboard();
+		scoreboard = new Scoreboard(players);
 		this.players = players;
 		fast = false;
-		games = 0;
+		// games = 0;
 		frame.setContentPane(panel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setPreferredSize(new Dimension(800, 600));
 		frame.setResizable(false);
 		frame.pack();
 		frame.setVisible(true);
+
 		new Thread(() -> {
 			play(false);
 		}).start();
@@ -46,7 +56,7 @@ public class Game {
 		frame = new JFrame();
 		panel = new GamePanel(this);
 		board = new Board();
-		scoreboard = new Scoreboard();
+		scoreboard = new Scoreboard(players);
 		this.players = players;
 		this.fast = fast;
 		this.games = games;
@@ -61,7 +71,7 @@ public class Game {
 		}).start();
 	}
 
-	public Player getcurrentPlayer() {
+	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
 
@@ -86,46 +96,94 @@ public class Game {
 						e.printStackTrace();
 					}
 				}
+				System.out.println("player: " + p.getName() + " just placed");
 			}
+			System.out.println("outside of loop");
+			// calculateDistances();
+
+			// XXX: temporary debug code
+
+			// XXX
+
 			panel.clearOutlinedPoint();
 			turns = 0;
 			while (!gameOver) {
 				board.setGameState(Board.GS_ROUND);
 				while (!roundOver) {
+
 					for (Player p : players) {
+						turns++;
+						System.out.println("turn #" + turns);
+						// p.calculateDistances();
+
 						// each player places 2 rails per round
 						board.setRemainingRails(2);
 						currentPlayer = p;
-						recentRails = new ArrayList<Rail>();
+						System.out.println("current player: " + currentPlayer.getName());
+						turnRails = new ArrayList<Rail>();
 						while (board.getRemainingRails() > 0) {
 							try {
 								wait();
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
-							// first rail placed
-							if (recentRails.get(0).isDouble()) {
+							System.out.println("calculating distances");
+							calculateDistances();
+							System.out.println("distances calculated");
+							System.out.println("remaining rails: " + board.getRemainingRails());
+							// rail placed
+							if (turnRails.get(0).isDouble()) {
 								board.setRemainingRails(0);
 								// we can use a constant here because the loop always ends after
 							} else {
 								board.setRemainingRails(board.getRemainingRails() - 1);
 							}
-
+							// p.calculateDistances();
 						}
-						turns++;
+						addTurnRails(turnRails);
+						roundOver = true;
+						int[] distances = p.getDistancesToCities();
+						for (int i = 0; i < distances.length; i++) {
+							if (distances[i] > 0) {
+								roundOver = false;
+							}
+						}
 					}
 				}
+				System.out.println("round over");
 				board.setGameState(Board.GS_ROUND_END);
 				// TODO: show round end dialog
+
 			}
 			board.setGameState(Board.GS_GAME_END);
-			// TODO: show game end dialog
-
+			JOptionPane.showMessageDialog(panel, new EndGame(getPlayers()));
 		}
 		return null;
 	}
 
-	public ArrayList<Rail> getRecentRails() {
+	public void calculateDistances() {
+		for (Player player : players) {
+			int[] dist = new int[6];
+			for (int i = 0; i < player.getTargetCities().size(); i++) {
+				dist[i] = board.getDistancetoCity(player, player.getTargetCities().get(i));
+			}
+			player.setDistancesToCities(dist);
+		}
+	}
+
+	public void addTurnRails(ArrayList<Rail> turn) {
+		recentRails.add(turn);
+		// if queue is too large (turns have wrapped around), trim queue
+		while (recentRails.size() > players.length - 1) {
+			recentRails.poll();
+		}
+	}
+
+	public ArrayList<Rail> getTurnRails() {
+		return turnRails;
+	}
+
+	public LinkedList<ArrayList<Rail>> getRecentRails() {
 		return recentRails;
 	}
 

@@ -5,8 +5,14 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.awt.event.*;
+import java.util.Random;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -320,13 +326,37 @@ public class InitialScreen {
 					}
 				}
 
+				ArrayList<City> orangeCities = new ArrayList<City>();
+				ArrayList<City> blueCities = new ArrayList<City>();
+				ArrayList<City> yellowCities = new ArrayList<City>();
+				ArrayList<City> redCities = new ArrayList<City>();
+				ArrayList<City> greenCities = new ArrayList<City>();
+				ArrayList[] cityLists = { orangeCities, blueCities, yellowCities, redCities, greenCities };
+				for (int i = 0; i < cityLists.length; i++) {
+					for (int j = i * 7; j < 7 * (i + 1); j++) {
+						cityLists[i].add(Board.cities[j]);
+					}
+				}
 				ArrayList<Player> playerList = new ArrayList<Player>();
-				// TODO: generate city lists based on number of players
-				City[] cities = { new City(new Position(0, 0), "Test city", Color.GREEN) };
 
 				for (int i = 0; i < players.size(); i++) {
-					playerList.add(new HumanPlayer(players.get(i), cities, colorList.get(i)));
+					playerList.add(new HumanPlayer(players.get(i), colorList.get(i)));
 				}
+
+				Random r = new Random();
+				for (Player player : playerList) {
+					for (int i = 0; i < cityLists.length; i++) {
+						player.getTargetCities().add((City) cityLists[i].remove(r.nextInt(cityLists[i].size())));
+					}
+				}
+
+				for (Player player : playerList) {
+					System.out.println("\n");
+					for (City city : player.getTargetCities()) {
+						System.out.println(city.toString());
+					}
+				}
+
 				if (computersOnly) {
 					System.out.println("Strategy Evaluation mode is on!");
 					StrategyEvalPanel p = new StrategyEvalPanel();

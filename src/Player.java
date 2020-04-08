@@ -10,11 +10,12 @@ public abstract class Player {
 
 	Position markerPos;
 	ArrayList<City> targetCities;
-	ArrayList<Integer> distanceToCities;
+	int[] distancesToCities;
 
-	Player(String n, City[] cities, Color c) {
+	Player(String n, Color c) {
 		name = n;
-		targetCities = new ArrayList<City>(Arrays.asList(cities));
+		targetCities = new ArrayList<City>();
+		distancesToCities = new int[6];
 		color = c;
 		score = 0;
 	}
@@ -29,9 +30,13 @@ public abstract class Player {
 		return markerPos;
 	}
 
-	abstract int getDistanceToCity(City c);
+	public int getDistanceToCity(City c) {
+		return distancesToCities[targetCities.indexOf(c)];
+	}
 
-	abstract void setDistanceToCity(City c, int n);
+	// abstract int getDistanceToCity(City c);
+
+	// abstract void setDistanceToCity(City c, int n);
 
 	abstract int getRail(Rail[] rails);
 
@@ -43,6 +48,20 @@ public abstract class Player {
 
 	public ArrayList<City> getTargetCities() {
 		return targetCities;
+	}
+
+	// public void calculateDistances() {
+	// for (int i = 0; i < targetCities.size(); i++) {
+	// distancesToCities[i] = this.getDistanceToCity(targetCities.get(i));
+	// }
+	// }
+
+	public int[] getDistancesToCities() {
+		return distancesToCities;
+	}
+
+	public void setDistancesToCities(int[] src) {
+		System.arraycopy(src, 0, distancesToCities, 0, src.length);
 	}
 
 	public Color getColor() {

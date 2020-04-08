@@ -1,5 +1,6 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -47,7 +48,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	final int cityStrokeDiam = 24;
 	final int cityStroke = 3;
 	public final static Color cityRed = new Color(220, 35, 25);
-	public final static Color cityBlue = new Color(15, 70, 200);
+	public final static Color cityBlue = new Color(15, 70, 175);
 	public final static Color cityGreen = new Color(10, 180, 60);
 	public final static Color cityYellow = new Color(245, 180, 25);
 	public final static Color cityOrange = new Color(245, 85, 25);
@@ -57,7 +58,15 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	final static int gridStartX = 90;
 	final static int gridStartY = 52;
 
+	// these keep track of the pulsing colored rails
+	private int pulse;
+	private int direction;
+
 	public GamePanel(Game game) {
+		pulse = 1;
+		direction = 1;
+
+		gameInfo = game;
 
 		int xMax = 0;
 		for (int i = 0; i < starPointsX.length - 1; i++) {
@@ -72,24 +81,46 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		starRangeX = xMax;
 		starRangeY = yMax - yMin;
 
-		this.addMouseListener(this);
-		this.addMouseMotionListener(this);
-		gameInfo = game;
+		addMouseListener(this);
+		addMouseMotionListener(this);
+
 		try {
 			map = ImageIO.read(new File("img/map.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		new Thread(() -> {
+			for (;;) {
+				pulse += direction;
+				if (pulse >= 255 || pulse <= 0) {
+					direction *= -1;
+					// pulse += direction;
+				}
+				try {
+					Thread.sleep(2);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				repaint();
+			}
+		}).start();
 	}
 
 	// Paints the components (board, grid, scoreboard, cityList, rails)
 	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		// System.out.println("repainted");
 		Graphics2D g2d = (Graphics2D) g;
 
 		drawBoard(g);
 		drawGrid(g);
 		drawScoreboard(g);
+
+		// TODO: draw trains on scoreboard
+		// for (Player p : gameInfo.getPlayers()) {
+		// drawTrain(g, p);
+		// }
 
 		// for (Player p : gameInfo.getPlayers())
 		// drawTrain(g, p.score);
@@ -100,13 +131,24 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		// drawMarker(g, new Point(getPixelX(p.getMarkerPos().getX()),
 		// getPixelY(p.getMarkerPos().getY())));
 
-		drawCityList(g, gameInfo.getBoard().getActivePlayer());
+		drawCityList(g, gameInfo.getCurrentPlayer());
 
 		for (Rail r : gameInfo.getBoard().getRails()) {
 			drawRail((Graphics2D) g, r);
 		}
 
+		// for (Player p : gameInfo.getPlayers()) {
+		// boolean active = p.equals(gameInfo.getcurrentPlayer());
+		// for (City c : p.getTargetCities()) {
+		// drawCity(g2d, c, active);
+		// }
+		// }
+
 		drawCities(g, gameInfo.getBoard().getCities());
+		for (City c : gameInfo.getCurrentPlayer().getTargetCities()) {
+			drawCity(g2d, c, true);
+		}
+
 		// draws board and game information
 
 		// g2d.setColor(Color.RED);
@@ -127,12 +169,12 @@ public class GamePanel extends JPanel implements MouseInputListener {
 			g2d.draw(outlinedPoint);
 		}
 
-		g2d.setColor(Color.GREEN);
-		g2d.draw(new Polygon(starPointsX, starPointsY, 11));
+		// g2d.setColor(Color.GREEN);
+		// g2d.draw(new Polygon(starPointsX, starPointsY, 11));
 	}
 
 	private void drawBoard(Graphics g) {
-		g.drawImage(map, 0, 0, this.getWidth(), this.getHeight(), Color.black, null);
+		g.drawImage(map, 0, 0, getWidth(), getHeight(), Color.black, null);
 	}
 
 	private void drawGrid(Graphics g) {
@@ -144,6 +186,16 @@ public class GamePanel extends JPanel implements MouseInputListener {
 
 	private void drawRail(Graphics2D g, Rail rail) {
 		g.setColor(railColor);
+
+		for (ArrayList<Rail> railList : gameInfo.getRecentRails()) {
+			for (Rail r : railList) {
+				if (rail.equals(r)) {
+					// the rail was recently placed
+					g.setColor(new Color(pulse, pulse, pulse));
+				}
+			}
+		}
+
 		Point p = gridToPixel(rail.startPos());
 		Point p2 = gridToPixel(rail.endPos());
 
@@ -261,8 +313,8 @@ public class GamePanel extends JPanel implements MouseInputListener {
 			g.drawString(i + "", xPos - (int) (cellSize / 2) - (g.getFontMetrics().stringWidth(i + "") / 2), 35);
 		}
 		g2.setStroke(new BasicStroke(5));
-		g.drawLine(60, 20, this.getWidth() - 60, 20);
-		g.drawLine(60, 50, this.getWidth() - 60, 50);
+		g.drawLine(60, 20, getWidth() - 60, 20);
+		g.drawLine(60, 50, getWidth() - 60, 50);
 
 		xPos = (int) Math.round(xPos + cellSize) - 1;
 		g.setColor(Color.WHITE);
@@ -274,10 +326,15 @@ public class GamePanel extends JPanel implements MouseInputListener {
 
 	private void drawTrain(Graphics g, Player player) {
 		int xPos = 60;
-		BufferedImage train = null; // temo
+		BufferedImage train = null;
+		try {
+			train = ImageIO.read(new File("img/train.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		double cellSize = 56.6666666667;
 		g.drawImage(train, xPos + (player.getScore() * (int) cellSize) - (train.getWidth() / 2), 45, 55, 25,
-				Color.black, null);
+				Color.BLACK, null);
 	}
 
 	private void drawCities(Graphics g, City[] cityList, Player activePlayer) {
@@ -294,7 +351,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	{
 		Graphics2D g2d = (Graphics2D) g;
 		for (City c : cityList) {
-			drawCity(g2d, c, true);
+			drawCity(g2d, c, false);
 		}
 	}
 
@@ -327,12 +384,33 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	}
 
 	private void drawCityList(Graphics g, Player player) {
-		Graphics2D g2 = (Graphics2D) g;
-		g.setColor(Color.WHITE);
-		g.fillRoundRect(0, this.getHeight() - 200, 125, 200, 50, 50);
-		g2.setStroke(new BasicStroke(7));
-		g.setColor(Color.BLACK);
-		g.drawRoundRect(0, this.getHeight() - 200, 125, 200, 50, 50);
+		Graphics2D g2d = (Graphics2D) g;
+		int width = 125;
+		int height = 175;
+		int arc = 50;
+
+		g2d.setColor(Color.WHITE);
+		g2d.fillRoundRect(0, getHeight() - height, width, height, arc, arc);
+		g2d.setStroke(new BasicStroke(5f));
+		g2d.setColor(Color.BLACK);
+		g2d.drawRoundRect(0, getHeight() - height, width, height, arc, arc);
+
+		Font f = g2d.getFont();
+		g2d.setFont(new Font("Arial", Font.BOLD, 14));
+		g2d.drawString("Cities", width / 3, getHeight() - 150);
+		g2d.setFont(f);
+
+		if (player != null) {
+			if (player.getTargetCities() != null) {
+				for (int i = 0; i < player.getTargetCities().size(); i++) {
+					g2d.drawString(player.getTargetCities().get(i).getName(), 7, getHeight() - 120 + (25 * i));
+					// TODO: draw the distances
+					g2d.drawString(
+							"" + (player.getDistancesToCities() == null ? "-" : player.getDistancesToCities()[i]),
+							width - 20, getHeight() - 120 + (25 * i));
+				}
+			}
+		}
 	}
 
 	public void mouseMoved(MouseEvent e) {
@@ -420,7 +498,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 			} else if (gameInfo.getBoard().getGameState().equals(Board.GS_MARKER)) {
 				for (Ellipse2D ellipse : gameInfo.getBoard().getPositionHitboxes()) {
 					if (ellipse.contains(e.getPoint())) {
-						gameInfo.getcurrentPlayer().setMarkerPos(gameInfo.getBoard().getPositions()
+						gameInfo.getCurrentPlayer().setMarkerPos(gameInfo.getBoard().getPositions()
 								.get(gameInfo.getBoard().getPositionHitboxes().indexOf(ellipse)));
 						gameInfo.notify();
 					}
@@ -431,7 +509,9 @@ public class GamePanel extends JPanel implements MouseInputListener {
 					if (r.getHitbox().contains(e.getPoint())) {
 						clickedRail = r;
 						clickedRail.setState(Rail.PLACED);
-						gameInfo.getRecentRails().add(r);
+						// gameInfo.getRecentRails().add(r);
+						gameInfo.getTurnRails().add(r);
+						gameInfo.notify();
 						repaint();
 						return;
 					}
