@@ -48,11 +48,12 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	final int cityInnerDiam = 12;
 	final int cityStrokeDiam = 24;
 	final int cityStroke = 3;
-	public final static Color cityRed = new Color(220, 35, 25);
-	public final static Color cityBlue = new Color(15, 70, 175);
-	public final static Color cityGreen = new Color(10, 180, 60);
-	public final static Color cityYellow = new Color(245, 180, 25);
-	public final static Color cityOrange = new Color(245, 85, 25);
+	public final static Color Red = new Color(220, 35, 25);
+	public final static Color Blue = new Color(15, 70, 175);
+	public final static Color Green = new Color(10, 180, 60);
+	public final static Color Yellow = new Color(245, 180, 25);
+	public final static Color Orange = new Color(245, 85, 25);
+	public final static Color Purple = new Color(125, 60, 190);
 
 	final boolean displayCoords = true;
 
@@ -277,7 +278,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		}
 		if (rail.getState().equals(Rail.HOVERING)) {
 			g.setStroke(new BasicStroke(Rail.THICKNESS * 3f));
-			g.setColor(new Color(0, 0, 0, 50));
+			g.setColor(new Color(255,255,255, 50));
 			// g.setColor(Color.RED);
 
 			// XXX: drawing hitbox
@@ -408,12 +409,23 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		g2d.setColor(Color.BLACK);
 		g2d.drawRoundRect(0, getHeight() - height, width, height, arc, arc);
 
+		//draw "Cities" label
 		Font f = g2d.getFont();
-		g2d.setFont(new Font("Arial", Font.BOLD, 14));
+		g2d.setFont(new Font("Arial", Font.BOLD, 18));
 		g2d.drawString("Cities", width / 3, getHeight() - 150);
-		g2d.setFont(f);
-
+		
 		if (player != null) {
+			
+			//draw active player's name
+			g2d.setColor(player.getColor());
+			g2d.setFont(new Font("Arial", Font.BOLD, 12));
+			g2d.drawString(player.getName(), width/3, getHeight() - 135);
+
+			
+			//draw the list
+			g2d.setColor(Color.BLACK);
+			g2d.setFont(f);
+			
 			if (player.getTargetCities() != null) {
 				for (int i = 0; i < player.getTargetCities().size(); i++) {
 					g2d.drawString(player.getTargetCities().get(i).getName(), 7, getHeight() - 120 + (25 * i));

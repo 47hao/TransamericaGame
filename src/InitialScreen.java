@@ -54,7 +54,7 @@ public class InitialScreen {
 	ArrayList<Color> colorList = new ArrayList<Color>();
 
 	// create color lookup table
-	final Color[] playerColors = { Color.CYAN, Color.YELLOW, Color.RED, Color.GREEN, Color.PINK, Color.ORANGE };
+	final Color[] playerColors = { GamePanel.Blue, GamePanel.Yellow, GamePanel.Red, GamePanel.Green, GamePanel.Purple, GamePanel.Orange};
 
 	final static int TOP_PADDING = 10;
 	final static int LEFT_PADDING = 15;
@@ -89,12 +89,12 @@ public class InitialScreen {
 		for (int i = 0; i < playerPrompts.length; i++) {
 			playerPrompts[i].setOpaque(true);
 		}
-		playerPrompts[0].setBackground(Color.CYAN);
-		playerPrompts[1].setBackground(Color.YELLOW);
-		playerPrompts[2].setBackground(Color.RED);
-		playerPrompts[3].setBackground(Color.GREEN);
-		playerPrompts[4].setBackground(Color.MAGENTA);
-		playerPrompts[5].setBackground(Color.ORANGE);
+		playerPrompts[0].setBackground(playerColors[0]);
+		playerPrompts[1].setBackground(playerColors[1]);
+		playerPrompts[2].setBackground(playerColors[2]);
+		playerPrompts[3].setBackground(playerColors[3]);
+		playerPrompts[4].setBackground(playerColors[4]);
+		playerPrompts[5].setBackground(playerColors[5]);
 
 		// create radio button groups (6 groups for 6 players)
 		for (int i = 0; i < buttonGroups.length; i++) {
