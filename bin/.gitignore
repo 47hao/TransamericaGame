@@ -1,1 +1,23 @@
+/BasicStrategy.class
+/Board.class
+/City.class
+/ComputerPlayer.class
+/EndGame$EndPanel.class
+/EndGame.class
+/Game.class
+/GamePanel.class
+/HumanPlayer.class
+/InitialScreen$ControlButtonListener.class
 /InitialScreen$NameKeyListener.class
+/InitialScreen$RadioListener.class
+/InitialScreen$StrategyEvalPanel$ConfirmButtonListener.class
+/InitialScreen$StrategyEvalPanel.class
+/InitialScreen.class
+/Main.class
+/Player.class
+/Position.class
+/Rail.class
+/RailFactory.class
+/Scoreboard.class
+/Strategy.class
+/a word of caution.txt
