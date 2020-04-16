@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
+import javax.swing.text.AttributeSet.ColorAttribute;
 
 public class GamePanel extends JPanel implements MouseInputListener {
 
@@ -209,6 +210,11 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		// if (rail.getState().equals(Rail.PLACED)) {
 		// System.out.println("placed rail found");
 		// }
+
+		// if (gameInfo.getCurrentPlayer().getValidRails().contains(rail)) {
+		// g.setColor(Color.WHITE);
+		// }
+
 		if (rail.getState().equals(Rail.EMPTY) || rail.getState().equals(Rail.HOVERING)) {
 			// System.out.println("empty/hovering");
 			g.setStroke(new BasicStroke(Rail.THICKNESS));
@@ -256,8 +262,11 @@ public class GamePanel extends JPanel implements MouseInputListener {
 				}
 			} else {
 				// XXX: drawing hitbox
-				// g.setColor(Color.GREEN);
+				// g.setColor(Color.WHITE);
+				// if (gameInfo.getCurrentPlayer().getValidRails().contains(rail)) {
 				// g.drawPolygon(rail.getHitbox());
+				// }
+				// g.setColor(Color.BLACK);
 				g.drawLine((int) p.getX(), (int) p.getY(), (int) p2.getX(), (int) p2.getY());
 			}
 		} else if (rail.getState().equals(Rail.PLACED)) {
@@ -482,7 +491,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 					// IFF the rail is in the list of possible rails for the current player and
 					// the rail's state is empty or hovering (not placed) and
 					// the click is within the rail's boundary
-					if (gameInfo.getCurrentPlayer().getPossibleRails().contains(r)
+					if (gameInfo.getCurrentPlayer().getValidRails().contains(r)
 							&& (r.getState().equals(Rail.EMPTY) || r.getState().equals(Rail.HOVERING))
 							&& r.getHitbox().contains(e.getPoint())) {
 						clickedRail = r;

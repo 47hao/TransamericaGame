@@ -1,5 +1,7 @@
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public abstract class Player {
 	Color color;
@@ -8,17 +10,30 @@ public abstract class Player {
 	int score;
 
 	Position markerPos;
-	ArrayList<Rail> possibleRails;
+	ArrayList<Rail> validRails;
 	ArrayList<City> targetCities;
 	int[] distancesToCities;
 
 	Player(String n, Color c) {
-		possibleRails = new ArrayList<Rail>();
+		validRails = new ArrayList<Rail>();
 		// XXX: just for testing
-		possibleRails.add(new Rail(new Position(0, 0), new Position(0, 1)));
-		possibleRails.add(new Rail(new Position(1, 1), new Position(2, 2)));
-		possibleRails.add(new Rail(new Position(2, 2), new Position(3, 3)));
-		possibleRails.add(new Rail(new Position(3, 3), new Position(4, 4)));
+		// validRails.add(new Rail(new Position(0, 0), new Position(0, 1)));
+		// validRails.add(new Rail(new Position(0, 1), new Position(1, 2)));
+		// validRails.add(new Rail(new Position(0, 1), new Position(0, 2)));
+		// validRails.add(new Rail(new Position(0, 0), new Position(1, 0)));
+		// validRails.add(new Rail(new Position(1, 1), new Position(2, 2)));
+		// validRails.add(new Rail(new Position(1, 2), new Position(2, 2)));
+		// validRails.add(new Rail(new Position(2, 2), new Position(3, 3)));
+		// validRails.add(new Rail(new Position(3, 3), new Position(4, 4)));
+		// validRails.add(new Rail(new Position(1, 0), new Position(1, 1)));
+		// validRails.add(new Rail(new Position(1, 1), new Position(2, 1)));
+		// validRails.add(new Rail(new Position(1, 0), new Position(2, 0)));
+		// validRails.add(new Rail(new Position(0, 0), new Position(1, 1)));
+
+		// validRails.addAll(Board.cities);
+		validRails.addAll(Arrays.asList());
+		// Collections.asList(Board.cities);
+
 		name = n;
 		targetCities = new ArrayList<City>();
 		color = c;
@@ -55,8 +70,8 @@ public abstract class Player {
 		return targetCities;
 	}
 
-	public ArrayList<Rail> getPossibleRails() {
-		return possibleRails;
+	public ArrayList<Rail> getValidRails() {
+		return validRails;
 	}
 
 	// public void calculateDistances() {

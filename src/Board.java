@@ -11,9 +11,15 @@ public class Board {
 	final static String GS_GAME_END = "gameEnd";
 
 	private String gameState;
-	private Queue<Rail> newRails;
+	// private Queue<Rail> newRails;
 	// private Player activePlayer;
 	// private final Position[] positions = new Position[188];
+
+	public final ArrayList<Rail> rails = new ArrayList<Rail>();
+	private ArrayList<Position> positions;
+	private ArrayList<Ellipse2D> positionHitboxes;
+	private ArrayList<Position> possiblePlacements = new ArrayList<Position>();
+	private ArrayList<Player> playerArray = new ArrayList<Player>();
 
 	public final static City[] cities = { new City(new Position(17, 2), "Boston", GamePanel.cityOrange),
 			new City(new Position(17, 4), "New York", GamePanel.cityOrange),
@@ -54,12 +60,6 @@ public class Board {
 			new City(new Position(5, 9), "Los Angeles", GamePanel.cityGreen),
 			new City(new Position(6, 10), "San Diego", GamePanel.cityGreen),
 			new City(new Position(1, 3), "Medford", GamePanel.cityGreen) };
-
-	private ArrayList<Rail> rails = new ArrayList<Rail>();
-	private ArrayList<Position> positions;
-	private ArrayList<Ellipse2D> positionHitboxes;
-	private ArrayList<Position> possiblePlacements = new ArrayList<Position>(0);
-	private ArrayList<Player> playerArray = new ArrayList<Player>(0);
 
 	private int remainingRails;
 
@@ -124,7 +124,7 @@ public class Board {
 		// cities[34] = new City(new Position(1, 3), "Medford", GamePanel.cityGreen);
 
 		RailFactory rf = new RailFactory();
-		rails = rf.genRails();
+		rails.addAll(rf.genRails());
 		positions = rf.getPositions();
 		positionHitboxes = rf.getPositionHitboxes();
 
@@ -175,14 +175,17 @@ public class Board {
 	// }
 
 	public Rail getRail(Position start, Position end) {
-		for (int i = 0; i < rails.size(); i++) {
-			if (equals(start, rails.get(i).startPos()) && equals(end, rails.get(i).endPos())
-					|| equals(end, rails.get(i).startPos()) && equals(start, rails.get(i).endPos())) {
-				return rails.get(i);
-			}
-		}
-		System.out.print("Board Class: No Such Rails");
-		return null;
+		// for (int i = 0; i < rails.size(); i++) {
+		// if (equals(start, rails.get(i).startPos()) && equals(end,
+		// rails.get(i).endPos())
+		// || equals(end, rails.get(i).startPos()) && equals(start,
+		// rails.get(i).endPos())) {
+		// return rails.get(i);
+		// }
+		// }
+		// System.out.print("Board Class: No Such Rails");
+		// return null;
+		return rails.get(rails.indexOf(new Rail(start, end)));
 	}
 
 	public ArrayList<Rail> getSurroundingRails(Position pos) {
@@ -270,12 +273,12 @@ public class Board {
 
 	public ArrayList<Rail> quickestPath(Position a, Position b) {
 		// XXX: note that this is dummy code for testing
-		ArrayList<Rail> test = new ArrayList<Rail>();
+		// ArrayList<Rail> test = new ArrayList<Rail>();
 		// test.add(new Rail(new Position(1, 1), new Position(1, 2)));
 		// test.add(new Rail(new Position(2, 1), new Position(2, 2)));
-		if (1 == 1) {
-			return test;
-		}
+		// if (1 == 1) {
+		// return test;
+		// }
 		// end dummy code
 
 		ArrayList<Rail> positionArray = new ArrayList<Rail>();
