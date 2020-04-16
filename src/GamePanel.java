@@ -64,6 +64,8 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	private int pulse;
 	private int direction;
 
+	boolean once = true;
+
 	public GamePanel(Game game) {
 		pulse = 1;
 		direction = 1;
@@ -278,7 +280,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		}
 		if (rail.getState().equals(Rail.HOVERING)) {
 			g.setStroke(new BasicStroke(Rail.THICKNESS * 3f));
-			g.setColor(new Color(255,255,255, 50));
+			g.setColor(new Color(255, 255, 255, 50));
 			// g.setColor(Color.RED);
 
 			// XXX: drawing hitbox
@@ -308,33 +310,56 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		Graphics2D g2d = (Graphics2D) g;
 		int xPos = 60;
 		int yPos = 7;
-		double cellSize = 56.6666666667;
+		double cellSize = 56;
 
+		//Draw final Box
 		g2d.setColor(Color.WHITE);
+		for (Player p : gameInfo.getPlayers()) {
+			if (p.getScore() == 12)
+				g2d.setColor(p.getColor());
+		}
 		g2d.fillRect(xPos, yPos, 60, 30);
 		g2d.setColor(Color.BLACK);
+		
+		//Draw thicker line beyond final box
 		g2d.setStroke(new BasicStroke(7));
 		g2d.drawLine(60, yPos - 5, 60, yPos + 35);
+		
+		//Reset stroke size
 		g2d.setStroke(new BasicStroke(5));
-
+		
+		//draw boxes 1 - 12
 		for (int i = 1; i < 12; i++) {
 			xPos = 60 + (int) (i * cellSize);
 			g2d.setColor(Color.WHITE);
+			for (Player p : gameInfo.getPlayers()) {
+				if (p.getScore() == 12 - i)
+					g2d.setColor(p.getColor());
+			}
 			g2d.fillRect(xPos, yPos, 59, 30);
 			g2d.setColor(Color.BLACK);
 			g2d.drawLine(xPos, yPos, xPos, yPos + 30);
 			g2d.drawString(i + "", xPos - (int) (cellSize / 2) - (g.getFontMetrics().stringWidth(i + "") / 2),
 					yPos + 20);
 		}
+		
+		//Draw lines above and below scoreboard
 		g2d.setStroke(new BasicStroke(5));
 		g2d.drawLine(60, yPos, getWidth() - 60, yPos);
 		g2d.drawLine(60, yPos + 30, getWidth() - 60, yPos + 30);
-
+		
+		//Draw station (blank square)
 		xPos = (int) Math.round(xPos + cellSize) - 1;
 		g2d.setColor(Color.WHITE);
+		for (Player p : gameInfo.getPlayers()) {
+			if (p.getScore() == 0)
+				g2d.setColor(p.getColor());
+		}
 		g2d.fillRect(xPos, yPos - 5, 40, 40);
 		g2d.setColor(Color.BLACK);
 		g2d.drawRect(xPos, yPos - 5, 40, 40);
+		
+		//Draw label for the 12 box (cause it doesn't draw properly)
 		g2d.drawString(12 + "", xPos - (int) (cellSize / 2) - (g.getFontMetrics().stringWidth(12 + "") / 2), yPos + 20);
 	}
 
@@ -409,23 +434,22 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		g2d.setColor(Color.BLACK);
 		g2d.drawRoundRect(0, getHeight() - height, width, height, arc, arc);
 
-		//draw "Cities" label
+		// draw "Cities" label
 		Font f = g2d.getFont();
 		g2d.setFont(new Font("Arial", Font.BOLD, 18));
 		g2d.drawString("Cities", width / 3, getHeight() - 150);
-		
+
 		if (player != null) {
-			
-			//draw active player's name
+
+			// draw active player's name
 			g2d.setColor(player.getColor());
 			g2d.setFont(new Font("Arial", Font.BOLD, 12));
-			g2d.drawString(player.getName(), width/3, getHeight() - 135);
+			g2d.drawString(player.getName(), width / 3, getHeight() - 135);
 
-			
-			//draw the list
+			// draw the list
 			g2d.setColor(Color.BLACK);
 			g2d.setFont(f);
-			
+
 			if (player.getTargetCities() != null) {
 				for (int i = 0; i < player.getTargetCities().size(); i++) {
 					g2d.drawString(player.getTargetCities().get(i).getName(), 7, getHeight() - 120 + (25 * i));
