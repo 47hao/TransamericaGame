@@ -74,7 +74,12 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	final int cityStroke = 4;
 
 	final boolean displayCoords = true;
-
+	
+	final int labelOffsetY = 15;
+	final int labelOffsetX = 15;
+	final int labelHeight = 22;
+	final float labelStroke = 1f;
+	final int labelFontSize = 16;
 
 	// these keep track of the pulsing colored rails
 	private int pulse;
@@ -400,7 +405,8 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		g.drawImage(train, xPos + (player.getScore() * (int) cellSize) - (train.getWidth() / 2), 45, 55, 25,
 				Color.BLACK, null);
 	}
-
+	
+	
 	private void drawCities(Graphics g, City[] cityList, Player activePlayer) {
 		Graphics2D g2d = (Graphics2D) g;
 		for (City c : cityList) {
@@ -410,7 +416,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 				drawCity(g2d, c, false);
 		}
 	}
-
+	
 	private void drawCities(Graphics g, City[] cityList) // without player
 	{
 		Graphics2D g2d = (Graphics2D) g;
@@ -433,11 +439,21 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		g2d.setColor(railColor);
 		g2d.drawOval((int) (pixelLoc.getX() - cityInnerDiam / 2), (int) (pixelLoc.getY() - cityInnerDiam / 2),
 				cityInnerDiam, cityInnerDiam);
+
+		drawCityLabel(g2d, c);
 	}
 
-	private void drawCityLabel(Graphics g, City c)
+	private void drawCityLabel(Graphics g2d, City c)
 	{
+		Point pixelLoc = gridToPixel(c.getPos());
 		
+		pixelLoc.x -= labelOffsetX;
+		pixelLoc.y += labelOffsetY;
+		g2d.setColor(Color.white);
+		g2d.fillRoundRect((int)pixelLoc.getX(), (int)pixelLoc.getY(), c.getName().length()*labelFontSize/2+labelHeight, labelHeight, labelHeight/4, labelHeight/4);
+		g2d.setColor(railColor);
+		g2d.setFont(new Font("Arial", Font.BOLD, labelFontSize));
+		g2d.drawString(c.getName(), (int)(pixelLoc.getX()+(labelFontSize/2)), (int)(pixelLoc.getY()+labelHeight/2+labelFontSize/3));
 	}
 	
 	private void drawMarker(Graphics2D g2d, Player player) {
