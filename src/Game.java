@@ -47,7 +47,7 @@ public class Game {
 		// games = 0;
 		frame.setContentPane(panel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setPreferredSize(new Dimension(800, 600));
+		frame.setPreferredSize(new Dimension(GamePanel.resolutionWidth, GamePanel.resolutionHeight));
 		frame.setResizable(false);
 		frame.pack();
 		frame.setVisible(true);
