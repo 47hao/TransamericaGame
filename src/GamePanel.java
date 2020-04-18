@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.List;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.event.MouseEvent;
@@ -29,11 +30,11 @@ public class GamePanel extends JPanel implements MouseInputListener {
 
 	Rail lastHovering;
 	String previousState;
-	
+
 	final static int resolutionWidth = 1200;
 	final static int resolutionHeight = 900;
 
-	//rail display details
+	// rail display details
 	final Color railColor = new Color(0, 0, 0);
 	public static final int railLength = 60;
 	final static float railThickness = 2f;
@@ -42,8 +43,8 @@ public class GamePanel extends JPanel implements MouseInputListener {
 
 	final static int gridStartX = 120;
 	final static int gridStartY = 70;
-	
-	//universal colors
+
+	// universal colors
 	public final static Color Red = new Color(200, 35, 25);
 	public final static Color Blue = new Color(15, 90, 220);
 	public final static Color Green = new Color(10, 200, 0);
@@ -54,11 +55,11 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	// final int[] starPointsY = { 10, 15, 25, 19, 25, 15, 10, 10, 0, 10, 10 };
 	// final int[] starPointsX = { 0, 4, 2, 7, 11, 9, 13, 8, 7, 5, 0 };
 	// final int[] starPointsY = { 5, 8, 13, 9, 13, 8, 5, 5, 0, 5, 5 };
-	
-	//marker parameters
-	//final int outerMarkerDiam = 18;
-	//final int innerMarkerDiam = 14;
-	
+
+	// marker parameters
+	// final int outerMarkerDiam = 18;
+	// final int innerMarkerDiam = 14;
+
 	final double starScale = 1.8;
 	final int[] starTemplateX = { 0, 5, 3, 8, 12, 10, 14, 9, 8, 6, 0 };
 	final int[] starTemplateY = { 6, 9, 15, 10, 14, 9, 6, 6, 0, 6, 6 };
@@ -68,13 +69,13 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	int starRangeX;
 	int starRangeY;
 
-	//city parameters
+	// city parameters
 	final int cityInnerDiam = 18;
 	final int cityStrokeDiam = 32;
 	final int cityStroke = 4;
 
 	final boolean displayCoords = true;
-	
+
 	final int labelOffsetY = 15;
 	final int labelOffsetX = 15;
 	final int labelHeight = 22;
@@ -91,15 +92,15 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		direction = 1;
 
 		gameInfo = game;
-		
-		//initializing geometry coords for player markers
+
+		// initializing geometry coords for player markers
 		starPointsX = new int[starTemplateX.length];
 		starPointsY = new int[starTemplateY.length];
-		
-		for(int i=0; i<starTemplateX.length; i++) //scaling star coords based on template
+
+		for (int i = 0; i < starTemplateX.length; i++) // scaling star coords based on template
 		{
-			starPointsX[i] = (int)(starTemplateX[i]*starScale);
-			starPointsY[i] = (int)(starTemplateY[i]*starScale);
+			starPointsX[i] = (int) (starTemplateX[i] * starScale);
+			starPointsY[i] = (int) (starTemplateY[i] * starScale);
 		}
 
 		int xMax = 0;
@@ -339,74 +340,189 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	private void drawScoreboard(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		int xPos = 60;
-		int yPos = 7;
-		double cellSize = 56;
+		int yPos = 15;
+		int cellSize = 87;
+		List<List<Player>> trains = new ArrayList<List<Player>>(13);
+		
+		/*
+		if (once) {
+			for (Player p : gameInfo.getPlayers()) {
+				p.addScore((int) (Math.random() * 13));
+			}
+			once = false;
+		}
+		*/
 
-		//Draw final Box
+		// Track how many players are in the same spot and offset them
+		trains = new ArrayList<List<Player>>(13);
+		for (int i = 0; i < 13; i++)
+			trains.add(new ArrayList<Player>());
+		for (Player p : gameInfo.getPlayers()) {
+			p.setOffset(0);
+			trains.get(p.getScore()).add(p);
+		}
+
+		for (int i = 0; i < trains.size(); i++) {
+			List<Player> playersEdit = trains.get(i);
+			int players = trains.get(i).size();
+			for (int j = 0; j < players; j++)
+				playersEdit.get(j).setLarge(false);
+			if (i == 0) {
+				if (players != 1) {
+					if (players == 2) {
+						playersEdit.get(0).setOffset(-5);
+						playersEdit.get(0).setLarge(true);
+						playersEdit.get(1).setOffset(5);
+						playersEdit.get(1).setLarge(true);
+					} else if (players == 3) {
+						playersEdit.get(0).setOffset(-6);
+						playersEdit.get(1).setOffset(0);
+						playersEdit.get(2).setOffset(6);
+					} else if (players == 4) {
+						playersEdit.get(0).setOffset(-6);
+						playersEdit.get(1).setOffset(-2);
+						playersEdit.get(2).setOffset(2);
+						playersEdit.get(3).setOffset(6);
+					} else if (players == 5) {
+						playersEdit.get(0).setOffset(-10);
+						playersEdit.get(1).setOffset(-5);
+						playersEdit.get(2).setOffset(0);
+						playersEdit.get(3).setOffset(5);
+						playersEdit.get(4).setOffset(10);
+					} else if (players == 6) {
+						playersEdit.get(0).setOffset(-10);
+						playersEdit.get(1).setOffset(-6);
+						playersEdit.get(2).setOffset(-2);
+						playersEdit.get(3).setOffset(2);
+						playersEdit.get(4).setOffset(6);
+						playersEdit.get(5).setOffset(10);
+					}
+				} else
+					playersEdit.get(0).setLarge(true);
+			} else {
+				if (players != 1) {
+					if (players == 2) {
+						playersEdit.get(0).setOffset(-10);
+						playersEdit.get(0).setLarge(true);
+						playersEdit.get(1).setOffset(10);
+						playersEdit.get(1).setLarge(true);
+					} else if (players == 3) {
+						playersEdit.get(0).setOffset(-12);
+						playersEdit.get(1).setOffset(0);
+						playersEdit.get(2).setOffset(12);
+					} else if (players == 4) {
+						playersEdit.get(0).setOffset(-12);
+						playersEdit.get(1).setOffset(-4);
+						playersEdit.get(2).setOffset(4);
+						playersEdit.get(3).setOffset(12);
+					} else if (players == 5) {
+						playersEdit.get(0).setOffset(-20);
+						playersEdit.get(1).setOffset(-10);
+						playersEdit.get(2).setOffset(0);
+						playersEdit.get(3).setOffset(10);
+						playersEdit.get(4).setOffset(20);
+					} else if (players == 6) {
+						playersEdit.get(0).setOffset(-20);
+						playersEdit.get(1).setOffset(-12);
+						playersEdit.get(2).setOffset(-4);
+						playersEdit.get(3).setOffset(4);
+						playersEdit.get(4).setOffset(12);
+						playersEdit.get(5).setOffset(20);
+					}
+				} else
+					playersEdit.get(0).setLarge(true);
+			}
+		}
+
+		// Draw final box
 		g2d.setColor(Color.WHITE);
+		g2d.fillRect(xPos, yPos, cellSize, 30);
+		g2d.setColor(Color.BLACK);
 		for (Player p : gameInfo.getPlayers()) {
 			if (p.getScore() == 12)
-				g2d.setColor(p.getColor());
+				drawTrain(g2d, p, xPos + p.getOffset(), yPos, p.getLarge());
 		}
-		g2d.fillRect(xPos, yPos, 60, 30);
-		g2d.setColor(Color.BLACK);
-		
-		//Draw thicker line beyond final box
+
+		// Draw thicker line beyond final box
 		g2d.setStroke(new BasicStroke(7));
 		g2d.drawLine(60, yPos - 5, 60, yPos + 35);
-		
-		//Reset stroke size
+
+		// Reset stroke size
 		g2d.setStroke(new BasicStroke(5));
-		
-		//draw boxes 1 - 12
+
+		// draw boxes 1 - 12
 		for (int i = 1; i < 12; i++) {
 			xPos = 60 + (int) (i * cellSize);
 			g2d.setColor(Color.WHITE);
-			for (Player p : gameInfo.getPlayers()) {
-				if (p.getScore() == 12 - i)
-					g2d.setColor(p.getColor());
-			}
-			g2d.fillRect(xPos, yPos, 59, 30);
+			g2d.fillRect(xPos, yPos, cellSize, 30);
 			g2d.setColor(Color.BLACK);
 			g2d.drawLine(xPos, yPos, xPos, yPos + 30);
-			g2d.drawString(i + "", xPos - (int) (cellSize / 2) - (g.getFontMetrics().stringWidth(i + "") / 2),
-					yPos + 20);
+			for (Player p : gameInfo.getPlayers()) {
+				if (p.getScore() == 12 - i)
+					drawTrain(g2d, p, xPos + p.getOffset(), yPos, p.getLarge());
+			}
+			g2d.drawString(i + "", xPos - (cellSize / 2) - (g.getFontMetrics().stringWidth(i + "") / 2), yPos + 20);
 		}
-		
-		//Draw lines above and below scoreboard
+
+		// Draw lines above and below scoreboard
 		g2d.setStroke(new BasicStroke(5));
-		g2d.drawLine(60, yPos, getWidth() - 60, yPos);
-		g2d.drawLine(60, yPos + 30, getWidth() - 60, yPos + 30);
-		
-		//Draw station (blank square)
+		g2d.drawLine(60, yPos, getWidth() - cellSize, yPos);
+		g2d.drawLine(60, yPos + 30, getWidth() - cellSize, yPos + 30);
+
+		// Draw station (blank square)
 		xPos = (int) Math.round(xPos + cellSize) - 1;
 		g2d.setColor(Color.WHITE);
-		for (Player p : gameInfo.getPlayers()) {
-			if (p.getScore() == 0)
-				g2d.setColor(p.getColor());
-		}
 		g2d.fillRect(xPos, yPos - 5, 40, 40);
 		g2d.setColor(Color.BLACK);
 		g2d.drawRect(xPos, yPos - 5, 40, 40);
-		
-		//Draw label for the 12 box (cause it doesn't draw properly)
-		g2d.drawString(12 + "", xPos - (int) (cellSize / 2) - (g.getFontMetrics().stringWidth(12 + "") / 2), yPos + 20);
+		for (Player p : gameInfo.getPlayers()) {
+			if (p.getScore() == 0)
+				drawTrain(g2d, p, xPos, yPos + p.getOffset(), p.getLarge());
+		}
+
+		// Draw label for the 12 box (cause it doesn't draw properly)
+		g2d.drawString(12 + "", xPos - (cellSize / 2) - (g.getFontMetrics().stringWidth(12 + "") / 2), yPos + 20);
 	}
 
-	private void drawTrain(Graphics g, Player player) {
-		int xPos = 60;
+	private void drawTrain(Graphics g, Player player, int xPos, int yPos, boolean big) {
+		int cellSize = 87;
 		BufferedImage train = null;
+		
 		try {
 			train = ImageIO.read(new File("img/train.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		double cellSize = 56.6666666667;
-		g.drawImage(train, xPos + (player.getScore() * (int) cellSize) - (train.getWidth() / 2), 45, 55, 25,
-				Color.BLACK, null);
+
+		int height = train.getHeight();
+		int width = train.getWidth();
+		
+		//change train color
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				if ((train.getRGB(x, y) >> 24) != 0x00)
+					train.setRGB(x, y, player.getColor().getRGB());
+			}
+		}
+		
+		//scale train according to number of trains
+		if (big) {
+			if (player.getScore() == 0) {
+				g.drawImage(train, xPos + (width / 8) - 2, yPos + 9, width / 2, height / 2, null, null);
+			} else {
+				g.drawImage(train, xPos + (cellSize / 2) - width / 2, yPos + 3, width,
+						height, null, null);
+			}
+		} else {
+			if (player.getScore() == 0) {
+				g.drawImage(train, xPos + (width / 8) - 2, yPos + 9, width / 2, height / 2, null, null);
+			} else {
+				g.drawImage(train, xPos + (cellSize / 2) - (width / 3), yPos + 8, (int)(width / 1.5),
+						(int)(height / 1.5), null, null);
+			}
+		}
 	}
-	
-	
+
 	private void drawCities(Graphics g, City[] cityList, Player activePlayer) {
 		Graphics2D g2d = (Graphics2D) g;
 		for (City c : cityList) {
@@ -416,7 +532,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 				drawCity(g2d, c, false);
 		}
 	}
-	
+
 	private void drawCities(Graphics g, City[] cityList) // without player
 	{
 		Graphics2D g2d = (Graphics2D) g;
@@ -443,28 +559,31 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		drawCityLabel(g2d, c);
 	}
 
-	private void drawCityLabel(Graphics g2d, City c)
-	{
+	private void drawCityLabel(Graphics g2d, City c) {
 		Point pixelLoc = gridToPixel(c.getPos());
-		
+
 		pixelLoc.x -= labelOffsetX;
 		pixelLoc.y += labelOffsetY;
 		g2d.setColor(Color.white);
-		g2d.fillRoundRect((int)pixelLoc.getX(), (int)pixelLoc.getY(), c.getName().length()*labelFontSize/2+labelHeight, labelHeight, labelHeight/4, labelHeight/4);
+		g2d.fillRoundRect((int) pixelLoc.getX(), (int) pixelLoc.getY(),
+				c.getName().length() * labelFontSize / 2 + labelHeight, labelHeight, labelHeight / 4, labelHeight / 4);
 		g2d.setColor(railColor);
 		g2d.setFont(new Font("Arial", Font.BOLD, labelFontSize));
-		g2d.drawString(c.getName(), (int)(pixelLoc.getX()+(labelFontSize/2)), (int)(pixelLoc.getY()+labelHeight/2+labelFontSize/3));
+		g2d.drawString(c.getName(), (int) (pixelLoc.getX() + (labelFontSize / 2)),
+				(int) (pixelLoc.getY() + labelHeight / 2 + labelFontSize / 3));
 	}
-	
+
 	private void drawMarker(Graphics2D g2d, Player player) {
 		if (player.getMarkerPos() != null) {
 			Point p = gridToPixel(player.getMarkerPos());
 			g2d.setColor(player.getColor());
-			//g.drawOval((int) (p.getX() - outerMarkerDiam/2), (int) (p.getY() - outerMarkerDiam/2), outerMarkerDiam,outerMarkerDiam);
-			
+			// g.drawOval((int) (p.getX() - outerMarkerDiam/2), (int) (p.getY() -
+			// outerMarkerDiam/2), outerMarkerDiam,outerMarkerDiam);
+
 			g2d.setColor(Color.white);
-			//g.fillOval((int) (p.getX() - innerMarkerDiam/2), (int) (p.getY() - innerMarkerDiam/2), innerMarkerDiam,innerMarkerDiam);
-			
+			// g.fillOval((int) (p.getX() - innerMarkerDiam/2), (int) (p.getY() -
+			// innerMarkerDiam/2), innerMarkerDiam,innerMarkerDiam);
+
 			g2d.setColor(player.getColor());
 			int[] markerPointsX = new int[starPointsX.length];
 			int[] markerPointsY = new int[starPointsY.length];
@@ -474,7 +593,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 			}
 
 			g2d.fillPolygon(markerPointsX, markerPointsY, markerPointsX.length);
-			g2d.setStroke(new BasicStroke(railThickness/2));
+			g2d.setStroke(new BasicStroke(railThickness / 2));
 			g2d.setColor(railColor);
 			g2d.drawPolygon(markerPointsX, markerPointsY, markerPointsX.length);
 		}

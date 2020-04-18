@@ -14,6 +14,9 @@ public abstract class Player {
 	ArrayList<City> targetCities;
 	int[] distancesToCities;
 
+	int offset = 0;
+	boolean large = false;
+	
 	Player(String n, Color c) {
 		validRails = new ArrayList<Rail>();
 		// XXX: just for testing
@@ -93,4 +96,20 @@ public abstract class Player {
 		return color;
 	}
 
+	public void setOffset(int off) {
+		offset = off;
+	}
+	
+	public int getOffset() {
+		return offset;
+	}
+	
+	public void setLarge(boolean size) {
+		large = size;
+	}
+	
+	public boolean getLarge() {
+		return large;
+	}
+	
 }
