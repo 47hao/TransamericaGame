@@ -29,41 +29,56 @@ public class GamePanel extends JPanel implements MouseInputListener {
 
 	Rail lastHovering;
 	String previousState;
+	
+	final static int resolutionWidth = 1200;
+	final static int resolutionHeight = 900;
 
-	final Color railColor = new Color(30, 30, 30);
-	public static final int railLength = 40;
-	final int doubleSpacing = 2;
+	//rail display details
+	final Color railColor = new Color(0, 0, 0);
+	public static final int railLength = 60;
+	final static float railThickness = 2f;
+	final int doubleSpacing = 3;
 	final int shortLength = 6;
 
+	final static int gridStartX = 120;
+	final static int gridStartY = 70;
+	
+	//universal colors
+	public final static Color Red = new Color(200, 35, 25);
+	public final static Color Blue = new Color(15, 90, 220);
+	public final static Color Green = new Color(10, 200, 0);
+	public final static Color Yellow = new Color(235, 190, 0);
+	public final static Color Orange = new Color(230, 120, 0);
+	public final static Color Purple = new Color(125, 60, 190);
 	// final int[] starPointsX = { 0, 8, 5, 13, 21, 18, 26, 16, 13, 10, 0 };
 	// final int[] starPointsY = { 10, 15, 25, 19, 25, 15, 10, 10, 0, 10, 10 };
 	// final int[] starPointsX = { 0, 4, 2, 7, 11, 9, 13, 8, 7, 5, 0 };
 	// final int[] starPointsY = { 5, 8, 13, 9, 13, 8, 5, 5, 0, 5, 5 };
+	
+	//marker parameters
+	//final int outerMarkerDiam = 18;
+	//final int innerMarkerDiam = 14;
+	
+	final double starScale = 1.8;
+	final int[] starTemplateX = { 0, 5, 3, 8, 12, 10, 14, 9, 8, 6, 0 };
+	final int[] starTemplateY = { 6, 9, 15, 10, 14, 9, 6, 6, 0, 6, 6 };
 
-	final int[] starPointsX = { 0, 5, 3, 8, 12, 10, 14, 9, 8, 6, 0 };
-	final int[] starPointsY = { 6, 9, 15, 10, 14, 9, 6, 6, 0, 6, 6 };
+	final int[] starPointsX;
+	final int[] starPointsY;
 	int starRangeX;
 	int starRangeY;
 
-	final int cityInnerDiam = 12;
-	final int cityStrokeDiam = 24;
-	final int cityStroke = 3;
-	public final static Color Red = new Color(220, 35, 25);
-	public final static Color Blue = new Color(15, 70, 175);
-	public final static Color Green = new Color(10, 180, 60);
-	public final static Color Yellow = new Color(245, 180, 25);
-	public final static Color Orange = new Color(245, 85, 25);
-	public final static Color Purple = new Color(125, 60, 190);
+	//city parameters
+	final int cityInnerDiam = 18;
+	final int cityStrokeDiam = 32;
+	final int cityStroke = 4;
 
 	final boolean displayCoords = true;
 
-	final static int gridStartX = 90;
-	final static int gridStartY = 52;
 
 	// these keep track of the pulsing colored rails
 	private int pulse;
 	private int direction;
-
 	boolean once = true;
 
 	public GamePanel(Game game) {
@@ -71,6 +86,16 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		direction = 1;
 
 		gameInfo = game;
+		
+		//initializing geometry coords for player markers
+		starPointsX = new int[starTemplateX.length];
+		starPointsY = new int[starTemplateY.length];
+		
+		for(int i=0; i<starTemplateX.length; i++) //scaling star coords based on template
+		{
+			starPointsX[i] = (int)(starTemplateX[i]*starScale);
+			starPointsY[i] = (int)(starTemplateY[i]*starScale);
+		}
 
 		int xMax = 0;
 		for (int i = 0; i < starPointsX.length - 1; i++) {
@@ -164,7 +189,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		// }
 
 		for (Player player : gameInfo.getPlayers()) {
-			drawMarker(g, player);
+			drawMarker((Graphics2D) g, player);
 		}
 
 		if (outlinedPoint != null) {
@@ -220,7 +245,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 
 		if (rail.getState().equals(Rail.EMPTY) || rail.getState().equals(Rail.HOVERING)) {
 			// System.out.println("empty/hovering");
-			g.setStroke(new BasicStroke(Rail.THICKNESS));
+			g.setStroke(new BasicStroke(railThickness));
 			if (rail.isDouble()) {
 				if (p.getY() == p2.getY())// horizontal rail
 				{
@@ -274,12 +299,12 @@ public class GamePanel extends JPanel implements MouseInputListener {
 			}
 		} else if (rail.getState().equals(Rail.PLACED)) {
 			// g.setColor(Color.RED);
-			g.setStroke(new BasicStroke(Rail.THICKNESS * 3f));
+			g.setStroke(new BasicStroke(railThickness * 3f));
 			g.drawLine((int) p.getX(), (int) p.getY(), (int) p2.getX(), (int) p2.getY());
 			// g.setColor(Color.BLACK);
 		}
 		if (rail.getState().equals(Rail.HOVERING)) {
-			g.setStroke(new BasicStroke(Rail.THICKNESS * 3f));
+			g.setStroke(new BasicStroke(railThickness * 3f));
 			g.setColor(new Color(255, 255, 255, 50));
 			// g.setColor(Color.RED);
 
@@ -404,13 +429,27 @@ public class GamePanel extends JPanel implements MouseInputListener {
 					strokeOffset, strokeOffset);
 		g2d.fillOval((int) (pixelLoc.getX() - cityInnerDiam / 2), (int) (pixelLoc.getY() - cityInnerDiam / 2),
 				cityInnerDiam, cityInnerDiam);
+		g2d.setStroke(new BasicStroke(railThickness));
+		g2d.setColor(railColor);
+		g2d.drawOval((int) (pixelLoc.getX() - cityInnerDiam / 2), (int) (pixelLoc.getY() - cityInnerDiam / 2),
+				cityInnerDiam, cityInnerDiam);
 	}
 
-	private void drawMarker(Graphics g, Player player) {
-		g.setColor(player.getColor());
+	private void drawCityLabel(Graphics g, City c)
+	{
+		
+	}
+	
+	private void drawMarker(Graphics2D g2d, Player player) {
 		if (player.getMarkerPos() != null) {
 			Point p = gridToPixel(player.getMarkerPos());
-			// g.drawOval((int) (p.getX() - 5), (int) (p.getY() - 5), 10, 10);
+			g2d.setColor(player.getColor());
+			//g.drawOval((int) (p.getX() - outerMarkerDiam/2), (int) (p.getY() - outerMarkerDiam/2), outerMarkerDiam,outerMarkerDiam);
+			
+			g2d.setColor(Color.white);
+			//g.fillOval((int) (p.getX() - innerMarkerDiam/2), (int) (p.getY() - innerMarkerDiam/2), innerMarkerDiam,innerMarkerDiam);
+			
+			g2d.setColor(player.getColor());
 			int[] markerPointsX = new int[starPointsX.length];
 			int[] markerPointsY = new int[starPointsY.length];
 			for (int i = 0; i < markerPointsX.length; i++) {
@@ -418,7 +457,10 @@ public class GamePanel extends JPanel implements MouseInputListener {
 				markerPointsY[i] = (int) p.getY() - (starRangeY / 2) + starPointsY[i];
 			}
 
-			g.fillPolygon(markerPointsX, markerPointsY, markerPointsX.length);
+			g2d.fillPolygon(markerPointsX, markerPointsY, markerPointsX.length);
+			g2d.setStroke(new BasicStroke(railThickness/2));
+			g2d.setColor(railColor);
+			g2d.drawPolygon(markerPointsX, markerPointsY, markerPointsX.length);
 		}
 	}
 
