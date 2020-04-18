@@ -203,11 +203,15 @@ public class Board {
 
 	public ArrayList<Rail> computeConnectedRails(Player p) {
 		ArrayList<Rail> returnVal = new ArrayList<Rail>();
-		ArrayList<Position> current = new ArrayList<Position>();
+		ArrayList<Position> currentRails = new ArrayList<Position>();
 		boolean stop = false;
-		current.add(p.getMarkerPos());
+		currentRails.add(p.getMarkerPos());
 		while (!stop) {
-			for (Position aroundPos : current) {
+			//for (Position aroundPos : currentRails) 
+			for (int i=0; i<currentRails.size(); i++)
+			
+			{
+				Position aroundPos = currentRails.get(i);
 				for (Rail check : getSurroundingRails(aroundPos)) {
 					for (Rail r : rails) {
 						boolean exists = false;
@@ -218,15 +222,15 @@ public class Board {
 						}
 						if (!exists && r.getState() == Rail.PLACED && r.equals(check)) {
 							returnVal.add(r);
-							current.add(r.endPos());
+							currentRails.add(r.endPos());
 							stop = false;
 						} else {
-							current.remove(aroundPos);
+							currentRails.remove(aroundPos);
 						}
 					}
 				}
 			}
-			if (current.size() == 0) {
+			if (currentRails.size() == 0) {
 				stop = true;
 			}
 		}
@@ -348,7 +352,9 @@ public class Board {
 
 	public ArrayList<Rail> computePossiblePlacements(Player p) {
 		ArrayList<Rail> returnVal = new ArrayList<Rail>();
+		
 		ArrayList<Rail> currentRails = computeConnectedRails(p);
+		
 		for (Rail r : currentRails) {
 			for (Rail r2 : getSurroundingRails(r.startPos())) {
 				boolean duplicate = false;

@@ -663,7 +663,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		} else if (gameInfo.getBoard().getGameState().equals(Board.GS_ROUND)) {
 			for (Rail r : gameInfo.getBoard().getRails()) {
 				if (r.getHitbox().contains(e.getPoint())) {
-					if (r.getState().equals(Rail.EMPTY)) {
+					if (r.getState().equals(Rail.EMPTY) && gameInfo.getCurrentPlayer().getValidRails().contains(r)) {
 						lastHovering = r;
 						lastHovering.setState(Rail.HOVERING);
 					}
@@ -711,6 +711,8 @@ public class GamePanel extends JPanel implements MouseInputListener {
 						clickedRail.setState(Rail.PLACED);
 						gameInfo.getTurnRails().add(r);
 						gameInfo.notify();
+						Player p = gameInfo.getCurrentPlayer();
+						p.setValidRails(gameInfo.getBoard().computePossiblePlacements(p));
 						repaint();
 						return;
 					}

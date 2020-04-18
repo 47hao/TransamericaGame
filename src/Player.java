@@ -17,6 +17,10 @@ public abstract class Player {
 	int offset = 0;
 	boolean large = false;
 	
+	//for initializing all the rails surrounding a point
+	final int[] surroundingFromCoords = {1,0, 1,1, 0,1}; //the three originating from it
+	final int[] surroundingToCoords = {-1,0, -1,-1, 0,-1}; ///the three that don't start at it
+	
 	Player(String n, Color c) {
 		validRails = new ArrayList<Rail>();
 		// XXX: just for testing
@@ -47,6 +51,24 @@ public abstract class Player {
 
 	public void setMarkerPos(Position pos) {
 		markerPos = pos;
+		for(int i=0; i<surroundingFromCoords.length; i+=2)
+		{
+			try{
+				validRails.add(new Rail(
+						new Position(pos.getX(),pos.getY()), 
+						new Position(pos.getX()+surroundingFromCoords[i],pos.getY()+surroundingFromCoords[i+1])
+						));
+			} catch(Exception e) {}
+		}
+		for(int i=0; i<surroundingToCoords.length; i+=2)
+		{
+			try{
+				validRails.add(new Rail(
+						new Position(pos.getX()+surroundingToCoords[i],pos.getY()+surroundingToCoords[i+1]),
+						new Position(pos.getX(),pos.getY())
+						));
+			} catch(Exception e) {}
+		}
 	}
 
 	public Position getMarkerPos() {
@@ -77,6 +99,9 @@ public abstract class Player {
 		return validRails;
 	}
 
+	public void setValidRails(ArrayList<Rail> rails) {
+		validRails = rails;
+	}
 	// public void calculateDistances() {
 	// for (int i = 0; i < targetCities.size(); i++) {
 	// distancesToCities[i] = this.getDistanceToCity(targetCities.get(i));
