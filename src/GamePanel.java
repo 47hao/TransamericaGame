@@ -323,7 +323,9 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		}
 
 		if (displayCoords) {
-			g.drawString(rail.startPos().getX() + ", " + rail.startPos().getY(), (int) p.getX(), (int) p.getY());
+
+			g.drawString(rail.getState(), (int) p.getX(), (int) p.getY());
+			//g.drawString(rail.startPos().getX() + ", " + rail.startPos().getY(), (int) p.getX(), (int) p.getY());
 		}
 
 	}
@@ -576,23 +578,26 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	private void drawMarker(Graphics2D g2d, Player player) {
 		if (player.getMarkerPos() != null) {
 			Point p = gridToPixel(player.getMarkerPos());
-			g2d.setColor(player.getColor());
-			// g.drawOval((int) (p.getX() - outerMarkerDiam/2), (int) (p.getY() -
-			// outerMarkerDiam/2), outerMarkerDiam,outerMarkerDiam);
-
-			g2d.setColor(Color.white);
-			// g.fillOval((int) (p.getX() - innerMarkerDiam/2), (int) (p.getY() -
-			// innerMarkerDiam/2), innerMarkerDiam,innerMarkerDiam);
-
-			g2d.setColor(player.getColor());
+			
 			int[] markerPointsX = new int[starPointsX.length];
 			int[] markerPointsY = new int[starPointsY.length];
 			for (int i = 0; i < markerPointsX.length; i++) {
 				markerPointsX[i] = (int) p.getX() - (starRangeX / 2) + starPointsX[i];
 				markerPointsY[i] = (int) p.getY() - (starRangeY / 2) + starPointsY[i];
 			}
-
+			
+			if(gameInfo.getCurrentPlayer().equals(player))
+			{
+				g2d.setStroke(new BasicStroke(railThickness*2));
+				g2d.setColor(Color.white);
+				g2d.drawPolygon(markerPointsX, markerPointsY, markerPointsX.length);
+			} else {
+				
+			}
+			
+			g2d.setColor(player.getColor());
 			g2d.fillPolygon(markerPointsX, markerPointsY, markerPointsX.length);
+			
 			g2d.setStroke(new BasicStroke(railThickness / 2));
 			g2d.setColor(railColor);
 			g2d.drawPolygon(markerPointsX, markerPointsY, markerPointsX.length);
@@ -693,8 +698,9 @@ public class GamePanel extends JPanel implements MouseInputListener {
 			} else if (gameInfo.getBoard().getGameState().equals(Board.GS_MARKER)) {
 				for (Ellipse2D ellipse : gameInfo.getBoard().getPositionHitboxes()) {
 					if (ellipse.contains(e.getPoint())) {
-						gameInfo.getCurrentPlayer().setMarkerPos(gameInfo.getBoard().getPositions()
-								.get(gameInfo.getBoard().getPositionHitboxes().indexOf(ellipse)));
+						Position pos = gameInfo.getBoard().getPositions()
+								.get(gameInfo.getBoard().getPositionHitboxes().indexOf(ellipse));
+						gameInfo.getCurrentPlayer().setMarkerPos(pos);
 						gameInfo.notify();
 					}
 				}
@@ -711,8 +717,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 						clickedRail.setState(Rail.PLACED);
 						gameInfo.getTurnRails().add(r);
 						gameInfo.notify();
-						Player p = gameInfo.getCurrentPlayer();
-						p.setValidRails(gameInfo.getBoard().computePossiblePlacements(p));
+						
 						repaint();
 						return;
 					}
@@ -720,6 +725,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 			}
 		}
 	}
+	
 
 	public void mouseEntered(MouseEvent e) {
 

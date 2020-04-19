@@ -203,35 +203,88 @@ public class Board {
 
 	public ArrayList<Rail> computeConnectedRails(Player p) {
 		ArrayList<Rail> returnVal = new ArrayList<Rail>();
-		ArrayList<Position> currentRails = new ArrayList<Position>();
+		ArrayList<Position> currentPositions = new ArrayList<Position>();
 		boolean stop = false;
-		currentRails.add(p.getMarkerPos());
+		currentPositions.add(p.getMarkerPos());
 		while (!stop) {
-			//for (Position aroundPos : currentRails) 
-			for (int i=0; i<currentRails.size(); i++)
-			
+			for (int i=0; i<currentPositions.size(); i++)
 			{
-				Position aroundPos = currentRails.get(i);
-				for (Rail check : getSurroundingRails(aroundPos)) {
+				Position aroundPos = currentPositions.get(i);
+				for (Rail check : getSurroundingRails(aroundPos)) { 
 					for (Rail r : rails) {
-						boolean exists = false;
+						boolean duplicate = false;
 						for (Rail previous : returnVal) {
 							if (previous.equals(r)) {
-								exists = true;
+								duplicate = true;
 							}
 						}
-						if (!exists && r.getState() == Rail.PLACED && r.equals(check)) {
+						if (!duplicate 
+						&& (r.getState().equals(Rail.PLACED)) 
+						&& r.equals(check)) 
+						{
 							returnVal.add(r);
-							currentRails.add(r.endPos());
+							if(aroundPos.equals(r.endPos()))
+								currentPositions.add(r.startPos());
+							else
+								currentPositions.add(r.endPos());
 							stop = false;
 						} else {
-							currentRails.remove(aroundPos);
+							
 						}
 					}
 				}
+				currentPositions.remove(aroundPos);				
 			}
-			if (currentRails.size() == 0) {
+			if (currentPositions.size() == 0) {
 				stop = true;
+			}
+		}
+		System.out.println("CONNECTED RAILS: " + returnVal.size());
+		return returnVal;
+	}
+	
+	public ArrayList<Rail> computePossiblePlacements(Player p) {
+		ArrayList<Rail> returnVal = new ArrayList<Rail>();
+		
+		ArrayList<Rail> currentRails = computeConnectedRails(p);
+		
+		if(currentRails.size() == 0) //no rails have been placed yet
+		{
+			return getSurroundingRails(p.getMarkerPos());
+		}
+		
+		for (Rail r : currentRails) {
+			for (Rail r2 : getSurroundingRails(r.startPos())) {
+				boolean duplicate = false;
+				for (Rail check : returnVal) {
+					if (check.equals(r2)) {
+						duplicate = true;
+					}
+				}
+				for (Rail check : currentRails) {
+					if (check.equals(r2)) {
+						duplicate = true;
+					}
+				}
+				if (!duplicate && r2.getState() == Rail.EMPTY) {
+					returnVal.add(r2);
+				}
+			}
+			for (Rail r2 : getSurroundingRails(r.endPos())) {
+				boolean duplicate = false;
+				for (Rail check : returnVal) {
+					if (check.equals(r2)) {
+						duplicate = true;
+					}
+				}
+				for (Rail check : currentRails) {
+					if (check.equals(r2)) {
+						duplicate = true;
+					}
+				}
+				if (!duplicate && r2.getState() == Rail.EMPTY) {
+					returnVal.add(r2);
+				}
 			}
 		}
 		return returnVal;
@@ -348,48 +401,6 @@ public class Board {
 				return cities[i];
 		}
 		return null;
-	}
-
-	public ArrayList<Rail> computePossiblePlacements(Player p) {
-		ArrayList<Rail> returnVal = new ArrayList<Rail>();
-		
-		ArrayList<Rail> currentRails = computeConnectedRails(p);
-		
-		for (Rail r : currentRails) {
-			for (Rail r2 : getSurroundingRails(r.startPos())) {
-				boolean duplicate = false;
-				for (Rail check : returnVal) {
-					if (check.equals(r2)) {
-						duplicate = true;
-					}
-				}
-				for (Rail check : currentRails) {
-					if (check.equals(r2)) {
-						duplicate = true;
-					}
-				}
-				if (!duplicate && r2.getState() == Rail.EMPTY) {
-					returnVal.add(r2);
-				}
-			}
-			for (Rail r2 : getSurroundingRails(r.endPos())) {
-				boolean duplicate = false;
-				for (Rail check : returnVal) {
-					if (check.equals(r2)) {
-						duplicate = true;
-					}
-				}
-				for (Rail check : currentRails) {
-					if (check.equals(r2)) {
-						duplicate = true;
-					}
-				}
-				if (!duplicate && r2.getState() == Rail.EMPTY) {
-					returnVal.add(r2);
-				}
-			}
-		}
-		return returnVal;
 	}
 
 	public void setRailState(Rail r, String state) {

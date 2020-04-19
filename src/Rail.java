@@ -12,9 +12,7 @@ public class Rail {
 
 	final static float THICKNESS = 1.5f;
 	final static String EMPTY = "empty";
-	final static String NEW = "new";
 	final static String PLACED = "placed";
-	final static String BLINKING = "blinking";
 	final static String HOVERING = "hovering";
 
 	public Rail(Position startPoint, Position endPoint) {

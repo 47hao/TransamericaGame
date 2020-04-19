@@ -127,6 +127,11 @@ public class Game {
 						System.out.println("current player: " + currentPlayer.getName());
 						turnRails = new ArrayList<Rail>();
 						while (board.getRemainingRails() > 0) {
+							
+							currentPlayer.setValidRails(board.computePossiblePlacements(currentPlayer));
+							
+							System.out.println("HECCS" + currentPlayer.getValidRails().size());
+							
 							try {
 								wait();
 							} catch (InterruptedException e) {
