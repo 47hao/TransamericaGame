@@ -221,13 +221,21 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	private void drawRail(Graphics2D g, Rail rail) {
 		g.setColor(railColor);
 
-		for (ArrayList<Rail> railList : gameInfo.getRecentRails()) {
-			for (Rail r : railList) {
-				if (rail.equals(r)) {
-					// the rail was recently placed
-					g.setColor(new Color(pulse, pulse, pulse));
+		for (int i=0; i<gameInfo.getRecentRails().size(); i++)
+		{
+			try {
+				ArrayList<Rail> railList = gameInfo.getRecentRails().get(i);
+				for (Rail r : railList) {
+					if (rail.equals(r)) {
+						// the rail was recently placed
+						g.setColor(new Color(pulse, pulse, pulse));
+					}
 				}
+			} catch(Exception e)
+			{
+				System.out.println("Null getRecentRails problem");
 			}
+			
 		}
 
 		Point p = gridToPixel(rail.startPos());
