@@ -56,7 +56,7 @@ public class EndGame {
 			g2d.setColor(Color.BLACK);
 
 			g2d.setFont(new Font("Arial", Font.BOLD, 36));
-			g2d.drawString("Final Results:", panel.getWidth() / 3, 3 + OFFSET_Y);
+			g2d.drawString("Round Results:", panel.getWidth() / 3, 3 + OFFSET_Y);
 
 			Stroke stroke = g2d.getStroke();
 
