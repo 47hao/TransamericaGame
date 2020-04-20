@@ -53,7 +53,7 @@ public class Board {
 
             new City(new Position(0, 0), "Seattle", GamePanel.Green),
             new City(new Position(0, 1), "Portland", GamePanel.Green),
-            new City(new Position(2, 5), "Sacremento", GamePanel.Green),
+            new City(new Position(2, 5), "Sacramento", GamePanel.Green),
             new City(new Position(2, 6), "San Francisco", GamePanel.Green),
             new City(new Position(5, 9), "Los Angeles", GamePanel.Green),
             new City(new Position(6, 10), "San Diego", GamePanel.Green),
@@ -285,8 +285,8 @@ public class Board {
     }
 
     public int getDistancetoCity(Player p, City c) {
-        return 1;
-        // return quickestPath(p.getMarkerPos(), c.getPos()).size();
+        // return 1;
+        return quickestPath(p.getMarkerPos(), c.getPos()).size();
     }
 
     // public ArrayList<Rail> quickestPath(Position a, Position b) {
