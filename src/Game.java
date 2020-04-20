@@ -98,12 +98,18 @@ public class Game {
 			board.setGameState(Board.GS_MARKER);
 			for (Player p : players) {
 				currentPlayer = p;
-				while (currentPlayer.getMarkerPos() == null) {
-					try {
-						// TODO: code strategy to notify() after marker placed
-						wait();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+				if(p.isComputer)
+				{
+					p.setMarkerPos(p.getMarker(board));
+					System.out.println("cpu marker placed");
+				} else {
+					while (currentPlayer.getMarkerPos() == null) {
+						try {
+							// TODO: code strategy to notify() after marker placed
+							wait();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 			}
@@ -131,12 +137,22 @@ public class Game {
 						while (board.getRemainingRails() > 0) {
 
 							currentPlayer.setValidRails(board.computePossiblePlacements(currentPlayer));
-							
-							try {
-								wait();
-							} catch (InterruptedException e) {
-								e.printStackTrace();
+
+							if(p.isComputer())
+							{
+								
+								int railIndex = p.getRail(p.getValidRails().toArray(new Rail[p.getValidRails().size()]), board);
+								Rail selectedRail = p.getValidRails().get(railIndex);
+								turnRails.add(selectedRail);
+								board.setRailState(selectedRail, Rail.PLACED);
+							} else {
+								try {
+									wait();
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
 							}
+							
 							// turnRails.add()
 							calculateDistances();
 							// rail placed
@@ -150,7 +166,6 @@ public class Game {
 							checkCitiesReached(currentPlayer);
 							if(currentPlayer.checkAllCitiesReached())
 							{
-								System.out.println("haha hyea");
 								roundOver = true;
 							}
 						}

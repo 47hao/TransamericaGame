@@ -346,7 +346,20 @@ public class InitialScreen {
 				ArrayList<Player> playerList = new ArrayList<Player>();
 
 				for (int i = 0; i < players.size(); i++) {
-					playerList.add(new HumanPlayer(players.get(i), colorList.get(i)));
+
+					if (radioGroups[i][1].isSelected())
+					{
+						if(strategyChooserBoxes[i].getSelectedItem().equals("Basic"))
+						{
+							playerList.add(new ComputerPlayer(players.get(i), colorList.get(i), new BasicStrategy()));
+						} else {
+							System.out.println("oop sorry no experts yet");
+							//playerList.add(new ComputerPlayer(players.get(i), colorList.get(i), new ExpertStrategy()));
+						}
+					} else {
+						playerList.add(new HumanPlayer(players.get(i), colorList.get(i)));
+					}
+					
 				}
 
 				Random r = new Random();

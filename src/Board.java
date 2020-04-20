@@ -233,7 +233,6 @@ public class Board {
                 stop = true;
             }
         }
-        System.out.println("CONNECTED RAILS: " + returnVal.size());
         return returnVal;
     }
 

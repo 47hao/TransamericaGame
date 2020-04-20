@@ -6,6 +6,7 @@ import java.util.Collections;
 public abstract class Player {
 	Color color;
 	String name;
+	boolean isComputer;
 
 	int score;
 
@@ -15,8 +16,8 @@ public abstract class Player {
 	ArrayList<Boolean> targetsReached;
 	int[] distancesToCities;
 
-	int offset = 0;
-	boolean large = false;
+	int scoreboardOffset = 0;
+	boolean largeIcon = false;
 
 	// for initializing all the rails surrounding a point
 	final int[] surroundingFromCoords = { 1, 0, 1, 1, 0, 1 }; // the three originating from it
@@ -32,6 +33,11 @@ public abstract class Player {
 	}
 
 	abstract String getName();
+	
+	public boolean isComputer()
+	{
+		return isComputer;
+	}
 
 	public void initTargetCities()
 	{
@@ -54,8 +60,9 @@ public abstract class Player {
 	// abstract int getDistanceToCity(City c);
 
 	// abstract void setDistanceToCity(City c, int n);
+	abstract Position getMarker(Board b);
 
-	abstract int getRail(Rail[] rails);
+	abstract int getRail(Rail[] rails, Board b);
 
 	abstract void addScore(int amount);
 
@@ -111,19 +118,19 @@ public abstract class Player {
 	}
 
 	public void setOffset(int off) {
-		offset = off;
+		scoreboardOffset = off;
 	}
 
 	public int getOffset() {
-		return offset;
+		return scoreboardOffset;
 	}
 
 	public void setLarge(boolean size) {
-		large = size;
+		largeIcon = size;
 	}
 
 	public boolean getLarge() {
-		return large;
+		return largeIcon;
 	}
 
 }
