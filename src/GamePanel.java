@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
-import javax.swing.text.AttributeSet.ColorAttribute;
 
 public class GamePanel extends JPanel implements MouseInputListener {
 
@@ -325,7 +324,8 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		if (displayCoords) {
 
 			g.drawString(rail.getState(), (int) p.getX(), (int) p.getY());
-			//g.drawString(rail.startPos().getX() + ", " + rail.startPos().getY(), (int) p.getX(), (int) p.getY());
+			// g.drawString(rail.startPos().getX() + ", " + rail.startPos().getY(), (int)
+			// p.getX(), (int) p.getY());
 		}
 
 	}
@@ -345,15 +345,11 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		int yPos = 15;
 		int cellSize = 87;
 		List<List<Player>> trains = new ArrayList<List<Player>>(13);
-		
+
 		/*
-		if (once) {
-			for (Player p : gameInfo.getPlayers()) {
-				p.addScore((int) (Math.random() * 13));
-			}
-			once = false;
-		}
-		*/
+		 * if (once) { for (Player p : gameInfo.getPlayers()) { p.addScore((int)
+		 * (Math.random() * 13)); } once = false; }
+		 */
 
 		// Track how many players are in the same spot and offset them
 		trains = new ArrayList<List<Player>>(13);
@@ -489,7 +485,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	private void drawTrain(Graphics g, Player player, int xPos, int yPos, boolean big) {
 		int cellSize = 87;
 		BufferedImage train = null;
-		
+
 		try {
 			train = ImageIO.read(new File("img/train.png"));
 		} catch (IOException e) {
@@ -498,29 +494,28 @@ public class GamePanel extends JPanel implements MouseInputListener {
 
 		int height = train.getHeight();
 		int width = train.getWidth();
-		
-		//change train color
+
+		// change train color
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				if ((train.getRGB(x, y) >> 24) != 0x00)
 					train.setRGB(x, y, player.getColor().getRGB());
 			}
 		}
-		
-		//scale train according to number of trains
+
+		// scale train according to number of trains
 		if (big) {
 			if (player.getScore() == 0) {
 				g.drawImage(train, xPos + (width / 8) - 2, yPos + 9, width / 2, height / 2, null, null);
 			} else {
-				g.drawImage(train, xPos + (cellSize / 2) - width / 2, yPos + 3, width,
-						height, null, null);
+				g.drawImage(train, xPos + (cellSize / 2) - width / 2, yPos + 3, width, height, null, null);
 			}
 		} else {
 			if (player.getScore() == 0) {
 				g.drawImage(train, xPos + (width / 8) - 2, yPos + 9, width / 2, height / 2, null, null);
 			} else {
-				g.drawImage(train, xPos + (cellSize / 2) - (width / 3), yPos + 8, (int)(width / 1.5),
-						(int)(height / 1.5), null, null);
+				g.drawImage(train, xPos + (cellSize / 2) - (width / 3), yPos + 8, (int) (width / 1.5),
+						(int) (height / 1.5), null, null);
 			}
 		}
 	}
@@ -578,26 +573,25 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	private void drawMarker(Graphics2D g2d, Player player) {
 		if (player.getMarkerPos() != null) {
 			Point p = gridToPixel(player.getMarkerPos());
-			
+
 			int[] markerPointsX = new int[starPointsX.length];
 			int[] markerPointsY = new int[starPointsY.length];
 			for (int i = 0; i < markerPointsX.length; i++) {
 				markerPointsX[i] = (int) p.getX() - (starRangeX / 2) + starPointsX[i];
 				markerPointsY[i] = (int) p.getY() - (starRangeY / 2) + starPointsY[i];
 			}
-			
-			if(gameInfo.getCurrentPlayer().equals(player))
-			{
-				g2d.setStroke(new BasicStroke(railThickness*2));
+
+			if (gameInfo.getCurrentPlayer().equals(player)) {
+				g2d.setStroke(new BasicStroke(railThickness * 2));
 				g2d.setColor(Color.white);
 				g2d.drawPolygon(markerPointsX, markerPointsY, markerPointsX.length);
 			} else {
-				
+
 			}
-			
+
 			g2d.setColor(player.getColor());
 			g2d.fillPolygon(markerPointsX, markerPointsY, markerPointsX.length);
-			
+
 			g2d.setStroke(new BasicStroke(railThickness / 2));
 			g2d.setColor(railColor);
 			g2d.drawPolygon(markerPointsX, markerPointsY, markerPointsX.length);
@@ -717,7 +711,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 						clickedRail.setState(Rail.PLACED);
 						gameInfo.getTurnRails().add(r);
 						gameInfo.notify();
-						
+
 						repaint();
 						return;
 					}
@@ -725,7 +719,6 @@ public class GamePanel extends JPanel implements MouseInputListener {
 			}
 		}
 	}
-	
 
 	public void mouseEntered(MouseEvent e) {
 
