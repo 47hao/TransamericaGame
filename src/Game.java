@@ -138,6 +138,9 @@ public class Game {
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
+							// turnRails.add()
+							System.out.println("\n\n\n\nFIRST RAIL: " + turnRails.get(0) + "\n\n" + "double rail? "
+									+ turnRails.get(0).isDouble() + "\n\n\n");
 							System.out.println("calculating distances");
 							calculateDistances();
 							System.out.println("distances calculated");

@@ -708,6 +708,9 @@ public class GamePanel extends JPanel implements MouseInputListener {
 							&& (r.getState().equals(Rail.EMPTY) || r.getState().equals(Rail.HOVERING))
 							&& r.getHitbox().contains(e.getPoint())) {
 						clickedRail = r;
+						if (r.isDouble() && gameInfo.getBoard().getRemainingRails() < 2) {
+							return;
+						}
 						clickedRail.setState(Rail.PLACED);
 						gameInfo.getTurnRails().add(r);
 						gameInfo.notify();
