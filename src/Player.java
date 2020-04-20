@@ -12,6 +12,7 @@ public abstract class Player {
 	Position markerPos;
 	ArrayList<Rail> validRails;
 	ArrayList<City> targetCities;
+	ArrayList<Boolean> targetsReached;
 	int[] distancesToCities;
 
 	int offset = 0;
@@ -23,49 +24,23 @@ public abstract class Player {
 
 	Player(String n, Color c) {
 		validRails = new ArrayList<Rail>();
-		// XXX: just for testing
-		// validRails.add(new Rail(new Position(0, 0), new Position(0, 1)));
-		// validRails.add(new Rail(new Position(0, 1), new Position(1, 2)));
-		// validRails.add(new Rail(new Position(0, 1), new Position(0, 2)));
-		// validRails.add(new Rail(new Position(0, 0), new Position(1, 0)));
-		// validRails.add(new Rail(new Position(1, 1), new Position(2, 2)));
-		// validRails.add(new Rail(new Position(1, 2), new Position(2, 2)));
-		// validRails.add(new Rail(new Position(2, 2), new Position(3, 3)));
-		// validRails.add(new Rail(new Position(3, 3), new Position(4, 4)));
-		// validRails.add(new Rail(new Position(1, 0), new Position(1, 1)));
-		// validRails.add(new Rail(new Position(1, 1), new Position(2, 1)));
-		// validRails.add(new Rail(new Position(1, 0), new Position(2, 0)));
-		// validRails.add(new Rail(new Position(0, 0), new Position(1, 1)));
-
-		// validRails.addAll(Board.cities);
-		validRails.addAll(Arrays.asList());
-		// Collections.asList(Board.cities);
-
 		name = n;
 		targetCities = new ArrayList<City>();
+		targetsReached = new ArrayList<Boolean>();
 		color = c;
 		score = 0;
 	}
 
 	abstract String getName();
 
+	public void initTargetCities()
+	{
+		for(int i=0; i<targetCities.size(); i++)
+			targetsReached.add(false);
+	}
+	
 	public void setMarkerPos(Position pos) {
 		markerPos = pos;
-		for (int i = 0; i < surroundingFromCoords.length; i += 2) {
-			try {
-				validRails.add(new Rail(new Position(pos.getX(), pos.getY()), new Position(
-						pos.getX() + surroundingFromCoords[i], pos.getY() + surroundingFromCoords[i + 1])));
-			} catch (Exception e) {
-			}
-		}
-		for (int i = 0; i < surroundingToCoords.length; i += 2) {
-			try {
-				validRails.add(new Rail(
-						new Position(pos.getX() + surroundingToCoords[i], pos.getY() + surroundingToCoords[i + 1]),
-						new Position(pos.getX(), pos.getY())));
-			} catch (Exception e) {
-			}
-		}
 	}
 
 	public Position getMarkerPos() {
@@ -104,6 +79,23 @@ public abstract class Player {
 	// distancesToCities[i] = this.getDistanceToCity(targetCities.get(i));
 	// }
 	// }
+	public void setCityReached(City c)
+	{
+		System.out.println("Reached " + c);
+		int i = targetCities.indexOf(c);
+		targetsReached.set(i, true);
+	}
+	
+	public boolean checkAllCitiesReached()
+	{
+		System.out.println("Checckin " + targetsReached.size() + "targets");
+		for(boolean reached : targetsReached)
+		{
+			if(reached==false)
+				return false;
+		}
+		return true;
+	}
 
 	public int[] getDistancesToCities() {
 		return distancesToCities;

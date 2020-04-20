@@ -130,8 +130,7 @@ public class Game {
 						while (board.getRemainingRails() > 0) {
 
 							currentPlayer.setValidRails(board.computePossiblePlacements(currentPlayer));
-
-							System.out.println("HECCS" + currentPlayer.getValidRails().size());
+							
 
 							try {
 								wait();
@@ -139,12 +138,7 @@ public class Game {
 								e.printStackTrace();
 							}
 							// turnRails.add()
-							System.out.println("\n\n\n\nFIRST RAIL: " + turnRails.get(0) + "\n\n" + "double rail? "
-									+ turnRails.get(0).isDouble() + "\n\n\n");
-							System.out.println("calculating distances");
 							calculateDistances();
-							System.out.println("distances calculated");
-							System.out.println("remaining rails: " + board.getRemainingRails());
 							// rail placed
 							if (turnRails.get(0).isDouble()) {
 								board.setRemainingRails(0);
@@ -153,15 +147,25 @@ public class Game {
 								board.setRemainingRails(board.getRemainingRails() - 1);
 							}
 							// p.calculateDistances();
+							checkCitiesReached(currentPlayer);
+							if(currentPlayer.checkAllCitiesReached())
+							{
+								System.out.println("haha hyea");
+								roundOver = true;
+							}
 						}
 						addTurnRails(turnRails);
+						/*
 						roundOver = true;
+						
 						int[] distances = p.getDistancesToCities();
 						for (int i = 0; i < distances.length; i++) {
 							if (distances[i] > 0) {
 								roundOver = false;
 							}
 						}
+						*/
+						
 					}
 				}
 				// System.out.println("round over");
@@ -183,12 +187,25 @@ public class Game {
 			new EndGame(getPlayers());
 		}
 	}
+	
+	public void checkCitiesReached(Player p)
+	{
+		for(City c: p.getTargetCities())
+			for(Rail r: board.computeConnectedRails(p) )
+				if(c.getPos().equals(r.startPos()) || c.getPos().equals(r.endPos()))
+				{
+					p.setCityReached(c);
+					System.out.println("brokeloop");
+					break;
+				}
+	}
 
 	public void calculateDistances() {
 		for (Player player : players) {
 			int[] dist = new int[6];
 			for (int i = 0; i < player.getTargetCities().size(); i++) {
-				dist[i] = board.getDistancetoCity(player, player.getTargetCities().get(i));
+				//dist[i] = board.getDistancetoCity(player, player.getTargetCities().get(i));
+				dist[i] = 1;
 			}
 			player.setDistancesToCities(dist);
 		}

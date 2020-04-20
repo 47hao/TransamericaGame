@@ -642,8 +642,6 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		// FIXME: there's a bug where rails stay stuck as hovering
 		// try moving the mouse very quickly over the first diagonal right rail
 		// (leftmost, near california)
-		System.out.println("lastHovering: " + lastHovering);
-		System.out.println("(" + e.getPoint().getX() + ", " + e.getPoint().getY() + ")");
 
 		if (gameInfo.getBoard().getGameState().equals(Board.GS_GAME_END)
 				|| gameInfo.getBoard().getGameState().equals(Board.GS_GAME_END)) {
@@ -667,18 +665,15 @@ public class GamePanel extends JPanel implements MouseInputListener {
 						lastHovering.setState(Rail.HOVERING);
 					}
 					repaint();
-					System.out.println("hitbox contained");
 					return;
 				}
 				if (lastHovering != null && !lastHovering.equals(r) && lastHovering.getState().equals(Rail.HOVERING)) {
 					lastHovering.setState(Rail.EMPTY);
-					System.out.println("reset1");
 				}
 			}
 
 			if (lastHovering != null && lastHovering.getState().equals(Rail.HOVERING)) {
 				lastHovering.setState(Rail.EMPTY);
-				System.out.println("reset2");
 			}
 		}
 	}

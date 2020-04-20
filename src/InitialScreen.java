@@ -354,6 +354,7 @@ public class InitialScreen {
 					for (int i = 0; i < cityLists.length; i++) {
 						player.getTargetCities().add((City) cityLists[i].remove(r.nextInt(cityLists[i].size())));
 					}
+					player.initTargetCities();
 				}
 
 				for (Player player : playerList) {
