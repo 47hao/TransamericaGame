@@ -23,8 +23,13 @@ public class HumanPlayer extends Player {
 	// distanc
 	// }
 
-	public int getRail(Rail[] rails) {
-		return 0;
+	Position getMarker(Board b) {
+		return null;
+	}
+
+	int getRail(Rail[] rails, Board b) {
+		// TODO Auto-generated method stub
+		return -1;
 	}
 
 }

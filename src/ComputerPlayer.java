@@ -3,12 +3,12 @@ import java.awt.Color;
 class ComputerPlayer extends Player {
 	private String offname;
 	private Strategy s;
-	private Board board;
 
 	public ComputerPlayer(String name, Color c, Strategy strat) {
 		super(name, c);
 		offname = name;
 		s = strat;
+		isComputer = true;
 	}
 
 	public String getName() {
@@ -34,23 +34,19 @@ class ComputerPlayer extends Player {
 	// XXX: a note: only this getrail method should be used outside of this class
 	// (this allows for having the board state)
 	public int getRail(Rail[] possibleRails, Board b) {
-		board = b;
-		return getRail(possibleRails);
-	}
-
-	public int getRail(Rail[] possibleRails) {
-		// can use instance of board here
-
-		// Rail r = s.returnRail(targetCities, possibleRails, board);
-		getTargetCities();
-
-		Rail r = null;
-		int index = -1;
-		for (int i = 0; i < possibleRails.length; i++) {
-			if (possibleRails[i].equals(r)) {
-				index = i;
+		Rail returnRail = s.returnRail(targetCities.toArray(new City[targetCities.size()]), possibleRails, b);
+		for(int i=0; i<possibleRails.length; i++)
+		{
+			if(possibleRails[i].equals(returnRail))
+			{
+				return i;
 			}
 		}
-		return index;
+		return -1;
+	}
+	
+	public Position getMarker(Board b) {
+		int range = b.getPositions().size();
+		return b.getPositions().get((int)(Math.random()*range));
 	}
 }
