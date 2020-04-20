@@ -331,18 +331,7 @@ public class InitialScreen {
 						computersOnly = false;
 					}
 				}
-
-				ArrayList<City> orangeCities = new ArrayList<City>();
-				ArrayList<City> blueCities = new ArrayList<City>();
-				ArrayList<City> yellowCities = new ArrayList<City>();
-				ArrayList<City> redCities = new ArrayList<City>();
-				ArrayList<City> greenCities = new ArrayList<City>();
-				ArrayList[] cityLists = { orangeCities, blueCities, yellowCities, redCities, greenCities };
-				for (int i = 0; i < cityLists.length; i++) {
-					for (int j = i * 7; j < 7 * (i + 1); j++) {
-						cityLists[i].add(Board.cities[j]);
-					}
-				}
+				
 				ArrayList<Player> playerList = new ArrayList<Player>();
 
 				for (int i = 0; i < players.size(); i++) {
@@ -360,14 +349,6 @@ public class InitialScreen {
 						playerList.add(new HumanPlayer(players.get(i), colorList.get(i)));
 					}
 					
-				}
-
-				Random r = new Random();
-				for (Player player : playerList) {
-					for (int i = 0; i < cityLists.length; i++) {
-						player.getTargetCities().add((City) cityLists[i].remove(r.nextInt(cityLists[i].size())));
-					}
-					player.initTargetCities();
 				}
 
 				for (Player player : playerList) {

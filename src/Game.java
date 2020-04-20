@@ -1,6 +1,7 @@
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
@@ -94,12 +95,35 @@ public class Game {
 
 		synchronized (this) {
 
+			ArrayList<City> orangeCities = new ArrayList<City>();
+			ArrayList<City> blueCities = new ArrayList<City>();
+			ArrayList<City> yellowCities = new ArrayList<City>();
+			ArrayList<City> redCities = new ArrayList<City>();
+			ArrayList<City> greenCities = new ArrayList<City>();
+			ArrayList[] cityLists = { orangeCities, blueCities, yellowCities, redCities, greenCities };
+			for (int i = 0; i < cityLists.length; i++) {
+				for (int j = i * 7; j < 7 * (i + 1); j++) {
+					cityLists[i].add(Board.cities[j]);
+				}
+			}
+
+			for (Player player : players) {
+				player.clearCities();
+			}
+
+			Random r = new Random();
+			for (Player player : players) {
+				for (int i = 0; i < cityLists.length; i++) {
+					player.getTargetCities().add((City) cityLists[i].remove(r.nextInt(cityLists[i].size())));
+				}
+				player.initTargetCities();
+			}
+
 			// first, place the markers for each player
 			board.setGameState(Board.GS_MARKER);
 			for (Player p : players) {
 				currentPlayer = p;
-				if(p.isComputer)
-				{
+				if (p.isComputer) {
 					p.setMarkerPos(p.getMarker(board));
 					System.out.println("cpu marker placed");
 				} else {
@@ -119,9 +143,55 @@ public class Game {
 			totalTurns = 0;
 			panel.clearOutlinedPoint();
 			while (!gameOver) {
-				board.setGameState(Board.GS_ROUND);
 				turns = 0;
+
+				if (totalTurns != 0) {
+					
+					for (Player player : players)
+						player.clearMarker();
+					
+					board = new Board();
+					board.setGameState(Board.GS_MARKER);
+					for (Player p : players) {
+						currentPlayer = p;
+						if (p.isComputer) {
+							p.setMarkerPos(p.getMarker(board));
+							System.out.println("cpu marker placed");
+						} else {
+							while (currentPlayer.getMarkerPos() == null) {
+								try {
+									// TODO: code strategy to notify() after marker placed
+									wait();
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+							}
+						}
+					}
+					
+					// reset board
+					for (int i = 0; i < cityLists.length; i++) {
+						for (int j = i * 7; j < 7 * (i + 1); j++) {
+							cityLists[i].add(Board.cities[j]);
+						}
+					}
+
+					for (Player player : players) {
+						player.clearCities();
+					}
+
+					r = new Random();
+					for (Player player : players) {
+						for (int i = 0; i < cityLists.length; i++) {
+							player.getTargetCities().add((City) cityLists[i].remove(r.nextInt(cityLists[i].size())));
+						}
+						player.initTargetCities();
+					}
+					
+				}
 				
+				board.setGameState(Board.GS_ROUND);
+
 				while (!roundOver) {
 
 					for (Player p : players) {
@@ -129,67 +199,62 @@ public class Game {
 						System.out.println("turn #" + turns);
 						// p.calculateDistances();
 
-						// each player places 2 rails per round
-						board.setRemainingRails(2);
-						currentPlayer = p;
-						System.out.println("current player: " + currentPlayer.getName());
-						turnRails = new ArrayList<Rail>();
-						while (board.getRemainingRails() > 0) {
+						checkCitiesReached(currentPlayer);
+						if (currentPlayer.checkAllCitiesReached()) {
+							roundOver = true;
+							board.setGameState(Board.GS_ROUND_END);
+						} else {
+							// each player places 2 rails per round
+							board.setRemainingRails(2);
+							currentPlayer = p;
+							System.out.println("current player: " + currentPlayer.getName());
+							turnRails = new ArrayList<Rail>();
+							while (board.getRemainingRails() > 0) {
 
-							currentPlayer.setValidRails(board.computePossiblePlacements(currentPlayer));
+								currentPlayer.setValidRails(board.computePossiblePlacements(currentPlayer));
 
-							if(p.isComputer())
-							{
-								
-								int railIndex = p.getRail(p.getValidRails().toArray(new Rail[p.getValidRails().size()]), board);
-								Rail selectedRail = p.getValidRails().get(railIndex);
-								turnRails.add(selectedRail);
-								board.setRailState(selectedRail, Rail.PLACED);
-							} else {
-								try {
-									wait();
-								} catch (InterruptedException e) {
-									e.printStackTrace();
+								if (p.isComputer()) {
+
+									int railIndex = p.getRail(
+											p.getValidRails().toArray(new Rail[p.getValidRails().size()]), board);
+									Rail selectedRail = p.getValidRails().get(railIndex);
+									turnRails.add(selectedRail);
+									board.setRailState(selectedRail, Rail.PLACED);
+								} else {
+									try {
+										wait();
+									} catch (InterruptedException e) {
+										e.printStackTrace();
+									}
 								}
+
+								// turnRails.add()
+								calculateDistances();
+								// rail placed
+								if (turnRails.get(0).isDouble()) {
+									board.setRemainingRails(0);
+									// we can use a constant here because the loop always ends after
+								} else {
+									board.setRemainingRails(board.getRemainingRails() - 1);
+								}
+								// p.calculateDistances();
 							}
-							
-							// turnRails.add()
-							calculateDistances();
-							// rail placed
-							if (turnRails.get(0).isDouble()) {
-								board.setRemainingRails(0);
-								// we can use a constant here because the loop always ends after
-							} else {
-								board.setRemainingRails(board.getRemainingRails() - 1);
-							}
-							// p.calculateDistances();
-							checkCitiesReached(currentPlayer);
-							if(currentPlayer.checkAllCitiesReached())
-							{
-								roundOver = true;
-							}
+							addTurnRails(turnRails);
+							/*
+							 * roundOver = true;
+							 * 
+							 * int[] distances = p.getDistancesToCities(); for (int i = 0; i <
+							 * distances.length; i++) { if (distances[i] > 0) { roundOver = false; } }
+							 */
 						}
-						addTurnRails(turnRails);
-						/*
-						roundOver = true;
-						
-						int[] distances = p.getDistancesToCities();
-						for (int i = 0; i < distances.length; i++) {
-							if (distances[i] > 0) {
-								roundOver = false;
-							}
-						}
-						*/
-						
 					}
 				}
 				// System.out.println("round over");
-				board.setGameState(Board.GS_ROUND_END);
 				// TODO: show round end dialog
 				// TODO: increment scoreboard
 				// TODO:
 				// if (scoreboard.isGameOver()) {
-				//gameOver = true;
+				// gameOver = true;
 				// }
 				// else {
 				new EndGame(getPlayers());
@@ -201,13 +266,11 @@ public class Game {
 			// Player[] endResults = scoreboard.getEndResults();
 		}
 	}
-	
-	public void checkCitiesReached(Player p)
-	{
-		for(City c: p.getTargetCities())
-			for(Rail r: board.computeConnectedRails(p) )
-				if(c.getPos().equals(r.startPos()) || c.getPos().equals(r.endPos()))
-				{
+
+	public void checkCitiesReached(Player p) {
+		for (City c : p.getTargetCities())
+			for (Rail r : board.computeConnectedRails(p))
+				if (c.getPos().equals(r.startPos()) || c.getPos().equals(r.endPos())) {
 					p.setCityReached(c);
 					System.out.println("brokeloop");
 					break;
@@ -218,7 +281,7 @@ public class Game {
 		for (Player player : players) {
 			int[] dist = new int[6];
 			for (int i = 0; i < player.getTargetCities().size(); i++) {
-				//dist[i] = board.getDistancetoCity(player, player.getTargetCities().get(i));
+				// dist[i] = board.getDistancetoCity(player, player.getTargetCities().get(i));
 				dist[i] = 1;
 			}
 			player.setDistancesToCities(dist);

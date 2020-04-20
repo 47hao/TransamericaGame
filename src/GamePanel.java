@@ -643,8 +643,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 		// try moving the mouse very quickly over the first diagonal right rail
 		// (leftmost, near california)
 
-		if (gameInfo.getBoard().getGameState().equals(Board.GS_GAME_END)
-				|| gameInfo.getBoard().getGameState().equals(Board.GS_GAME_END)) {
+		if (gameInfo.getBoard().getGameState().equals(Board.GS_GAME_END)) {
 			// disallow user input to the board on round end/game end
 			return;
 		} else if (gameInfo.getBoard().getGameState().equals(Board.GS_MARKER)) {

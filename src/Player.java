@@ -132,5 +132,13 @@ public abstract class Player {
 	public boolean getLarge() {
 		return largeIcon;
 	}
+	
+	public void clearCities() {
+		targetCities = new ArrayList<City>();
+	}
 
+	public void clearMarker() {
+		markerPos = null;
+	}
+	
 }
