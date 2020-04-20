@@ -22,7 +22,7 @@ public class EndGame {
 	public EndGame(Player[] p) {
 		players = p;
 		// scoreboard = new Scoreboard(p);
-		frame = new JFrame("Game Over");
+		frame = new JFrame("Round Over");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		panel = new EndPanel();
 		// panel.setBackground(new Color(233, 233, 233));

@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 public class Game {
 
@@ -14,6 +13,7 @@ public class Game {
 	private boolean roundOver = false;
 
 	private int turns;
+	private int totalTurns;
 	// private int railsPlaced = 0;
 	private Player[] players;
 	private Player currentPlayer;
@@ -110,11 +110,12 @@ public class Game {
 			System.out.println("FINISHED THE THINGS, ABOUT TO CALC");
 			// TODO: fix distance calculation
 			calculateDistances();
-
+			totalTurns = 0;
 			panel.clearOutlinedPoint();
-			turns = 0;
 			while (!gameOver) {
 				board.setGameState(Board.GS_ROUND);
+				turns = 0;
+				
 				while (!roundOver) {
 
 					for (Player p : players) {
@@ -131,7 +132,6 @@ public class Game {
 
 							currentPlayer.setValidRails(board.computePossiblePlacements(currentPlayer));
 							
-
 							try {
 								wait();
 							} catch (InterruptedException e) {
@@ -172,19 +172,18 @@ public class Game {
 				board.setGameState(Board.GS_ROUND_END);
 				// TODO: show round end dialog
 				// TODO: increment scoreboard
-				JOptionPane.showMessageDialog(null, "round over");
 				// TODO:
 				// if (scoreboard.isGameOver()) {
-				gameOver = true;
+				//gameOver = true;
 				// }
 				// else {
+				new EndGame(getPlayers());
+				totalTurns += turns;
 				roundOver = false;
 				// }
 			}
 			board.setGameState(Board.GS_GAME_END);
 			// Player[] endResults = scoreboard.getEndResults();
-
-			new EndGame(getPlayers());
 		}
 	}
 	
