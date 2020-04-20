@@ -146,10 +146,10 @@ public class Game {
 				turns = 0;
 
 				if (totalTurns != 0) {
-					
+
 					for (Player player : players)
 						player.clearMarker();
-					
+
 					board = new Board();
 					board.setGameState(Board.GS_MARKER);
 					for (Player p : players) {
@@ -168,7 +168,7 @@ public class Game {
 							}
 						}
 					}
-					
+
 					// reset board
 					for (int i = 0; i < cityLists.length; i++) {
 						for (int j = i * 7; j < 7 * (i + 1); j++) {
@@ -187,9 +187,9 @@ public class Game {
 						}
 						player.initTargetCities();
 					}
-					
+
 				}
-				
+
 				board.setGameState(Board.GS_ROUND);
 
 				while (!roundOver) {
@@ -200,17 +200,23 @@ public class Game {
 						// p.calculateDistances();
 
 						checkCitiesReached(currentPlayer);
-						if (currentPlayer.checkAllCitiesReached()) {
-							roundOver = true;
-							board.setGameState(Board.GS_ROUND_END);
-						} else {
-							// each player places 2 rails per round
-							board.setRemainingRails(2);
-							currentPlayer = p;
-							System.out.println("current player: " + currentPlayer.getName());
-							turnRails = new ArrayList<Rail>();
-							while (board.getRemainingRails() > 0) {
 
+						// each player places 2 rails per round
+						board.setRemainingRails(2);
+						currentPlayer = p;
+						System.out.println("current player: " + currentPlayer.getName());
+						turnRails = new ArrayList<Rail>();
+						while (board.getRemainingRails() > 0) {
+
+							for (Player player : players) {
+								if (player.checkAllCitiesReached()) {
+									roundOver = true;
+									board.setGameState(Board.GS_ROUND_END);
+									board.setRemainingRails(0);
+								}
+							}
+
+							if (!roundOver) {
 								currentPlayer.setValidRails(board.computePossiblePlacements(currentPlayer));
 
 								if (p.isComputer()) {
@@ -238,14 +244,14 @@ public class Game {
 									board.setRemainingRails(board.getRemainingRails() - 1);
 								}
 								// p.calculateDistances();
+								addTurnRails(turnRails);
+								/*
+								 * roundOver = true;
+								 * 
+								 * int[] distances = p.getDistancesToCities(); for (int i = 0; i <
+								 * distances.length; i++) { if (distances[i] > 0) { roundOver = false; } }
+								 */
 							}
-							addTurnRails(turnRails);
-							/*
-							 * roundOver = true;
-							 * 
-							 * int[] distances = p.getDistancesToCities(); for (int i = 0; i <
-							 * distances.length; i++) { if (distances[i] > 0) { roundOver = false; } }
-							 */
 						}
 					}
 				}
