@@ -322,213 +322,236 @@ public class Board {
 
     // }
 
-    public ArrayList<Rail> quickestPath(Position a, Position b) {
-        int leftBound, rightBound, topBound, botBound;
-        if (a.getX() < b.getX()) {
-            leftBound = a.getX() - 2;// -2+2
-            rightBound = b.getX() + 2;
-        } else {
-            if (a.getX() > b.getX()) {
-                rightBound = a.getX() + 2;// +2-2
-                leftBound = b.getX() - 2;
-            } else {
-                rightBound = a.getX() + 2;// +2-2
-                leftBound = a.getX() - 2;
-                // they would be on a the same vertical line;
-            }
-        }
+	public ArrayList<Rail> quickestPath(Position a, Position b) {
+		int leftBound, rightBound, topBound, botBound;
+		if(a.getX()<b.getX()) {
+			leftBound=a.getX()-2;//-2+2
+			rightBound=b.getX()+2;
+		}else {
+			if(a.getX()>b.getX()) {
+				rightBound=a.getX()+2;//+2-2
+				leftBound=b.getX()-2;
+			}else {
+				rightBound=a.getX()+2;//+2-2
+				leftBound=a.getX()-2;
+				//they would be on a the same vertical line;
+			}
+		}
+		
+		if(a.getY()<b.getY()) {
+			topBound=a.getY()-2;//same as above
+			botBound=b.getY()+2;
+		}else {
+			if(a.getY()>b.getY()) {
+				botBound=a.getY()+2;
+				topBound=b.getY()-2;
+			}else {
+				botBound=a.getY()+2;
+				topBound=a.getY()-2;
+				//they would be on a the same horizontal line;
+			}
+		}
+		
+		//Beware that these bounds can be negative
+		ArrayList<ArrayList<Rail>> paths= new ArrayList<ArrayList<Rail>>();
+		Rail r= getThisRail(rails,a, new Position(a.getX()-1,a.getY()));
+		if(r!=null) {
+			paths.add(new ArrayList<Rail>());
+			paths.get(paths.size()-1).add(r);
+		}
+		r=  getThisRail(rails,a, new Position(a.getX()+1,a.getY()));
+		if(r!=null) {
+			paths.add(new ArrayList<Rail>());
+			paths.get(paths.size()-1).add(r);
+		}
+		r= getThisRail(rails,a, new Position(a.getX(),a.getY()-1));
+		if(r!=null) {
+			paths.add(new ArrayList<Rail>());
+			paths.get(paths.size()-1).add(r);
+		}
+		r= getThisRail(rails,a, new Position(a.getX(),a.getY()+1));
+		if(r!=null) {
+			paths.add(new ArrayList<Rail>());
+			paths.get(paths.size()-1).add(r);
+		}
+		r= getThisRail(rails,a, new Position(a.getX()-1,a.getY()-1));
+		if(r!=null) {
+			paths.add(new ArrayList<Rail>());
+			paths.get(paths.size()-1).add(r);
+		}
+		r= getThisRail(rails, a, new Position(a.getX()+1,a.getY()+1));
+		if(r!=null) {
+			paths.add(new ArrayList<Rail>());
+			paths.get(paths.size()-1).add(r);
+		}
+		
+		for(int i=0;i<paths.size();i++) {
+			Rail correctStartPoint=setStartCoordinateTo(paths.get(i).get(0),a);
+			paths.get(i).remove(0);
+			paths.get(i).add(correctStartPoint);
+		}
 
-        if (a.getY() < b.getY()) {
-            topBound = a.getY() - 2;// same as above
-            botBound = b.getY() + 2;
-        } else {
-            if (a.getY() > b.getY()) {
-                botBound = a.getY() + 2;
-                topBound = b.getY() - 2;
-            } else {
-                botBound = a.getY() + 2;
-                topBound = a.getY() - 2;
-                // they would be on a the same horizontal line;
-            }
-        }
+		//^gives the first moves
+		ArrayList<Rail>restrictedRails= new ArrayList<Rail>();
+		for(int i=0;i<rails.size();i++) {
+			if(rails.get(i).startPos().getX()>=leftBound && rails.get(i).startPos().getX()<=rightBound
+					&& rails.get(i).endPos().getX()>=leftBound && rails.get(i).endPos().getX()<=rightBound
+					&& rails.get(i).startPos().getY()>=topBound && rails.get(i).startPos().getY()<=botBound
+					&& rails.get(i).endPos().getY()>=topBound && rails.get(i).endPos().getY()<=botBound) {
+				restrictedRails.add(rails.get(i));
+			}
+		}
+		//restricts the rails array to ones within the bounds
+		ArrayList<ArrayList<Rail>> returnArray= new ArrayList<ArrayList<Rail>>();
+		paths=makePaths(paths,b, restrictedRails, returnArray, 30);
+	
+		int shortestScore=1000000;
+		int shortestScoreIndex=1000000;
+		for(int l=0;l<paths.size();l++) {
+			int currentScore=0;
+			for(int c=0; c<paths.get(l).size();c++) {
+				if(paths.get(l).get(c).isDouble())
+					currentScore+=2;
+				else
+					currentScore++;
+			}
+			if(currentScore<shortestScore) {
+				shortestScore=currentScore;
+				shortestScoreIndex=l;
+			}
+		}
+		return paths.get(shortestScoreIndex);
+	}
 
-        // Beware that these bounds can be negative
-        ArrayList<ArrayList<Rail>> paths = new ArrayList<ArrayList<Rail>>();
-        Rail r = getThisRail(rails, a, new Position(a.getX() - 1, a.getY()));
-        if (r != null) {
-            paths.add(new ArrayList<Rail>());
-            paths.get(paths.size() - 1).add(r);
-        }
-        r = getThisRail(rails, a, new Position(a.getX() + 1, a.getY()));
-        if (r != null) {
-            paths.add(new ArrayList<Rail>());
-            paths.get(paths.size() - 1).add(r);
-        }
-        r = getThisRail(rails, a, new Position(a.getX(), a.getY() - 1));
-        if (r != null) {
-            paths.add(new ArrayList<Rail>());
-            paths.get(paths.size() - 1).add(r);
-        }
-        r = getThisRail(rails, a, new Position(a.getX(), a.getY() + 1));
-        if (r != null) {
-            paths.add(new ArrayList<Rail>());
-            paths.get(paths.size() - 1).add(r);
-        }
-        r = getThisRail(rails, a, new Position(a.getX() - 1, a.getY() - 1));
-        if (r != null) {
-            paths.add(new ArrayList<Rail>());
-            paths.get(paths.size() - 1).add(r);
-        }
-        r = getThisRail(rails, a, new Position(a.getX() + 1, a.getY() + 1));
-        if (r != null) {
-            paths.add(new ArrayList<Rail>());
-            paths.get(paths.size() - 1).add(r);
-        }
+	/*public ArrayList<ArrayList<Rail>> makePaths(ArrayList<ArrayList<Rail>> paths, Position b, ArrayList<Rail> restrictedRails) {		
+		ArrayList<ArrayList<Rail>> addedArrays= new ArrayList<ArrayList<Rail>>();
+		for(int i=0;i< paths.size();i++) {
+			ArrayList<Rail> currentPath= paths.get(i);
+			Rail currentRail= currentPath.get(currentPath.size()-1);
+			ArrayList<Rail> around= new ArrayList<Rail>();
+			around.add(new Rail(currentRail.endPos(), new Position(currentRail.endPos().getX()+1, currentRail.endPos().getY())));
+			around.add(new Rail(currentRail.endPos(), new Position(currentRail.endPos().getX()-1, currentRail.endPos().getY())));
+			around.add(new Rail(currentRail.endPos(), new Position(currentRail.endPos().getX(), currentRail.endPos().getY()+1)));
+			around.add(new Rail(currentRail.endPos(), new Position(currentRail.endPos().getX(), currentRail.endPos().getY()-1)));	
+			around.add(new Rail(currentRail.endPos(), new Position(currentRail.endPos().getX()+1, currentRail.endPos().getY()+1)));
+			around.add(new Rail(currentRail.endPos(), new Position(currentRail.endPos().getX()-1, currentRail.endPos().getY()-1)));
+			for(int j=0;j<around.size();j++) {
+				boolean repeat=repeat(currentPath, around.get(j));
+				boolean inLimits=getThisRail(restrictedRails, around.get(j).startPos(),around.get(j).endPos())!=null;
+				boolean endPointIsB=equals(around.get(j).endPos(),b);
+				boolean beginingPointIsB=equals(around.get(j).startPos(),b);
+				if(!repeat && inLimits && !beginingPointIsB) {
+					ArrayList<Rail> nextGenPath= new ArrayList<Rail>();
+					for(int k=0;k<currentPath.size();k++) {
+						nextGenPath.add(currentPath.get(k));
+					}
+					nextGenPath.add(around.get(j));
+					addedArrays.add(nextGenPath);
+				}else {
+					if(repeat && !inLimits) {
+						
+					}else {
+						if(beginingPointIsB && j==0) {
+							ArrayList<Rail> nextGenPath= new ArrayList<Rail>();
+							for(int k=0;k<currentPath.size();k++) {
+								nextGenPath.add(currentPath.get(k));
+							}
+							addedArrays.add(nextGenPath);
+						}
+					}
+				}
+			
+			}
 
-        for (int i = 0; i < paths.size(); i++) {
-            Rail correctStartPoint = setStartCoordinateTo(paths.get(i).get(0), a);
-            paths.get(i).remove(0);
-            paths.get(i).add(correctStartPoint);
-        }
+		}
+		System.out.println(paths.size()+" "+addedArrays.size());
+		if(addedArrays.size()==paths.size()) {
+			return paths;
+		}
+		return makePaths(addedArrays,  b, restrictedRails);
+	}*/
+	
+	
+	
 
-        // ^gives the first moves
-        ArrayList<Rail> restrictedRails = new ArrayList<Rail>();
-        for (int i = 0; i < rails.size(); i++) {
-            if (rails.get(i).startPos().getX() >= leftBound && rails.get(i).startPos().getX() <= rightBound
-                    && rails.get(i).endPos().getX() >= leftBound && rails.get(i).endPos().getX() <= rightBound
-                    && rails.get(i).startPos().getY() >= topBound && rails.get(i).startPos().getY() <= botBound
-                    && rails.get(i).endPos().getY() >= topBound && rails.get(i).endPos().getY() <= botBound) {
-                restrictedRails.add(rails.get(i));
-            }
-        }
-        // restricts the rails array to ones within the bounds\
-        ArrayList<ArrayList<Rail>> returnPaths = new ArrayList<ArrayList<Rail>>();
-        paths = makePaths(paths, b, restrictedRails, returnPaths, 35);
-        //
-        System.out.println(paths.size());
-        int shortestScore = 1000000;
-        int shortestScoreIndex = 1000000;
-        for (int l = 0; l < paths.size(); l++) {
-            int currentScore = 0;
-            for (int c = 0; c < paths.get(l).size(); c++) {
-                System.out.print(paths.get(l).get(c).startPos().toString());//
-                System.out.print(
-                        getThisRail(rails, paths.get(l).get(c).startPos(), paths.get(l).get(c).endPos()).isDouble());
-                if (getThisRail(rails, paths.get(l).get(c).startPos(), paths.get(l).get(c).endPos()).isDouble())
-                    // maybe this wok
-                    currentScore += 2;
-                else
-                    currentScore++;
-            }
-            if (currentScore < shortestScore) {
-                shortestScore = currentScore;
-                shortestScoreIndex = l;
-            }
-            System.out.println(currentScore);//
-        }
-        // sometimes returns 10000000
-        return paths.get(shortestScoreIndex);
-    }
+	public ArrayList<ArrayList<Rail>> makePaths(ArrayList<ArrayList<Rail>> paths, Position b, ArrayList<Rail> restrictedRails, ArrayList<ArrayList<Rail>> returnArray, int nth) {		
+		ArrayList<ArrayList<Rail>> addedArrays= new ArrayList<ArrayList<Rail>>();
+		for(ArrayList<Rail> currentPath: paths) {
+			Rail lastRail= currentPath.get(currentPath.size()-1);
+			ArrayList<Rail> around= new ArrayList<Rail>();
+			around.add(new Rail(lastRail.endPos(), new Position(lastRail.endPos().getX()+1, lastRail.endPos().getY())));
+			around.add(new Rail(lastRail.endPos(), new Position(lastRail.endPos().getX()-1, lastRail.endPos().getY())));
+			around.add(new Rail(lastRail.endPos(), new Position(lastRail.endPos().getX(), lastRail.endPos().getY()+1)));
+			around.add(new Rail(lastRail.endPos(), new Position(lastRail.endPos().getX(), lastRail.endPos().getY()-1)));	
+			around.add(new Rail(lastRail.endPos(), new Position(lastRail.endPos().getX()+1, lastRail.endPos().getY()+1)));
+			around.add(new Rail(lastRail.endPos(), new Position(lastRail.endPos().getX()-1, lastRail.endPos().getY()-1)));
+			for(Rail nextRail: around) {
+				Boolean repeat= repeat(currentPath,nextRail);
+				Boolean inBound=getThisRail(restrictedRails, nextRail.startPos(),nextRail.endPos())!=null;
+				Boolean endIsB= nextRail.endPos().equals(b);
+				//Boolean beginningIsB=nextRail.startPos().equals(b);
+				if(!repeat && inBound ) {//begining is B
+					ArrayList<Rail> addThisToAddedArray= new ArrayList<Rail>();
+					for(Rail r:currentPath)
+						addThisToAddedArray.add(r);
+					addThisToAddedArray.add(nextRail);
+					addedArrays.add(addThisToAddedArray);
+					if(endIsB) {
+						returnArray.add(addThisToAddedArray);
+						addedArrays.remove(addedArrays.get(addedArrays.size()-1));
+					}	
+				}else {
+					
+				}
+			}
 
-    public ArrayList<ArrayList<Rail>> makePaths(ArrayList<ArrayList<Rail>> paths, Position b,
-            ArrayList<Rail> restrictedRails, ArrayList<ArrayList<Rail>> path, int num) {
-        ArrayList<ArrayList<Rail>> addedArrays = new ArrayList<ArrayList<Rail>>();
-        for (int i = 0; i < paths.size(); i++) {
-            ArrayList<Rail> currentPath = paths.get(i);
-            Rail currentRail = currentPath.get(currentPath.size() - 1);
-            ArrayList<Rail> around = new ArrayList<Rail>();
-            around.add(new Rail(currentRail.endPos(),
-                    new Position(currentRail.endPos().getX() + 1, currentRail.endPos().getY())));
-            around.add(new Rail(currentRail.endPos(),
-                    new Position(currentRail.endPos().getX() - 1, currentRail.endPos().getY())));
-            around.add(new Rail(currentRail.endPos(),
-                    new Position(currentRail.endPos().getX(), currentRail.endPos().getY() + 1)));
-            around.add(new Rail(currentRail.endPos(),
-                    new Position(currentRail.endPos().getX(), currentRail.endPos().getY() - 1)));
-            around.add(new Rail(currentRail.endPos(),
-                    new Position(currentRail.endPos().getX() + 1, currentRail.endPos().getY() + 1)));
-            around.add(new Rail(currentRail.endPos(),
-                    new Position(currentRail.endPos().getX() - 1, currentRail.endPos().getY() - 1)));
-            for (int j = 0; j < around.size(); j++) {
-                boolean repeat = repeat(currentPath, around.get(j));
-                boolean inLimits = getThisRail(restrictedRails, around.get(j).startPos(),
-                        around.get(j).endPos()) != null;
-                boolean endPointIsB = around.get(j).endPos().equals(b);
-                boolean beginingPointIsB = equals(around.get(j).startPos(), b);
-                if (endPointIsB) {
-                    // This never gets triggered
-                    ArrayList<Rail> nextGenPath = new ArrayList<Rail>();
-                    for (int k = 0; k < currentPath.size(); k++) {
-                        nextGenPath.add(currentPath.get(k));
-                    }
-                    nextGenPath.add(around.get(j));
-                    addedArrays.add(nextGenPath);
-                    path.add(nextGenPath);
-                    if (path.size() >= num) {
-                        return path;
-                    }
-                } else {
-                    if (!repeat && inLimits && !beginingPointIsB) {
-                        ArrayList<Rail> nextGenPath = new ArrayList<Rail>();
-                        for (int k = 0; k < currentPath.size(); k++) {
-                            nextGenPath.add(currentPath.get(k));
-                        }
-                        nextGenPath.add(around.get(j));
-                        addedArrays.add(nextGenPath);
-                    } else {
-                        if (repeat || !inLimits) {
+		}
+		if(returnArray.size()>=nth || addedArrays.size()==0)
+			return returnArray;
+		//System.out.println(paths.size()+" "+addedArrays.size());
+		return makePaths(addedArrays,  b, restrictedRails, returnArray, nth);
+	}
+	public boolean tester() {
+		ArrayList<Rail>stuff=new ArrayList<Rail>();
+		stuff.add(new Rail(new Position(0,0), new Position (1,1)));
+		stuff.add(new Rail(new Position(0,0), new Position (2,1)));
+		stuff.add(new Rail(new Position(0,0), new Position (3,1)));
+		Rail rail= new Rail(new Position(3,1), new Position (0,0));
+		return repeat(stuff, rail);
+		
+	}
+	public boolean railEquals(Rail r, Rail rail) {
+		if(rail.startPos().equals(r.startPos()) && rail.endPos().equals(r.endPos())
+				|| rail.startPos().equals(r.endPos()) && rail.endPos().equals(r.startPos())) {
+			return true;
+		}
+		return false;
+	}
+	public boolean repeat(ArrayList<Rail> array, Rail r) {
+		for(Rail rail:array) {
+			if(rail.startPos().equals(r.startPos()) && rail.endPos().equals(r.endPos())
+					|| rail.startPos().equals(r.endPos()) && rail.endPos().equals(r.startPos()))
+				return true;
+		}
+		return false;
+	}
+	public Rail setStartCoordinateTo(Rail r, Position p) {
+			Position start= r.startPos();
+			Position end= r.endPos();
+			if(p.equals(r.startPos()))
+				return r;
+			else
+				return new Rail(end,start);
+	}
+	public Rail getThisRail(ArrayList<Rail> rails, Position A, Position B) {
+		for(Rail rail: rails) {
+			if(rail.startPos().equals(A) && rail.endPos().equals(B)
+					|| rail.startPos().equals(B) && rail.endPos().equals(A))
+				return rail;
+		}
+		return null;
+	}
 
-                        } else {
-                            if (beginingPointIsB && j == 0) {
-                                ArrayList<Rail> nextGenPath = new ArrayList<Rail>();
-                                for (int k = 0; k < currentPath.size(); k++) {
-                                    nextGenPath.add(currentPath.get(k));
-                                }
-                                addedArrays.add(nextGenPath);
-                            }
-                        }
-                    }
-                }
-
-            }
-        }
-
-        // System.out.println(paths.size()+" "+addedArrays.size());
-        return makePaths(addedArrays, b, restrictedRails, path, num);
-    }
-
-    public boolean repeat(ArrayList<Rail> array, Rail r) {
-        boolean repeat = false;
-        for (int i = 0; i < array.size(); i++) {
-            if (array.get(i).equals(r))
-                repeat = true;
-        }
-        return repeat;
-    }
-
-    public Rail setStartCoordinateTo(Rail r, Position p) {
-        Position start = r.startPos();
-        Position end = r.endPos();
-        if (p.equals(r.startPos()))
-            return r;
-        else
-            return new Rail(end, start);
-    }
-
-    public Rail getThisRail(ArrayList<Rail> rails, Position A, Position B) {
-        // returns the object in the rails array with these end/start points
-        for (int i = 0; i < rails.size(); i++) {
-            Rail r = rails.get(i);
-            if (r.endPos().equals(B) && r.startPos().equals(A)) {
-                return rails.get(i);
-            }
-            if (r.endPos().equals(A) && r.startPos().equals(B)) {
-                return rails.get(i);
-            }
-
-        }
-        return null;
-    }
 
     public boolean isDoubleRail(Position startPos, Position endPos) {
         for (int i = 0; i < rails.size(); i++) {
