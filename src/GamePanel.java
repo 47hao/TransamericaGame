@@ -40,6 +40,8 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	final int doubleSpacing = 3;
 	final int shortLength = 6;
 
+	boolean once2 = true;
+
 	final static int gridStartX = 120;
 	final static int gridStartY = 70;
 
@@ -221,8 +223,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	private void drawRail(Graphics2D g, Rail rail) {
 		g.setColor(railColor);
 
-		for (int i=0; i<gameInfo.getRecentRails().size(); i++)
-		{
+		for (int i = 0; i < gameInfo.getRecentRails().size(); i++) {
 			try {
 				ArrayList<Rail> railList = gameInfo.getRecentRails().get(i);
 				for (Rail r : railList) {
@@ -231,11 +232,10 @@ public class GamePanel extends JPanel implements MouseInputListener {
 						g.setColor(new Color(pulse, pulse, pulse));
 					}
 				}
-			} catch(Exception e)
-			{
+			} catch (Exception e) {
 				System.out.println("Null getRecentRails problem");
 			}
-			
+
 		}
 
 		Point p = gridToPixel(rail.startPos());
@@ -365,7 +365,15 @@ public class GamePanel extends JPanel implements MouseInputListener {
 			trains.add(new ArrayList<Player>());
 		for (Player p : gameInfo.getPlayers()) {
 			p.setOffset(0);
-			trains.get(p.getScore()).add(p);
+			try {
+				trains.get(p.getScore()).add(p);
+			} catch (IndexOutOfBoundsException ex) {
+				if (once2) {
+					new EndGame(gameInfo.getPlayers(), "Game End");
+					gameInfo.gameOver();
+					once2 = false;
+				}
+			}
 		}
 
 		for (int i = 0; i < trains.size(); i++) {
@@ -697,23 +705,21 @@ public class GamePanel extends JPanel implements MouseInputListener {
 						Position pos = gameInfo.getBoard().getPositions()
 								.get(gameInfo.getBoard().getPositionHitboxes().indexOf(ellipse));
 						boolean alreadyTaken = false;
-						for(Player p : gameInfo.getPlayers())
-						{
+						for (Player p : gameInfo.getPlayers()) {
 							try {
-								if(p.getMarkerPos().equals(pos))
-								{
+								if (p.getMarkerPos().equals(pos)) {
 									alreadyTaken = true;
 									break;
 								}
-							} catch(Exception except) {}
+							} catch (Exception except) {
+							}
 						}
-						
-						if(!alreadyTaken)
-						{
+
+						if (!alreadyTaken) {
 							gameInfo.getCurrentPlayer().setMarkerPos(pos);
 							gameInfo.notify();
 						}
-						
+
 					}
 				}
 				repaint();

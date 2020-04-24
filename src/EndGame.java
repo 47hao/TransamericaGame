@@ -10,6 +10,7 @@ public class EndGame {
 	// final static int OFFSET_X = 20;
 	final static int OFFSET_Y = 30;
 
+	String title;
 	JFrame frame;
 	EndPanel panel;
 
@@ -19,10 +20,12 @@ public class EndGame {
 
 	// XXX: Scoreboard isn't needed because Game class will be able to provide
 	// XXX: the player array directly (Game class is the highest level)
-	public EndGame(Player[] p) {
+	public EndGame(Player[] p, String titleStr) {
 		players = p;
+		
+		title = titleStr;
 		// scoreboard = new Scoreboard(p);
-		frame = new JFrame("Round Over");
+		frame = new JFrame(title);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		panel = new EndPanel();
 		// panel.setBackground(new Color(233, 233, 233));
@@ -56,7 +59,20 @@ public class EndGame {
 			g2d.setColor(Color.BLACK);
 
 			g2d.setFont(new Font("Arial", Font.BOLD, 36));
-			g2d.drawString("Round Results:", panel.getWidth() / 3, 3 + OFFSET_Y);
+			if (title.equals("Game End")) {
+				String name = "";
+				int score = 13;
+				for (Player player : players) {
+					if (player.getScore() < score) {
+						score = player.getScore();
+						name = player.getName();
+					}
+				}
+				
+				g2d.drawString(name + " has won!", panel.getWidth() / 3 - 30, 3 + OFFSET_Y);
+				g2d.drawString("Game Results:", panel.getWidth() / 3, 33 + OFFSET_Y);
+			} else
+				g2d.drawString("Round Results:", panel.getWidth() / 3, 3 + OFFSET_Y);
 
 			Stroke stroke = g2d.getStroke();
 

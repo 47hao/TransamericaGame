@@ -12,15 +12,7 @@ public class Scoreboard {
 
 	public void addScores(int[] scores) {
 		for (int i = 0; i < players.length; i++) {
-			locations[i * 2] = players[i].getScore();
-		}
-		for (int z = 0; z < players.length; z++) {
-			players[z].addScore(scores[z]);
-		}
-		int i = 0;
-		for (int j = 1; j < 12; j = j + 2) {
-			locations[j] = players[i].getScore();
-			i++;
+			players[i].addScore(scores[i]);
 		}
 	}
 

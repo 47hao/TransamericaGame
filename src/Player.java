@@ -63,7 +63,11 @@ public abstract class Player {
 	abstract int getRail(Rail[] rails, Board b);
 
 	abstract void addScore(int amount);
-
+	
+	public void setScore(int score) {
+		this.score = score;
+	}
+	
 	public int getScore() {
 		return score;
 	}

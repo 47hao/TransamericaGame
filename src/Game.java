@@ -227,22 +227,18 @@ public class Game {
 				System.out.println("round over");
 				// TODO: show round end dialog
 				// TODO: increment scoreboard
-				new EndGame(getPlayers());
 				totalTurns += turns;
 				int[] scores = new int[players.length];
 				for (int i = 0; i < scores.length; i++) {
 					// scores[i] = distance thing
-					scores[i] = (int) (Math.random() * 5);
+					scores[i] = (int) (Math.random() * 20);
 				}
-				try {
-					scoreboard.addScores(scores);
-				} catch (ArrayIndexOutOfBoundsException ex) {
-					gameOver = true;
-				}
+				scoreboard.addScores(scores);
+				//maybe find a way to not activate when game end? if (!gameOver) doesn't work
+				new EndGame(getPlayers(), "Round End");
 				roundOver = false;
 			}
 
-			board.setGameState(Board.GS_GAME_END);
 			ArrayList<String> endResults = scoreboard.gameOver();
 		}
 	}
@@ -257,6 +253,19 @@ public class Game {
 				}
 	}
 
+	public void gameOver() {
+		gameOver = true;
+		board.setGameState(Board.GS_GAME_END);
+		for (Player p : players) {
+			if (p.getScore() > 13)
+				p.setScore(0);
+		}
+	}
+	
+	public boolean getGameOver() {
+		return gameOver;
+	}
+	
 	public void calculateDistances() {
 		for (Player player : players) {
 			int[] dist = new int[6];
