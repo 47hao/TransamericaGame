@@ -54,7 +54,8 @@ public class InitialScreen {
 	ArrayList<Color> colorList = new ArrayList<Color>();
 
 	// create color lookup table
-	final Color[] playerColors = { GamePanel.Blue, GamePanel.Yellow, GamePanel.Red, GamePanel.Green, GamePanel.Purple, GamePanel.Orange};
+	final Color[] playerColors = { GamePanel.Blue, GamePanel.Yellow, GamePanel.Red, GamePanel.Green, GamePanel.Purple,
+			GamePanel.Orange };
 
 	final static int TOP_PADDING = 10;
 	final static int LEFT_PADDING = 15;
@@ -108,7 +109,12 @@ public class InitialScreen {
 			radioGroups[i][1] = new JRadioButton("Computer");
 			radioGroups[i][2] = new JRadioButton("None");
 			// set all players to default to none
-			radioGroups[i][2].setSelected(true);
+			// radioGroups[i][2].setSelected(true);
+			if (i == 0) {// first row, select human
+				radioGroups[i][0].setSelected(true);
+			} else { // else, computer
+				radioGroups[i][1].setSelected(true);
+			}
 
 			for (int j = 0; j < radioGroups[i].length; j++) {
 				buttonGroups[i].add(radioGroups[i][j]);
@@ -126,14 +132,23 @@ public class InitialScreen {
 		for (int i = 0; i < strategyChooserBoxes.length; i++) {
 			strategyChooserBoxes[i] = new JComboBox<String>(new String[] { "Basic", "Expert" });
 			// hide all initially because computer player is not selected
-			strategyChooserBoxes[i].setVisible(false);
+			if (i == 0) {
+				strategyChooserBoxes[i].setVisible(false);
+			} else {
+				strategyChooserBoxes[i].setVisible(true);
+			}
 		}
 
 		// set player text fields to default: player $i:
 		for (int i = 0; i < nameTextFields.length; i++) {
 			nameTextFields[i] = new JTextField("Player " + (i + 1), 7);
 			// set invisible by default because human not selected
-			nameTextFields[i].setVisible(false);
+			if (i == 0) {
+				nameTextFields[i].setVisible(true);
+			} else {
+				nameTextFields[i].setVisible(false);
+			}
+
 			nameTextFields[i].addKeyListener(new NameKeyListener());
 		}
 
@@ -203,8 +218,8 @@ public class InitialScreen {
 		playButton = new JButton("Play");
 		JButton exitButton = new JButton("Exit");
 
-		// make play button disabled by default
-		playButton.setEnabled(false);
+		// make play button enabled by default
+		playButton.setEnabled(true);
 
 		// set action commands:
 		playButton.setActionCommand("Play");
@@ -226,11 +241,11 @@ public class InitialScreen {
 		// make play button 2 xgrid width
 		c.gridwidth = 2;
 		panel.add(playButton, c);
-		c.gridwidth = 1;
+		// c.gridwidth = 2;
 		c.gridx = 2;
 		// TODO: add instructions page: buttonlistener + JOptionPane.showDialog
-		panel.add(new JButton("Instructions"), c);
-		c.gridx = 3;
+		// panel.add(new JButton("Instructions"), c);
+		// c.gridx = 3;
 		panel.add(exitButton, c);
 
 		frame.pack();
@@ -331,17 +346,16 @@ public class InitialScreen {
 						computersOnly = false;
 					}
 				}
-				
+
 				ArrayList<Player> playerList = new ArrayList<Player>();
 
 				for (int i = 0; i < players.size(); i++) {
-					if (players.get(i).contains("CPU"))
-					{
+					if (players.get(i).contains("CPU")) {
 						playerList.add(new ComputerPlayer(players.get(i), colorList.get(i), new BasicStrategy()));
 					} else {
 						playerList.add(new HumanPlayer(players.get(i), colorList.get(i)));
 					}
-					
+
 				}
 
 				for (Player player : playerList) {
