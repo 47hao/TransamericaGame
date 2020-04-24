@@ -101,94 +101,62 @@ public class Game {
 			ArrayList<City> redCities = new ArrayList<City>();
 			ArrayList<City> greenCities = new ArrayList<City>();
 			ArrayList[] cityLists = { orangeCities, blueCities, yellowCities, redCities, greenCities };
+
 			for (int i = 0; i < cityLists.length; i++) {
 				for (int j = i * 7; j < 7 * (i + 1); j++) {
 					cityLists[i].add(Board.cities[j]);
 				}
 			}
 
-			for (Player player : players) {
-				player.clearCities();
-			}
-
-			Random r = new Random();
-			for (Player player : players) {
-				for (int i = 0; i < cityLists.length; i++) {
-					player.getTargetCities().add((City) cityLists[i].remove(r.nextInt(cityLists[i].size())));
-				}
-				player.initTargetCities();
-			}
-
-			// first, place the markers for each player
-			board.setGameState(Board.GS_MARKER);
-			for (Player p : players) {
-				currentPlayer = p;
-				if (p.isComputer) {
-					p.setMarkerPos(p.getMarker(board));
-					System.out.println("cpu marker placed");
-				} else {
-					while (currentPlayer.getMarkerPos() == null) {
-						try {
-							// TODO: code strategy to notify() after marker placed
-							wait();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-			}
 			System.out.println("FINISHED THE THINGS, ABOUT TO CALC");
-			// TODO: fix distance calculation
-			calculateDistances();
 			totalTurns = 0;
 			panel.clearOutlinedPoint();
 			while (!gameOver) {
 				turns = 0;
 
-				if (totalTurns != 0) {
+				// reset board
+				for (int i = 0; i < cityLists.length; i++) {
+					for (int j = i * 7; j < 7 * (i + 1); j++) {
+						cityLists[i].add(Board.cities[j]);
+					}
+				}
 
-					for (Player player : players)
-						player.clearMarker();
+				for (Player player : players) {
+					player.clearCities();
+				}
 
-					board = new Board();
-					board.setGameState(Board.GS_MARKER);
-					for (Player p : players) {
-						currentPlayer = p;
-						if (p.isComputer) {
-							p.setMarkerPos(p.getMarker(board));
-							System.out.println("cpu marker placed");
-						} else {
-							while (currentPlayer.getMarkerPos() == null) {
-								try {
-									// TODO: code strategy to notify() after marker placed
-									wait();
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
+				Random r = new Random();
+				for (Player player : players) {
+					for (int i = 0; i < cityLists.length; i++) {
+						player.getTargetCities().add((City) cityLists[i].remove(r.nextInt(cityLists[i].size())));
+					}
+					player.initTargetCities();
+				}
+
+				for (Player player : players)
+					player.clearMarker();
+
+				board = new Board();
+				board.setGameState(Board.GS_MARKER);
+				for (Player p : players) {
+					currentPlayer = p;
+					if (p.isComputer) {
+						p.setMarkerPos(p.getMarker(board));
+						System.out.println("cpu marker placed");
+					} else {
+						while (currentPlayer.getMarkerPos() == null) {
+							try {
+								// TODO: code strategy to notify() after marker placed
+								wait();
+							} catch (InterruptedException e) {
+								e.printStackTrace();
 							}
 						}
 					}
-
-					// reset board
-					for (int i = 0; i < cityLists.length; i++) {
-						for (int j = i * 7; j < 7 * (i + 1); j++) {
-							cityLists[i].add(Board.cities[j]);
-						}
-					}
-
-					for (Player player : players) {
-						player.clearCities();
-					}
-
-					r = new Random();
-					for (Player player : players) {
-						for (int i = 0; i < cityLists.length; i++) {
-							player.getTargetCities().add((City) cityLists[i].remove(r.nextInt(cityLists[i].size())));
-						}
-						player.initTargetCities();
-					}
-
 				}
+
+				// TODO: fix distance calculation
+				calculateDistances();
 
 				board.setGameState(Board.GS_ROUND);
 

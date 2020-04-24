@@ -1,6 +1,3 @@
-/BasicStrategy.class
-/Board.class
-/City.class
 /ComputerPlayer.class
 /EndGame$EndPanel.class
 /EndGame.class
@@ -13,6 +10,7 @@
 /InitialScreen$StrategyEvalPanel$ConfirmButtonListener.class
 /InitialScreen$StrategyEvalPanel.class
 /InitialScreen.class
+/Instructions.class
 /Main.class
 /Player.class
 /Position.class
@@ -20,10 +18,3 @@
 /RailFactory.class
 /Scoreboard.class
 /Strategy.class
-/a word of caution.txt
-/Instructions$ControlButtonListener.class
-/Instructions$NameKeyListener.class
-/Instructions$RadioListener.class
-/Instructions$StrategyEvalPanel$ConfirmButtonListener.class
-/Instructions$StrategyEvalPanel.class
-/Instructions.class
