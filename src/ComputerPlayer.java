@@ -24,16 +24,6 @@ class ComputerPlayer extends Player {
 		return score;
 	}
 
-	// public void setDistanceToCity(City c, int distance) {
-	// distancesToCities[targetCities.indexOf(c)] = distance;
-	// }
-
-	// public Rail getRail(City[] targetCities, Rail[] possibleRails, Board board) {
-	// return s.returnRail(targetCities, possibleRails, board);
-	// }
-
-	// XXX: a note: only this getrail method should be used outside of this class
-	// (this allows for having the board state)
 	public int getRail(Rail[] possibleRails, Board b) {
 		Rail returnRail = s.returnRail(targetCities.toArray(new City[targetCities.size()]), possibleRails, b);
 		for(int i=0; i<possibleRails.length; i++)
@@ -52,16 +42,16 @@ class ComputerPlayer extends Player {
 		boolean occupied = false;
 		do
 		{
+			occupied = false;
 			selectedPos = b.getPositions().get((int)(Math.random()*range));
 			for(Position otherPos : otherMarkers)
 			{
 				if(otherPos != null)
 				{
-					if((otherPos.getX() == selectedPos.getX()) && (otherPos.getY() == selectedPos.getY()))
+					if(otherPos.equals(selectedPos))
 					{
 						occupied = true;
-
-						System.out.println("DUPLICATE");
+						System.out.println("DUPLICATE" + otherPos + " = " + selectedPos);
 					}
 				}
 				

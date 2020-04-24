@@ -38,7 +38,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	public static final int railLength = 60;
 	final static float railThickness = 2f;
 	final int doubleSpacing = 3;
-	final int shortLength = 6;
+	final int shortLength = 10;
 
 	boolean once2 = true;
 
@@ -52,15 +52,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	public final static Color Yellow = new Color(235, 190, 0);
 	public final static Color Orange = new Color(230, 120, 0);
 	public final static Color Purple = new Color(125, 60, 190);
-	// final int[] starPointsX = { 0, 8, 5, 13, 21, 18, 26, 16, 13, 10, 0 };
-	// final int[] starPointsY = { 10, 15, 25, 19, 25, 15, 10, 10, 0, 10, 10 };
-	// final int[] starPointsX = { 0, 4, 2, 7, 11, 9, 13, 8, 7, 5, 0 };
-	// final int[] starPointsY = { 5, 8, 13, 9, 13, 8, 5, 5, 0, 5, 5 };
-
-	// marker parameters
-	// final int outerMarkerDiam = 18;
-	// final int innerMarkerDiam = 14;
-
+	
 	final double starScale = 1.8;
 	final int[] starTemplateX = { 0, 5, 3, 8, 12, 10, 14, 9, 8, 6, 0 };
 	final int[] starTemplateY = { 6, 9, 15, 10, 14, 9, 6, 6, 0, 6, 6 };
@@ -75,7 +67,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	final int cityStrokeDiam = 32;
 	final int cityStroke = 4;
 
-	final boolean displayCoords = true;
+	final boolean displayCoords = false;
 
 	final int labelOffsetY = 15;
 	final int labelOffsetX = 15;
@@ -173,27 +165,10 @@ public class GamePanel extends JPanel implements MouseInputListener {
 			drawRail((Graphics2D) g, r);
 		}
 
-		// for (Player p : gameInfo.getPlayers()) {
-		// boolean active = p.equals(gameInfo.getcurrentPlayer());
-		// for (City c : p.getTargetCities()) {
-		// drawCity(g2d, c, active);
-		// }
-		// }
-
 		drawCities(g, gameInfo.getBoard().getCities());
 		for (City c : gameInfo.getCurrentPlayer().getTargetCities()) {
 			drawCity(g2d, c, true);
 		}
-
-		// draws board and game information
-
-		// g2d.setColor(Color.RED);
-		// for (Ellipse2D e : gameInfo.getBoard().getPositionHitboxes()) {
-		// g2d.fill(e);
-		// // System.out.println("(" + e.getX() + ", " + e.getY() + ")");
-		// // System.out.println("width: " + e.getWidth() + " height: " +
-		// e.getHeight());
-		// }
 
 		for (Player player : gameInfo.getPlayers()) {
 			drawMarker((Graphics2D) g, player);
@@ -205,8 +180,6 @@ public class GamePanel extends JPanel implements MouseInputListener {
 			g2d.draw(outlinedPoint);
 		}
 
-		// g2d.setColor(Color.GREEN);
-		// g2d.draw(new Polygon(starPointsX, starPointsY, 11));
 	}
 
 	private void drawBoard(Graphics g) {
