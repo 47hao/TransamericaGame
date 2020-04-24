@@ -223,21 +223,26 @@ public class Game {
 						}
 					}
 				}
-				// System.out.println("round over");
+				System.out.println("round over");
 				// TODO: show round end dialog
 				// TODO: increment scoreboard
-				// TODO:
-				// if (scoreboard.isGameOver()) {
-				// gameOver = true;
-				// }
-				// else {
 				new EndGame(getPlayers());
 				totalTurns += turns;
+				int[] scores = new int[players.length];
+				for (int i = 0; i < scores.length; i++) {
+					// scores[i] = distance thing
+					scores[i] = (int) (Math.random() * 5);
+				}
+				try {
+					scoreboard.addScores(scores);
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					gameOver = true;
+				}
 				roundOver = false;
-				// }
 			}
+
 			board.setGameState(Board.GS_GAME_END);
-			// Player[] endResults = scoreboard.getEndResults();
+			ArrayList<String> endResults = scoreboard.gameOver();
 		}
 	}
 

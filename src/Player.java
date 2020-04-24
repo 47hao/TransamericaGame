@@ -13,7 +13,7 @@ public abstract class Player {
 	Position markerPos;
 	ArrayList<Rail> validRails;
 	ArrayList<City> targetCities;
-	ArrayList<Boolean> targetsReached;
+	boolean[] targetsReached;
 	int[] distancesToCities;
 
 	int scoreboardOffset = 0;
@@ -27,24 +27,22 @@ public abstract class Player {
 		validRails = new ArrayList<Rail>();
 		name = n;
 		targetCities = new ArrayList<City>();
-		targetsReached = new ArrayList<Boolean>();
+		targetsReached = new boolean[5];
 		color = c;
 		score = 0;
 	}
 
 	abstract String getName();
-	
-	public boolean isComputer()
-	{
+
+	public boolean isComputer() {
 		return isComputer;
 	}
 
-	public void initTargetCities()
-	{
-		for(int i=0; i<targetCities.size(); i++)
-			targetsReached.add(false);
+	public void initTargetCities() {
+		for (int i = 0; i < targetCities.size(); i++)
+			targetsReached[i] = false;
 	}
-	
+
 	public void setMarkerPos(Position pos) {
 		markerPos = pos;
 	}
@@ -81,24 +79,21 @@ public abstract class Player {
 	public void setValidRails(ArrayList<Rail> rails) {
 		validRails = rails;
 	}
+
 	// public void calculateDistances() {
 	// for (int i = 0; i < targetCities.size(); i++) {
 	// distancesToCities[i] = this.getDistanceToCity(targetCities.get(i));
 	// }
 	// }
-	public void setCityReached(City c)
-	{
+	public void setCityReached(City c) {
 		System.out.println("Reached " + c);
 		int i = targetCities.indexOf(c);
-		targetsReached.set(i, true);
+		targetsReached[i] = true;
 	}
-	
-	public boolean checkAllCitiesReached()
-	{
-		System.out.println("Checckin " + targetsReached.size() + "targets");
-		for(boolean reached : targetsReached)
-		{
-			if(reached==false)
+
+	public boolean checkAllCitiesReached() {
+		for (boolean reached : targetsReached) {
+			if (reached == false)
 				return false;
 		}
 		return true;
@@ -132,13 +127,14 @@ public abstract class Player {
 	public boolean getLarge() {
 		return largeIcon;
 	}
-	
+
 	public void clearCities() {
 		targetCities = new ArrayList<City>();
+
 	}
 
 	public void clearMarker() {
 		markerPos = null;
 	}
-	
+
 }
