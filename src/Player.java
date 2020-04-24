@@ -92,7 +92,7 @@ public abstract class Player {
 	// }
 	// }
 	public void setCityReached(City c) {
-		System.out.println("Reached " + c);
+		// System.out.println("Reached " + c);
 		int i = targetCities.indexOf(c);
 		targetsReached[i] = true;
 	}

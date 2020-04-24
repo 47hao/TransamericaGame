@@ -52,7 +52,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 	public final static Color Yellow = new Color(235, 190, 0);
 	public final static Color Orange = new Color(230, 120, 0);
 	public final static Color Purple = new Color(125, 60, 190);
-	
+
 	final double starScale = 1.8;
 	final int[] starTemplateX = { 0, 5, 3, 8, 12, 10, 14, 9, 8, 6, 0 };
 	final int[] starTemplateY = { 6, 9, 15, 10, 14, 9, 6, 6, 0, 6, 6 };
@@ -206,7 +206,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 					}
 				}
 			} catch (Exception e) {
-				System.out.println("Null getRecentRails problem");
+				// System.out.println("Null getRecentRails problem");
 			}
 
 		}

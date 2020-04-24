@@ -32,51 +32,63 @@ public class Game {
 
 	// TODO: look at a better way to organize these constructors (don't repeat code)
 
+	// public Game(Player[] players) {
+	// 	gameOver = false;
+	// 	roundOver = false;
+
+	// 	recentRails = new LinkedList<ArrayList<Rail>>();
+	// 	turnRails = new ArrayList<Rail>();
+
+	// 	frame = new JFrame();
+	// 	panel = new GamePanel(this);
+	// 	board = new Board();
+	// 	scoreboard = new Scoreboard(players);
+	// 	this.players = players;
+	// 	fast = false;
+	// 	// games = 0;
+	// 	frame.setContentPane(panel);
+	// 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	// 	frame.setPreferredSize(new Dimension(GamePanel.resolutionWidth, GamePanel.resolutionHeight));
+	// 	frame.setResizable(false);
+	// 	frame.pack();
+	// 	frame.setVisible(true);
+
+	// 	new Thread(() -> {
+	// 		play(false);
+	// 	}).start();
+	// }
+
 	public Game(Player[] players) {
+		this(players, false, 1, false);
+	}
+
+	public Game(Player[] players, boolean fast, int games, boolean computersOnly) {
+		this.games = games;
+		this.fast = fast;
 		gameOver = false;
 		roundOver = false;
 
 		recentRails = new LinkedList<ArrayList<Rail>>();
 		turnRails = new ArrayList<Rail>();
 
-		frame = new JFrame();
-		panel = new GamePanel(this);
+		if (!computersOnly && !fast) {
+			frame = new JFrame();
+			panel = new GamePanel(this);
+		}
 		board = new Board();
 		scoreboard = new Scoreboard(players);
 		this.players = players;
-		fast = false;
-		// games = 0;
-		frame.setContentPane(panel);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setPreferredSize(new Dimension(GamePanel.resolutionWidth, GamePanel.resolutionHeight));
-		frame.setResizable(false);
-		frame.pack();
-		frame.setVisible(true);
+		if (!computersOnly && !fast) {
+			frame.setContentPane(panel);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setPreferredSize(new Dimension(GamePanel.resolutionWidth, GamePanel.resolutionHeight));
+			frame.setResizable(false);
+			frame.pack();
+			frame.setVisible(true);
+		}
 
 		new Thread(() -> {
-			play(false);
-		}).start();
-	}
-
-	public Game(Player[] players, boolean fast, int games) {
-		gameOver = false;
-		roundOver = false;
-
-		frame = new JFrame();
-		panel = new GamePanel(this);
-		board = new Board();
-		scoreboard = new Scoreboard(players);
-		this.players = players;
-		this.fast = fast;
-		this.games = games;
-		frame.setContentPane(panel);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setPreferredSize(new Dimension(800, 600));
-		frame.setResizable(false);
-		frame.pack();
-		frame.setVisible(true);
-		new Thread(() -> {
-			play(true);
+			play(computersOnly);
 		}).start();
 	}
 
@@ -102,7 +114,7 @@ public class Game {
 			ArrayList<City> greenCities = new ArrayList<City>();
 			ArrayList[] cityLists = { orangeCities, blueCities, yellowCities, redCities, greenCities };
 
-			System.out.println("FINISHED THE THINGS, ABOUT TO CALC");
+			// System.out.println("FINISHED THE THINGS, ABOUT TO CALC");
 			totalTurns = 0;
 			while (!gameOver) {
 				turns = 0;
@@ -142,7 +154,7 @@ public class Game {
 							otherPlayerMarkers.add(otherPlayer.getMarkerPos());
 						}
 						p.setMarkerPos(p.getMarker(board, otherPlayerMarkers));
-						System.out.println("cpu marker placed");
+						// System.out.println("cpu marker placed");
 					} else {
 						while (currentPlayer.getMarkerPos() == null) {
 							try {
@@ -166,7 +178,7 @@ public class Game {
 
 					for (Player p : players) {
 						turns++;
-						System.out.println("turn #" + turns);
+						// System.out.println("turn #" + turns);
 						// p.calculateDistances();
 
 						checkCitiesReached(currentPlayer);
@@ -174,7 +186,7 @@ public class Game {
 						// each player places 2 rails per round
 						board.setRemainingRails(2);
 						currentPlayer = p;
-						System.out.println("current player: " + currentPlayer.getName());
+						// System.out.println("current player: " + currentPlayer.getName());
 						turnRails = new ArrayList<Rail>();
 						while (board.getRemainingRails() > 0) {
 
@@ -203,6 +215,7 @@ public class Game {
 										e.printStackTrace();
 									}
 								}
+								board.setRemainingRails(board.getRemainingRails() - 1 * (turnRails.get(0).isDouble() ? 2 : 1));
 								// p.getConnectedPoints().addRailPositions();
 								addRailPositions(p);
 								// turnRails.add()
@@ -218,7 +231,7 @@ public class Game {
 						}
 					}
 				}
-				System.out.println("round over");
+				// System.out.println("round over");
 				// TODO: show round end dialog
 				// TODO: increment scoreboard
 				totalTurns += turns;
@@ -242,7 +255,7 @@ public class Game {
 			for (Rail r : board.computeConnectedRails(p))
 				if (c.getPos().equals(r.startPos()) || c.getPos().equals(r.endPos())) {
 					p.setCityReached(c);
-					System.out.println("brokeloop");
+					// System.out.println("brokeloop");
 					break;
 				}
 	}

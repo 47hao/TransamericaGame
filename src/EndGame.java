@@ -22,7 +22,7 @@ public class EndGame {
 	// XXX: the player array directly (Game class is the highest level)
 	public EndGame(Player[] p, String titleStr) {
 		players = p;
-		
+
 		title = titleStr;
 		// scoreboard = new Scoreboard(p);
 		frame = new JFrame(title);
@@ -47,7 +47,7 @@ public class EndGame {
 
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			System.out.println(getBackground());
+			// System.out.println(getBackground());
 			Graphics2D g2d = (Graphics2D) g;
 
 			g2d.setColor(new Color(110, 70, 0));
@@ -68,7 +68,7 @@ public class EndGame {
 						name = player.getName();
 					}
 				}
-				
+
 				g2d.drawString(name + " has won!", panel.getWidth() / 3 - 30, 3 + OFFSET_Y);
 				g2d.drawString("Game Results:", panel.getWidth() / 3, 33 + OFFSET_Y);
 			} else

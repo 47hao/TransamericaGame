@@ -334,7 +334,7 @@ public class Board {
             // System.out.println("removing " + currentPos);
             possibleNodes.remove(currentPos);
             for (Position position : possibleNodes) {
-                System.out.println(position);
+                // System.out.println(position);
             }
 
             // System.out.println("targetPos: " + target);
@@ -487,9 +487,9 @@ public class Board {
                 shortestScore = currentScore;
                 shortestScoreIndex = l;
             }
-            System.out.println(currentScore + "Current Score");
+            // System.out.println(currentScore + "Current Score");
         }
-        System.out.println(shortestScoreIndex);
+        // System.out.println(shortestScoreIndex);
         return railPath.get(shortestScoreIndex);
 
     }

@@ -336,9 +336,9 @@ public class InitialScreen {
 					}
 				}
 				// XXX: the stubs below are proof of concept code
-				System.out.println("Players: ");
+				// System.out.println("Players: ");
 				for (String s : players) {
-					System.out.println(s);
+					// System.out.println(s);
 				}
 				boolean computersOnly = true;
 				for (String s : players) {
@@ -359,14 +359,14 @@ public class InitialScreen {
 				}
 
 				for (Player player : playerList) {
-					System.out.println("\n");
+					// System.out.println("\n");
 					for (City city : player.getTargetCities()) {
-						System.out.println(city.toString());
+						// System.out.println(city.toString());
 					}
 				}
 
 				if (computersOnly) {
-					System.out.println("Strategy Evaluation mode is on!");
+					// System.out.println("Strategy Evaluation mode is on!");
 					StrategyEvalPanel p = new StrategyEvalPanel();
 					JFrame evalFrame = new JFrame("Strategy Evaluator");
 					evalFrame.setContentPane(p);
@@ -438,8 +438,8 @@ public class InitialScreen {
 				}
 				String speed = fastButton.isSelected() ? "fast" : "slow";
 
-				System.out.println("numGames: " + numGames);
-				System.out.println("mode: " + speed);
+				// System.out.println("numGames: " + numGames);
+				// System.out.println("mode: " + speed);
 
 			}
 
