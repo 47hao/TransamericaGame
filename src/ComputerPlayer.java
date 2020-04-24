@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.ArrayList;
 
 class ComputerPlayer extends Player {
 	private String offname;
@@ -45,8 +46,28 @@ class ComputerPlayer extends Player {
 		return -1;
 	}
 	
-	public Position getMarker(Board b) {
+	public Position getMarker(Board b, ArrayList<Position> otherMarkers) {
 		int range = b.getPositions().size();
-		return b.getPositions().get((int)(Math.random()*range));
+		Position selectedPos = null;
+		boolean occupied = false;
+		do
+		{
+			selectedPos = b.getPositions().get((int)(Math.random()*range));
+			for(Position otherPos : otherMarkers)
+			{
+				if(otherPos != null)
+				{
+					if((otherPos.getX() == selectedPos.getX()) && (otherPos.getY() == selectedPos.getY()))
+					{
+						occupied = true;
+
+						System.out.println("DUPLICATE");
+					}
+				}
+				
+			}
+			
+		} while(occupied);
+		return selectedPos;
 	}
 }

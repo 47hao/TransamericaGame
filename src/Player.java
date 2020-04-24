@@ -58,7 +58,7 @@ public abstract class Player {
 	// abstract int getDistanceToCity(City c);
 
 	// abstract void setDistanceToCity(City c, int n);
-	abstract Position getMarker(Board b);
+	abstract Position getMarker(Board b, ArrayList<Position> otherMarkers);
 
 	abstract int getRail(Rail[] rails, Board b);
 

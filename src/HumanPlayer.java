@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.ArrayList;
 
 public class HumanPlayer extends Player {
 
@@ -23,7 +24,7 @@ public class HumanPlayer extends Player {
 	// distanc
 	// }
 
-	Position getMarker(Board b) {
+	Position getMarker(Board b, ArrayList<Position> otherMarkers) {
 		return null;
 	}
 

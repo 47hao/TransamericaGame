@@ -696,8 +696,24 @@ public class GamePanel extends JPanel implements MouseInputListener {
 					if (ellipse.contains(e.getPoint())) {
 						Position pos = gameInfo.getBoard().getPositions()
 								.get(gameInfo.getBoard().getPositionHitboxes().indexOf(ellipse));
-						gameInfo.getCurrentPlayer().setMarkerPos(pos);
-						gameInfo.notify();
+						boolean alreadyTaken = false;
+						for(Player p : gameInfo.getPlayers())
+						{
+							try {
+								if(p.getMarkerPos().equals(pos))
+								{
+									alreadyTaken = true;
+									break;
+								}
+							} catch(Exception except) {}
+						}
+						
+						if(!alreadyTaken)
+						{
+							gameInfo.getCurrentPlayer().setMarkerPos(pos);
+							gameInfo.notify();
+						}
+						
 					}
 				}
 				repaint();

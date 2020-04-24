@@ -141,7 +141,12 @@ public class Game {
 				for (Player p : players) {
 					currentPlayer = p;
 					if (p.isComputer) {
-						p.setMarkerPos(p.getMarker(board));
+						ArrayList<Position> otherPlayerMarkers = new ArrayList<Position>();
+						for(Player otherPlayer : players)
+						{
+							otherPlayerMarkers.add(otherPlayer.getMarkerPos());
+						}
+						p.setMarkerPos(p.getMarker(board, otherPlayerMarkers));
 						System.out.println("cpu marker placed");
 					} else {
 						while (currentPlayer.getMarkerPos() == null) {
