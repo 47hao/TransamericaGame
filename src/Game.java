@@ -102,18 +102,13 @@ public class Game {
 			ArrayList<City> greenCities = new ArrayList<City>();
 			ArrayList[] cityLists = { orangeCities, blueCities, yellowCities, redCities, greenCities };
 
-			for (int i = 0; i < cityLists.length; i++) {
-				for (int j = i * 7; j < 7 * (i + 1); j++) {
-					cityLists[i].add(Board.cities[j]);
-				}
-			}
-
 			System.out.println("FINISHED THE THINGS, ABOUT TO CALC");
 			totalTurns = 0;
-			panel.clearOutlinedPoint();
 			while (!gameOver) {
 				turns = 0;
 
+				board = new Board();
+				
 				// reset board
 				for (int i = 0; i < cityLists.length; i++) {
 					for (int j = i * 7; j < 7 * (i + 1); j++) {
@@ -121,6 +116,8 @@ public class Game {
 					}
 				}
 
+				panel.clearOutlinedPoint();
+				
 				for (Player player : players) {
 					player.clearCities();
 				}
@@ -136,7 +133,6 @@ public class Game {
 				for (Player player : players)
 					player.clearMarker();
 
-				board = new Board();
 				board.setGameState(Board.GS_MARKER);
 				for (Player p : players) {
 					currentPlayer = p;
