@@ -13,6 +13,7 @@ public abstract class Player {
 	Position markerPos;
 	ArrayList<Rail> validRails;
 	ArrayList<City> targetCities;
+	ArrayList<Position> connectedPoints;
 	boolean[] targetsReached;
 	int[] distancesToCities;
 
@@ -27,6 +28,7 @@ public abstract class Player {
 		validRails = new ArrayList<Rail>();
 		name = n;
 		targetCities = new ArrayList<City>();
+		connectedPoints = new ArrayList<Position>();
 		targetsReached = new boolean[5];
 		color = c;
 		score = 0;
@@ -63,11 +65,11 @@ public abstract class Player {
 	abstract int getRail(Rail[] rails, Board b);
 
 	abstract void addScore(int amount);
-	
+
 	public void setScore(int score) {
 		this.score = score;
 	}
-	
+
 	public int getScore() {
 		return score;
 	}
@@ -110,6 +112,10 @@ public abstract class Player {
 	public void setDistancesToCities(int[] src) {
 		distancesToCities = new int[6];
 		System.arraycopy(src, 0, distancesToCities, 0, src.length);
+	}
+
+	public ArrayList<Position> getConnectedPoints() {
+		return connectedPoints;
 	}
 
 	public Color getColor() {

@@ -108,7 +108,7 @@ public class Game {
 				turns = 0;
 
 				board = new Board();
-				
+
 				// reset board
 				for (int i = 0; i < cityLists.length; i++) {
 					for (int j = i * 7; j < 7 * (i + 1); j++) {
@@ -117,7 +117,7 @@ public class Game {
 				}
 
 				panel.clearOutlinedPoint();
-				
+
 				for (Player player : players) {
 					player.clearCities();
 				}
@@ -138,8 +138,7 @@ public class Game {
 					currentPlayer = p;
 					if (p.isComputer) {
 						ArrayList<Position> otherPlayerMarkers = new ArrayList<Position>();
-						for(Player otherPlayer : players)
-						{
+						for (Player otherPlayer : players) {
 							otherPlayerMarkers.add(otherPlayer.getMarkerPos());
 						}
 						p.setMarkerPos(p.getMarker(board, otherPlayerMarkers));
@@ -154,7 +153,9 @@ public class Game {
 							}
 						}
 					}
+					p.getConnectedPoints().add(p.getMarkerPos());
 				}
+				panel.clearOutlinedPoint();
 
 				// TODO: fix distance calculation
 				calculateDistances();
@@ -202,17 +203,10 @@ public class Game {
 										e.printStackTrace();
 									}
 								}
-
+								// p.getConnectedPoints().addRailPositions();
+								addRailPositions(p);
 								// turnRails.add()
 								calculateDistances();
-								// rail placed
-								if (turnRails.get(0).isDouble()) {
-									board.setRemainingRails(0);
-									// we can use a constant here because the loop always ends after
-								} else {
-									board.setRemainingRails(board.getRemainingRails() - 1);
-								}
-								// p.calculateDistances();
 								addTurnRails(turnRails);
 								/*
 								 * roundOver = true;
@@ -234,7 +228,7 @@ public class Game {
 					scores[i] = (int) (Math.random() * 20);
 				}
 				scoreboard.addScores(scores);
-				//maybe find a way to not activate when game end? if (!gameOver) doesn't work
+				// maybe find a way to not activate when game end? if (!gameOver) doesn't work
 				new EndGame(getPlayers(), "Round End");
 				roundOver = false;
 			}
@@ -261,17 +255,29 @@ public class Game {
 				p.setScore(0);
 		}
 	}
-	
+
+	public void addRailPositions(Player p) {
+		for (Player player : players) {
+			if (!(player == p)) {
+				for (Position pos : p.getConnectedPoints()) {
+					if (player.getConnectedPoints().contains(pos)) {
+						p.getConnectedPoints().addAll(player.getConnectedPoints());
+						player.getConnectedPoints().addAll(p.getConnectedPoints());
+					}
+				}
+			}
+		}
+	}
+
 	public boolean getGameOver() {
 		return gameOver;
 	}
-	
+
 	public void calculateDistances() {
 		for (Player player : players) {
 			int[] dist = new int[6];
 			for (int i = 0; i < player.getTargetCities().size(); i++) {
-				// dist[i] = board.getDistancetoCity(player, player.getTargetCities().get(i));
-				dist[i] = 1;
+				dist[i] = board.getDistancetoCity(player, player.getTargetCities().get(i));
 			}
 			player.setDistancesToCities(dist);
 		}
