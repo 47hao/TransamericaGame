@@ -19,7 +19,7 @@ public class Scoreboard {
 	public int[] getLocations() {
 		return locations;
 	}
-	
+
 	public ArrayList<String> gameOver() {
 		// not accounted for players with same score
 		ArrayList<String> winnerOrder = new ArrayList<String>();
